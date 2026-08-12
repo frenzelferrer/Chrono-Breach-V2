@@ -277,6 +277,73 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   .mActBtn{min-height:52px;font-size:11px;border-radius:14px}
 }
 
+
+/* ==================== TITAN TELEGRAPHS + CHAMPIONS ==================== */
+.lbTabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 14px}
+.lbTab{border:1px solid rgba(87,233,255,.24);border-radius:10px;padding:10px 12px;background:rgba(8,18,32,.7);color:#8ca9bd;font-size:11px;font-weight:1000;letter-spacing:.12em;cursor:pointer}
+.lbTab.active{color:#fff;border-color:rgba(87,233,255,.65);background:rgba(87,233,255,.1);box-shadow:0 0 18px rgba(87,233,255,.12)}
+.lbTab.titan.active{color:#ffb067;border-color:rgba(255,91,61,.65);background:rgba(255,91,61,.1);box-shadow:0 0 18px rgba(255,91,61,.14)}
+.lbModeInfo{font-size:10px;letter-spacing:.12em;color:#7895aa;margin:-4px 0 10px;text-align:left}
+.titanBadge{display:inline-flex;align-items:center;gap:4px;margin-left:6px;padding:2px 7px;border:1px solid rgba(255,91,61,.48);border-radius:999px;background:rgba(255,91,61,.1);color:#ff9b72;font-size:9px;font-weight:1000;letter-spacing:.08em;vertical-align:middle;white-space:nowrap;text-shadow:0 0 10px rgba(255,91,61,.32)}
+.lbRow.titanRow{background:linear-gradient(90deg,rgba(255,91,61,.07),rgba(255,216,93,.025))}
+.lbRow .wv.titanStatus{color:#ffae82;opacity:1;font-weight:800}
+.lbChampionMeta{display:block;color:#7693a7;font-size:9px;font-weight:700;letter-spacing:.04em;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.titanCeremony{margin:16px auto 14px;padding:18px 16px;border:1px solid rgba(255,91,61,.5);border-radius:16px;background:radial-gradient(circle at 50% 0%,rgba(255,91,61,.18),rgba(255,216,93,.035) 50%,rgba(5,10,22,.2));box-shadow:inset 0 0 28px rgba(255,91,61,.05),0 0 28px rgba(255,91,61,.1)}
+.titanCoreIcon{width:76px;height:76px;margin:0 auto 8px;display:grid;place-items:center;border-radius:50%;font-size:42px;background:radial-gradient(circle,rgba(255,216,93,.26),rgba(255,91,61,.09) 58%,transparent 62%);border:1px solid rgba(255,216,93,.45);box-shadow:0 0 28px rgba(255,91,61,.25);animation:titanCorePulse 1.8s ease-in-out infinite}
+@keyframes titanCorePulse{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.055);filter:brightness(1.2)}}
+.titanCeremony .tcEyebrow{font-size:10px;color:#ff9b72;font-weight:1000;letter-spacing:.22em}
+.titanCeremony .tcTitle{font-size:20px;font-weight:1000;letter-spacing:.12em;color:#ffd85d;margin-top:4px;text-shadow:0 0 18px rgba(255,216,93,.35)}
+.titanCeremony .tcText{font-size:11px;color:#a7bed0;line-height:1.5;margin-top:6px}
+#vNameEntry{display:none;gap:8px;justify-content:center;margin:12px 0 4px;flex-wrap:wrap}
+#vPilotName{min-width:190px;flex:1;background:#07101e;border:1px solid rgba(255,216,93,.4);color:#fff;border-radius:10px;padding:12px 14px;font-weight:900;letter-spacing:.12em;outline:none;text-transform:uppercase}
+#vPilotName:focus{border-color:#ffd85d;box-shadow:0 0 14px rgba(255,216,93,.16)}
+#vClaimed{font-size:11px;color:#59ff9c;font-weight:900;letter-spacing:.1em;margin-top:8px;min-height:16px}
+#titanCombatHint{position:fixed;left:50%;top:16%;transform:translateX(-50%);z-index:8;pointer-events:none;opacity:0;transition:opacity .15s;text-align:center;min-width:min(86vw,520px);padding:10px 16px;border:1px solid rgba(255,70,90,.55);border-radius:10px;background:rgba(18,3,9,.78);box-shadow:0 0 24px rgba(255,46,77,.15);font-weight:1000;letter-spacing:.13em;font-size:12px;color:#fff;text-shadow:0 0 12px rgba(255,80,100,.5)}
+#titanCombatHint.on{opacity:1}
+#titanCombatHint .thSub{display:block;margin-top:3px;color:#ffb1bd;font-size:9px;letter-spacing:.1em}
+@media(max-width:680px){
+ .lbRow{grid-template-columns:32px 1fr 82px 82px;font-size:11px;padding:7px 6px;gap:5px}
+ .lbRow .wv{font-size:10px}.lbRow .sc{font-size:11px}
+ .titanBadge{font-size:8px;padding:2px 5px;margin-left:3px}
+ .titanCeremony{padding:12px 10px;margin:10px auto}.titanCoreIcon{width:58px;height:58px;font-size:32px}.titanCeremony .tcTitle{font-size:16px}
+ #titanCombatHint{top:13%;font-size:10px;padding:8px 10px}
+}
+
+
+
+/* ==================== BREACH LOADOUT // EQUIPMENT SHARDS + ACTIVE SKILLS ==================== */
+.loadoutPanel{width:min(1120px,96vw);max-height:94vh;overflow:auto;padding:26px 30px;scrollbar-width:thin}
+.loadoutTop{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}
+.loadoutWallet{display:flex;align-items:center;gap:8px;white-space:nowrap;background:rgba(8,18,32,.72);border:1px solid rgba(255,216,93,.3);border-radius:10px;padding:8px 12px;color:#ffd85d;font-weight:1000;font-size:13px}
+.loadoutSection{margin-top:18px}
+.loadoutSectionTitle{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:9px}
+.loadoutSectionTitle h3{margin:0;font-size:13px;letter-spacing:.15em;color:#e7f9ff}
+.loadoutSectionTitle span{font-size:9px;color:#7895aa;letter-spacing:.1em;text-align:right}
+.equippedShardSlots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 12px}
+.shardSlot{min-height:62px;border:1px dashed rgba(87,233,255,.25);border-radius:11px;background:rgba(4,12,24,.5);padding:9px 11px;display:flex;align-items:center;gap:9px;color:#6f8fa4}
+.shardSlot.filled{border-style:solid;border-color:rgba(87,233,255,.5);color:#dffaff;background:linear-gradient(180deg,rgba(87,233,255,.08),rgba(5,13,26,.6))}
+.shardOrb{width:36px;height:36px;flex:none;border-radius:50%;display:grid;place-items:center;border:1px solid currentColor;background:radial-gradient(circle,rgba(255,255,255,.15),rgba(255,255,255,.02));font-size:18px;box-shadow:0 0 16px rgba(87,233,255,.12)}
+.shardSlot b{font-size:10px;letter-spacing:.08em}.shardSlot small{display:block;font-size:9px;margin-top:3px;color:#7f9aae}
+.loadoutGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:9px}
+.loadCard{position:relative;border:1px solid rgba(70,130,180,.28);border-radius:13px;padding:13px;background:linear-gradient(180deg,rgba(8,18,34,.78),rgba(5,11,23,.72));min-height:168px;display:flex;flex-direction:column;transition:.14s}
+.loadCard:hover{border-color:rgba(87,233,255,.48);transform:translateY(-1px)}
+.loadCard.equipped{border-color:rgba(89,255,156,.62);box-shadow:inset 0 0 22px rgba(89,255,156,.045),0 0 16px rgba(89,255,156,.06)}
+.loadCard.locked{border-color:rgba(255,216,93,.22)}
+.lcTop{display:flex;align-items:center;gap:10px}.lcIcon{width:38px;height:38px;flex:none;border-radius:10px;display:grid;place-items:center;background:rgba(20,45,75,.52);border:1px solid currentColor;font-size:19px}.lcName{font-size:12px;font-weight:1000;letter-spacing:.08em}.lcType{font-size:8px;color:#6f8fa4;letter-spacing:.14em;margin-top:2px}.lcDesc{font-size:10.5px;color:#9eb3c4;line-height:1.45;margin:10px 0 8px;flex:1}.lcStat{font-size:9px;color:#59ff9c;font-weight:900;letter-spacing:.05em;min-height:14px}.lcBtn{width:100%;border:0;border-radius:9px;padding:9px 8px;margin-top:10px;cursor:pointer;font-weight:1000;font-size:10px;letter-spacing:.1em;color:#04101a;background:linear-gradient(90deg,#57e9ff,#7d69ff)}
+.lcBtn.buy{background:linear-gradient(90deg,#ffd85d,#ff9a3d);color:#241500}.lcBtn.unequip{background:rgba(89,255,156,.1);border:1px solid rgba(89,255,156,.35);color:#59ff9c}.lcBtn:disabled{cursor:not-allowed;background:#152538;color:#5f7486;border:0}
+.skillSlotGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.skillSlot{border:1px solid rgba(87,233,255,.2);border-radius:13px;padding:12px;background:rgba(5,13,26,.5)}
+.skillSlotHead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}.skillSlotHead b{font-size:11px;letter-spacing:.12em}.skillKey{display:inline-grid;place-items:center;min-width:28px;height:24px;padding:0 7px;border:1px solid rgba(255,255,255,.22);border-radius:6px;background:#091524;color:#fff;font-size:10px;font-weight:1000}
+.skillGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.skillCard{border:1px solid rgba(70,130,180,.25);border-radius:10px;padding:10px;background:rgba(7,16,30,.72);min-height:142px;display:flex;flex-direction:column}
+.skillCard.equipped{border-color:rgba(89,255,156,.58);background:linear-gradient(180deg,rgba(89,255,156,.06),rgba(7,16,30,.74))}.skillCard.locked{border-color:rgba(255,216,93,.2)}
+.skillName{font-size:11px;font-weight:1000;letter-spacing:.08em}.skillCost{font-size:9px;color:#ffd85d;font-weight:900;margin-top:3px}.skillDesc{font-size:9.5px;color:#94aabd;line-height:1.42;margin:8px 0;flex:1}.skillMeta{font-size:8.5px;color:#57e9ff;font-weight:900;letter-spacing:.07em}
+.loadoutFooter{position:sticky;bottom:-26px;margin:20px -30px -26px;padding:14px 30px calc(14px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between;gap:12px;background:linear-gradient(180deg,rgba(3,8,16,.25),rgba(3,8,16,.98) 28%);border-top:1px solid rgba(87,233,255,.12);z-index:3}
+.loadoutSummary{font-size:10px;color:#8fa8ba;line-height:1.45}.loadoutSummary b{color:#e9fbff}.loadoutActions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+#loadoutNotice{min-height:15px;margin-top:7px;color:#ffd85d;font-size:10px;font-weight:900;letter-spacing:.07em}
+@media(max-width:860px){.loadoutPanel{padding:20px 18px}.skillSlotGrid{grid-template-columns:1fr}.equippedShardSlots{grid-template-columns:1fr 1fr 1fr}.loadoutFooter{margin:18px -18px -20px;padding-left:18px;padding-right:18px;bottom:-20px}.loadoutTop{align-items:center}.loadoutGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.loadoutPanel{max-height:100vh;width:100vw;border-radius:0;padding:16px 12px}.loadoutGrid,.skillGrid{grid-template-columns:1fr}.equippedShardSlots{grid-template-columns:1fr}.loadoutFooter{margin:16px -12px -16px;padding:12px;bottom:-16px;flex-direction:column;align-items:stretch}.loadoutActions{justify-content:stretch}.loadoutActions .btn{flex:1}.loadoutTop{align-items:flex-start}.loadoutWallet{font-size:11px}}
+
 </style>
 </head>
 <body>
@@ -325,6 +392,7 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   <div id="warn"><div><div class="w1">⚠ WARNING ⚠</div><div class="w2">BREACH ENTITY DETECTED</div><div class="w3" id="warnName">SENTINEL MK-I</div></div></div>
 </div>
 <div id="dmgFlash"></div>
+<div id="titanCombatHint"><span id="titanHintMain">TITAN ATTACK</span><span class="thSub" id="titanHintSub"></span></div>
 
 <div id="mobileControls" aria-hidden="true">
   <button class="mPauseBtn mPulse" id="mPauseBtn" type="button" aria-label="Pause">Ⅱ</button>
@@ -374,6 +442,7 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
       <button class="btn ghost" id="btnMap">✦&nbsp; SECTOR MAP</button>
       <button class="btn ghost" id="btnLb">🏆&nbsp; LEADERBOARD</button>
       <button class="btn ghost" id="btnShop">⬆&nbsp; UPGRADES</button>
+      <button class="btn ghost" id="btnLoadout">◇&nbsp; LOADOUT</button>
     </div>
     <div class="menuBtns2">
       <button class="btn ghost" id="btnSettings">⚙&nbsp; SETTINGS</button>
@@ -403,9 +472,14 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 
 <!-- ==================== LEADERBOARD ==================== -->
 <div id="lbPanel" class="screen dim">
-  <div class="panel glass" style="width:min(560px,94vw)">
+  <div class="panel glass" style="width:min(680px,94vw)">
     <h2 class="pTitle">LEADERBOARD</h2>
-    <div class="pSub">TOP TIMELINES // LOCAL PILOT RECORDS</div>
+    <div class="pSub">LOCAL PILOT RECORDS // GLOBAL-READY FORMAT</div>
+    <div class="lbTabs">
+      <button class="lbTab active" id="lbTopTab" type="button">TOP SCORES</button>
+      <button class="lbTab titan" id="lbTitanTab" type="button">🔥 TITAN CHAMPIONS <span id="titanCount"></span></button>
+    </div>
+    <div class="lbModeInfo" id="lbModeInfo">HIGHEST SCORES ACROSS ALL LOCAL RUNS</div>
     <div class="lbTable" id="lbRows"></div>
     <div class="btnRow"><button class="btn ghost" id="lbBack">← BACK</button></div>
   </div>
@@ -419,6 +493,49 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     <div style="display:flex;justify-content:flex-end;margin-bottom:14px"><div class="cur">🪙 <span id="shopCredits">0</span></div></div>
     <div class="shopGrid" id="shopGrid"></div>
     <div class="btnRow"><button class="btn ghost" id="shopBack">← BACK</button></div>
+  </div>
+</div>
+
+
+<!-- ==================== BREACH LOADOUT ==================== -->
+<div id="loadoutPanel" class="screen dim">
+  <div class="panel glass loadoutPanel">
+    <div class="loadoutTop">
+      <div>
+        <h2 class="pTitle">BREACH // LOADOUT</h2>
+        <div class="pSub" style="margin-bottom:0">BUY WITH CREDITS • EQUIP UP TO 3 AUGMENT SHARDS • CHOOSE YOUR E + Q SKILLS</div>
+      </div>
+      <div class="loadoutWallet">🪙 <span id="loadoutCredits">0</span> CREDITS</div>
+    </div>
+
+    <div class="loadoutSection">
+      <div class="loadoutSectionTitle"><h3>ACTIVE SKILLS</h3><span>DEFAULT PARRY + TIME FRACTURE ARE FREE. PURCHASE ALTERNATIVES ONCE, THEN SWAP ANY TIME.</span></div>
+      <div class="skillSlotGrid">
+        <div class="skillSlot">
+          <div class="skillSlotHead"><b>TACTICAL SLOT</b><span class="skillKey">E</span></div>
+          <div class="skillGrid" id="tacticalSkillGrid"></div>
+        </div>
+        <div class="skillSlot">
+          <div class="skillSlotHead"><b>CHRONO SLOT</b><span class="skillKey">Q</span></div>
+          <div class="skillGrid" id="chronoSkillGrid"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="loadoutSection">
+      <div class="loadoutSectionTitle"><h3>EQUIPPED AUGMENT SHARDS <span id="shardEquipCount" style="color:#57e9ff"></span></h3><span>PASSIVE BONUSES APPLY FOR THE ENTIRE RUN. MAXIMUM 3 EQUIPPED.</span></div>
+      <div class="equippedShardSlots" id="equippedShardSlots"></div>
+      <div class="loadoutGrid" id="shardStoreGrid"></div>
+      <div id="loadoutNotice"></div>
+    </div>
+
+    <div class="loadoutFooter">
+      <div class="loadoutSummary" id="loadoutSummary"></div>
+      <div class="loadoutActions">
+        <button class="btn ghost" id="loadoutBack">← BACK</button>
+        <button class="btn" id="loadoutStart">▶ START SECTOR</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -444,10 +561,11 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
       <div class="control"><b>WASD</b>Move through the breach</div>
       <div class="control"><b>MOUSE</b>Aim — hold to fire</div>
       <div class="control"><b>SPACE</b>Phase dash + brief invulnerability</div>
-      <div class="control"><b>E</b>Zero parry — reflect bullets back</div>
-      <div class="control"><b>Q</b>Time fracture — slow the world (needs 100% energy)</div>
+      <div class="control"><b>E</b>Equipped Tactical Skill — Parry, Aegis Pulse, Repulsor Burst, or Phase Blink</div>
+      <div class="control"><b>Q</b>Equipped Chrono Skill — uses a full Energy bar</div>
       <div class="control"><b>ESC</b>Pause menu</div>
       <div class="control"><b>💠 XP</b>Collect cyan shards to level up and evolve your ship</div>
+      <div class="control"><b>◇ LOADOUT</b>Buy active skills and Augment Shards with Credits before entering a sector</div>
       <div class="control"><b>☠ BOSSES</b>Each sector ends with a boss. Defeat it to unlock the next sector</div>
     </div>
     <div class="btnRow"><button class="btn ghost" id="howBack">← BACK</button></div>
@@ -511,16 +629,27 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 
 <!-- ==================== VICTORY ==================== -->
 <div id="victory" class="screen dim">
-  <div class="rwPanel glass">
-    <div class="rwSub" style="color:#59ff9c">BREACH STABILIZED</div>
+  <div class="rwPanel glass" style="width:min(620px,94vw)">
+    <div class="rwSub" style="color:#59ff9c">TIMELINE CONQUERED</div>
     <div class="rwTitle" style="color:#ffd85d;text-shadow:0 0 30px rgba(255,216,93,.5)">CHRONOS TITAN DEFEATED</div>
-    <div class="rwSub" style="margin-top:8px">RUN COMPLETE</div>
+    <div class="titanCeremony">
+      <div class="titanCoreIcon">🔥</div>
+      <div class="tcEyebrow">LEGENDARY BADGE UNLOCKED</div>
+      <div class="tcTitle">TITAN CORE</div>
+      <div class="tcText">Proof that this pilot defeated the Chronos Titan and stabilized the final breach.</div>
+      <div id="vClaimed"></div>
+    </div>
     <div class="scorebig" id="vScore">0</div>
     <div class="rwRows" id="vRows"></div>
-    <div class="rwUnlock" style="border-color:#ff8a6e;color:#ff8a6e;background:rgba(255,91,61,.07)">🔥 LEGENDARY ITEM ACQUIRED — TITAN CORE</div>
+    <div id="vNameEntry">
+      <input id="vPilotName" maxlength="12" placeholder="ENTER CALLSIGN" autocomplete="off">
+      <button class="btn" id="vClaim" style="padding:12px 18px">CLAIM TITAN CORE</button>
+    </div>
+    <div class="rwUnlock" style="border-color:#ff8a6e;color:#ff8a6e;background:rgba(255,91,61,.07)">🔥 YOUR TITAN CORE IS NOW SHOWN IN TITAN CHAMPIONS</div>
     <div class="btnRow">
-      <button class="btn" id="vNew">↻ NEW RUN</button>
-      <button class="btn ghost" id="vEndless">∞ ENDLESS MODE</button>
+      <button class="btn" id="vLeaderboard">🏆 VIEW TITAN CHAMPIONS</button>
+      <button class="btn ghost" id="vNew">↻ NEW RUN</button>
+      <button class="btn ghost" id="vEndless">∞ CONTINUE BUILD — ENDLESS</button>
       <button class="btn ghost" id="vMenu">MAIN MENU</button>
     </div>
   </div>
@@ -685,14 +814,20 @@ function tone(freq=440,d=.05,type='sine',vol=.025,slide=0){
 function jload(k,def){try{let v=JSON.parse(localStorage.getItem(k));return v==null?def:v}catch(e){return def}}
 function jsave(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 const PERM_DEFAULTS={hull:0,weapons:0,thrusters:0,dashmod:0,magnet:0,conduit:0,regen:0,aegis:0,precision:0,ballistics:0,salvage:0,learning:0,parrycap:0,reactive:0,scanner:0,reserve:0};
-const meta=Object.assign({credits:0,shards:0,cores:0,unlocked:0,best:[0,0,0,0,0],prog:[0,0,0,0,0],cleared:[false,false,false,false,false],titanCore:false,perm:{}},jload('chronoMeta',{}));
+const meta=Object.assign({credits:0,shards:0,cores:0,unlocked:0,best:[0,0,0,0,0],prog:[0,0,0,0,0],cleared:[false,false,false,false,false],titanCore:false,perm:{},shardOwned:{},equippedShards:[],skillOwned:{},equippedSkills:{}},jload('chronoMeta',{}));
 meta.perm=Object.assign({},PERM_DEFAULTS,meta.perm||{});
+meta.shardOwned=Object.assign({},meta.shardOwned||{});
+meta.equippedShards=Array.isArray(meta.equippedShards)?meta.equippedShards.filter(Boolean).slice(0,3):[];
+meta.skillOwned=Object.assign({parry:true,fracture:true},meta.skillOwned||{});meta.skillOwned.parry=true;meta.skillOwned.fracture=true;
+meta.equippedSkills=Object.assign({tactical:'parry',chrono:'fracture'},meta.equippedSkills||{});
 const settings=Object.assign({volume:1,shake:true,density:2,reducedMotion:false},jload('chronoSettings',{}));
 function saveMeta(){jsave('chronoMeta',meta);refreshTopbar()}
 function saveSettings(){jsave('chronoSettings',settings)}
 let best=+(localStorage.getItem('chronoBest')||0);
 function loadBoard(){let b=jload('chronoBoard',[]);return Array.isArray(b)?b:[]}
-function saveBoard(b){jsave('chronoBoard',b.slice(0,10))}
+function saveBoard(b){const sorted=[...b].sort((x,y)=>(y.s||0)-(x.s||0)),keep=sorted.slice(0,100),champ=sorted.filter(r=>r.titanDefeated===true||r.titanCore===true).slice(0,50),seen=new Set(keep.map(r=>r.rid||[r.n,r.s,r.d].join(':')));for(const r of champ){const k=r.rid||[r.n,r.s,r.d].join(':');if(!seen.has(k)){keep.push(r);seen.add(k)}}jsave('chronoBoard',keep.slice(0,150))}
+function getPilotId(){let id=localStorage.getItem('chronoPilotId');if(!id){id=(typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():'pilot-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9);localStorage.setItem('chronoPilotId',id)}return id}
+const LOCAL_PILOT_ID=getPilotId();
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 /* ---------------- data: maps ---------------- */
@@ -741,7 +876,7 @@ const UPGRADES=[
  {id:'shieldmatrix',cat:'DEFENSE',name:'SHIELD MATRIX',dots:[['DEFENSE',4],['SHIELD',4]],desc:m=>`+${Math.round(25*m)} max shield (regenerates).`,apply:m=>{player.maxShield+=25*m;player.shieldPool=Math.min(player.maxShield,player.shieldPool+25*m)}},
  {id:'armor',cat:'DEFENSE',name:'ARMOR PLATING',dots:[['DEFENSE',4]],desc:m=>`Reduce incoming damage by ${Math.round(10*m)}%.`,apply:m=>player.armor*=Math.pow(.9,m)},
  {id:'regen',cat:'DEFENSE',name:'REGEN CORE',dots:[['DEFENSE',3]],desc:m=>`Regenerate ${(1*m).toFixed(1)} HP per second.`,apply:m=>player.regen+=1*m},
- {id:'parrymastery',cat:'DEFENSE',name:'PARRY MASTERY',dots:[['DEFENSE',3],['PARRY',4]],desc:m=>`Parry window +${Math.round(15*m)}% and recharges faster.`,apply:m=>{player.parryWin*=1+.15*m;player.parryMax*=.92}},
+ {id:'parrymastery',cat:'DEFENSE',name:'TACTICAL MASTERY',dots:[['DEFENSE',3],['PARRY',4]],desc:m=>`Tactical cooldown improves; Parry also gains +${Math.round(15*m)}% window.`,apply:m=>{player.parryWin*=1+.15*m;player.parryMax*=.92}},
  {id:'emergency',cat:'DEFENSE',name:'EMERGENCY SHIELD',dots:[['DEFENSE',5]],desc:()=>'Auto Aegis shield when HP drops below 30% (60s cooldown).',apply:()=>player.emergency=true},
  {id:'magnet',cat:'UTILITY',name:'XP MAGNET',dots:[['UTILITY',3],['RANGE',5]],desc:m=>`Pickup range +${Math.round(50*m)}%.`,apply:m=>player.magnet*=1+.5*m},
  {id:'creditfinder',cat:'UTILITY',name:'CREDIT FINDER',dots:[['UTILITY',3]],desc:m=>`+${Math.round(25*m)}% credits from kills.`,apply:m=>player.creditMult+=.25*m},
@@ -781,7 +916,7 @@ const PERMS=[
  {id:'ballistics',name:'BALLISTIC DRIVE',max:5,base:450,icon:'<path d="M3 12h13"/><path d="M12 7l5 5-5 5"/><path d="M5 7h3M5 17h3"/>',next:l=>`+7% projectile speed per level`,eff:l=>l>0?`Active: +${7*l}% projectile speed`:''},
  {id:'salvage',name:'SALVAGE PROTOCOL',max:5,base:550,icon:'<circle cx="12" cy="12" r="8"/><path d="M9 9h5a2 2 0 0 1 0 4h-4a2 2 0 0 0 0 4h5M12 6v12"/>',next:l=>`+10% credits from kills per level`,eff:l=>l>0?`Active: +${10*l}% kill credits`:''},
  {id:'learning',name:'LEARNING MATRIX',max:5,base:500,icon:'<path d="M4 5h7v14H4zM13 5h7v14h-7z"/><path d="M7 9h2M15 9h2M7 13h2M15 13h2"/>',next:l=>`+8% XP earned per level`,eff:l=>l>0?`Active: +${8*l}% XP`:''},
- {id:'parrycap',name:'PARRY CAPACITOR',max:5,base:550,icon:'<path d="M12 2v5M12 17v5M4.9 4.9l3.5 3.5M15.6 15.6l3.5 3.5M2 12h5M17 12h5"/><circle cx="12" cy="12" r="3"/>',next:l=>`Parry recharges 7% faster per level`,eff:l=>l>0?`Active: -${Math.round((1-Math.pow(.93,l))*100)}% parry cooldown`:''},
+ {id:'parrycap',name:'TACTICAL CAPACITOR',max:5,base:550,icon:'<path d="M12 2v5M12 17v5M4.9 4.9l3.5 3.5M15.6 15.6l3.5 3.5M2 12h5M17 12h5"/><circle cx="12" cy="12" r="3"/>',next:l=>`Tactical skill recharges 7% faster per level`,eff:l=>l>0?`Active: -${Math.round((1-Math.pow(.93,l))*100)}% tactical cooldown`:''},
  {id:'reactive',name:'REACTIVE ARMOR',max:5,base:700,icon:'<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-5"/>',next:l=>`3% less incoming damage per level`,eff:l=>l>0?`Active: ${Math.round((1-Math.pow(.97,l))*100)}% damage reduction`:''},
  {id:'scanner',name:'FORTUNE SCANNER',max:5,base:600,icon:'<circle cx="12" cy="12" r="8"/><path d="M12 7l1.4 2.8 3.1.5-2.2 2.2.5 3.1-2.8-1.4-2.8 1.4.5-3.1-2.2-2.2 3.1-.5z"/>',next:l=>`+2% powerup drop chance per level`,eff:l=>l>0?`Active: +${2*l}% drop chance`:''},
  {id:'reserve',name:'CHRONO RESERVE',max:5,base:500,icon:'<circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/><path d="M5 4l2 2M19 4l-2 2"/>',next:l=>`Start each run with +8 Energy per level`,eff:l=>l>0?`Active: starts at +${8*l} Energy`:''},
@@ -824,6 +959,118 @@ function renderShop(){
    g.appendChild(d);
  });
 }
+
+
+/* ---------------- breach loadout: augment shards + active skills ---------------- */
+const AUGMENT_SHARDS=[
+ {id:'assault',name:'ASSAULT SHARD',icon:'◆',color:'#ff667d',cost:1400,desc:'+12% weapon damage for the entire run.',stat:'OFFENSE +12%',apply:()=>{player.damage*=1.12}},
+ {id:'rapid',name:'RAPID SHARD',icon:'»',color:'#ff9a3d',cost:1500,desc:'+10% fire rate. Stacks with Rapid Fire upgrades.',stat:'FIRE RATE +10%',apply:()=>{player.fireRate*=.90}},
+ {id:'bastion',name:'BASTION SHARD',icon:'⬡',color:'#59ff9c',cost:1700,desc:'+20 max HP and +15 regenerating shield.',stat:'HP +20 • SHIELD +15',apply:()=>{player.maxHp+=20;player.hp+=20;player.maxShield+=15;player.shieldPool+=15}},
+ {id:'velocity',name:'VELOCITY SHARD',icon:'➤',color:'#a76cff',cost:1450,desc:'+10% movement speed and 8% faster Dash recharge.',stat:'MOVE +10% • DASH +8%',apply:()=>{player.speed*=1.10;player.dashMax*=.92}},
+ {id:'chrono',name:'CHRONO SHARD',icon:'◷',color:'#57e9ff',cost:1900,desc:'Start with +20 Energy and gain +2 extra Energy on every kill.',stat:'+20 START ENERGY • +2/KILL',apply:()=>{player.chrono=clamp(player.chrono+20,0,player.chronoMax);player.energyOnKill+=2}},
+ {id:'hunter',name:'HUNTER SHARD',icon:'◎',color:'#fff08a',cost:1800,desc:'+8% critical chance and +10% projectile speed.',stat:'CRIT +8% • BULLET +10%',apply:()=>{player.crit=Math.min(.75,player.crit+.08);player.bulletSpeed*=1.10}},
+ {id:'leech',name:'LEECH SHARD',icon:'♥',color:'#ff5b85',cost:2300,desc:'Recover 2 HP whenever an enemy is destroyed.',stat:'HEAL 2 HP / KILL',apply:()=>{player.lifesteal+=2}},
+ {id:'fortune',name:'FORTUNE SHARD',icon:'✦',color:'#ffd85d',cost:1600,desc:'+20% Credits from kills and +5% powerup drop chance.',stat:'CREDITS +20% • LUCK +5%',apply:()=>{player.creditMult*=1.20;player.luck+=.05}},
+];
+const TACTICAL_SKILLS={
+ parry:{id:'parry',name:'ZERO PARRY',mobile:'PARRY',icon:'↶',color:'#fff27a',cost:0,cd:2.2,desc:'Reflect nearby enemy bullets as 3× damage shots. Perfect timing briefly slows time.',meta:'COOLDOWN 2.2s • REFLECT'},
+ aegisPulse:{id:'aegisPulse',name:'AEGIS PULSE',mobile:'AEGIS',icon:'⬡',color:'#5ce8ff',cost:2000,cd:7.5,desc:'Become immune to damage for 2.2 seconds. Strong emergency defense with a longer cooldown.',meta:'COOLDOWN 7.5s • IMMUNITY'},
+ repulsor:{id:'repulsor',name:'REPULSOR BURST',mobile:'REPULSE',icon:'◉',color:'#59ff9c',cost:2400,cd:6.0,desc:'Erase nearby hostile bullets and blast enemies around your ship.',meta:'COOLDOWN 6.0s • BULLET CLEAR'},
+ blink:{id:'blink',name:'PHASE BLINK',mobile:'BLINK',icon:'➤',color:'#c44dff',cost:2600,cd:4.5,desc:'Instantly teleport toward your aim direction and gain brief invulnerability.',meta:'COOLDOWN 4.5s • TELEPORT'},
+};
+const CHRONO_SKILLS={
+ fracture:{id:'fracture',name:'TIME FRACTURE',mobile:'FRACTURE',icon:'◷',color:'#ffe56a',cost:0,desc:'Slow the entire hostile timeline for 4.2 seconds while you remain fast.',meta:'100% ENERGY • TIME SLOW'},
+ nova:{id:'nova',name:'CHRONO NOVA',mobile:'NOVA',icon:'✹',color:'#ff5df2',cost:3200,desc:'Detonate stored chrono energy: erase enemy bullets and damage every enemy, including bosses.',meta:'100% ENERGY • SCREEN CLEAR'},
+ overclock:{id:'overclock',name:'OVERCLOCK',mobile:'OVERCLOCK',icon:'⚡',color:'#ff9a3d',cost:3400,desc:'For 10 seconds gain extreme fire rate, +25% move speed, and +25% critical chance.',meta:'100% ENERGY • 10s OFFENSE'},
+ rewind:{id:'rewind',name:'REWIND PROTOCOL',mobile:'REWIND',icon:'↺',color:'#66ffd2',cost:3000,desc:'Restore 45% max HP, restore shield, reset Dash + Tactical Skill, and gain brief Aegis.',meta:'100% ENERGY • RECOVERY'},
+};
+const shardById=id=>AUGMENT_SHARDS.find(s=>s.id===id);
+const tacticalSkill=()=>meta.skillOwned[meta.equippedSkills.tactical]&&TACTICAL_SKILLS[meta.equippedSkills.tactical]?TACTICAL_SKILLS[meta.equippedSkills.tactical]:TACTICAL_SKILLS.parry;
+const chronoSkill=()=>meta.skillOwned[meta.equippedSkills.chrono]&&CHRONO_SKILLS[meta.equippedSkills.chrono]?CHRONO_SKILLS[meta.equippedSkills.chrono]:CHRONO_SKILLS.fracture;
+function applyEquippedShards(){
+ for(const id of meta.equippedShards){const s=shardById(id);if(s&&meta.shardOwned[id])s.apply()}
+ player.hp=Math.min(player.hp,player.maxHp);player.shieldPool=Math.min(player.shieldPool,player.maxShield);player.chrono=clamp(player.chrono,0,player.chronoMax);
+}
+function refreshAbilityLabels(){
+ const t=tacticalSkill(),q=chronoSkill(),p=$('abParry'),u=$('abUlt');
+ if(p)p.querySelector('.nm').textContent=t.name;
+ if(u)u.querySelector('.nm').textContent=q.name;
+ const mp=$('mParryBtn'),mu=$('mUltBtn');
+ if(mp)mp.innerHTML=`${t.mobile}<small>E</small>`;
+ if(mu)mu.innerHTML=`${q.mobile}<small>Q</small>`;
+}
+function useTacticalSkill(){
+ if(player.parryCd>0)return false;
+ const s=tacticalSkill(),cdScale=clamp(player.parryMax/2.2,.45,1.5);
+ if(s.id==='parry'){
+   player.parryCd=player.parryMax;player.parryWindow=player.parryWin;ring(player.x,player.y,'#fff27a',135,.38,4);tone(420,.12,'square',.024,520);
+ }else if(s.id==='aegisPulse'){
+   player.parryCd=s.cd*cdScale;player.aegis=Math.max(player.aegis,2.2);ring(player.x,player.y,s.color,150,.5,5);floating(player.x,player.y-34,'AEGIS PULSE',s.color,15);tone(300,.22,'sine',.03,360);
+ }else if(s.id==='repulsor'){
+   player.parryCd=s.cd*cdScale;let cleared=0;
+   for(const b of enemyBullets){if(!b.dead&&Math.hypot(b.x-player.x,b.y-player.y)<200){b.dead=true;cleared++}}
+   for(const e of enemies){if(e.dead||e.dying)continue;const d=Math.hypot(e.x-player.x,e.y-player.y);if(d<225){e.hp-=e.type==='boss'?45:95;e.hit=1;if(e.hp<=0){if(e.type==='boss')beginBossDeath(e);else killEnemy(e)}}}
+   player.chrono=clamp(player.chrono+Math.min(25,cleared*1.5),0,player.chronoMax);ring(player.x,player.y,s.color,225,.5,6);spawnParticle(player.x,player.y,s.color,24,280);floating(player.x,player.y-34,'REPULSOR '+cleared,s.color,15);shake(7);tone(120,.25,'sawtooth',.03,300);
+ }else if(s.id==='blink'){
+   player.parryCd=s.cd*cdScale;let a=Math.atan2(mouse.y-player.y,mouse.x-player.x);player.x=clamp(player.x+Math.cos(a)*190,24,W-24);player.y=clamp(player.y+Math.sin(a)*190,24,H-24);player.inv=Math.max(player.inv,.55);ring(player.x,player.y,s.color,90,.35,4);spawnParticle(player.x,player.y,s.color,20,220);tone(260,.16,'triangle',.026,420);
+ }
+ return true;
+}
+function useChronoSkill(){
+ if(player.chrono<player.chronoMax)return false;
+ const s=chronoSkill();player.chrono=0;
+ if(s.id==='fracture'){
+   slow=.13;slowTimer=4.2;player.inv=.45;flash=.9;shake(18);ring(player.x,player.y,'#ffe56a',Math.max(W,H),1.3,7);showMsg('TIME FRACTURE','YOU MOVE. THEY CRAWL.');tone(55,.8,'sawtooth',.04,800);
+ }else if(s.id==='nova'){
+   let cleared=0;for(const b of enemyBullets){if(!b.dead){b.dead=true;cleared++}}
+   for(const e of enemies){if(e.dead||e.dying)continue;e.hp-=e.type==='boss'?180:320;e.hit=1;if(e.hp<=0){if(e.type==='boss')beginBossDeath(e);else killEnemy(e)}}
+   player.inv=Math.max(player.inv,.5);flash=1;shake(24);ring(player.x,player.y,s.color,Math.max(W,H)*.82,1.1,9);spawnParticle(player.x,player.y,s.color,45,420);showMsg('CHRONO NOVA',`${cleared} HOSTILE PROJECTILES ERASED`);tone(65,.7,'sawtooth',.045,900);
+ }else if(s.id==='overclock'){
+   player.overclock=Math.max(player.overclock,10);player.inv=Math.max(player.inv,.35);ring(player.x,player.y,s.color,180,.7,5);showMsg('OVERCLOCK','WEAPONS + THRUSTERS UNBOUND');tone(240,.5,'square',.035,620);
+ }else if(s.id==='rewind'){
+   player.hp=Math.min(player.maxHp,player.hp+player.maxHp*.45);player.shieldPool=Math.min(player.maxShield,player.shieldPool+player.maxShield*.65);player.dashCd=0;player.parryCd=0;player.aegis=Math.max(player.aegis,1.5);flash=.65;ring(player.x,player.y,s.color,190,.8,6);floating(player.x,player.y-34,'TIMELINE RESTORED',s.color,16);showMsg('REWIND PROTOCOL','HULL + SYSTEMS RESTORED');tone(520,.45,'sine',.035,-300);
+ }
+ return true;
+}
+let loadoutSector=0,loadoutReturn='menu';
+function loadoutNotice(msg,color='#ffd85d'){const el=$('loadoutNotice');el.textContent=msg;el.style.color=color;clearTimeout(loadoutNotice.t);loadoutNotice.t=setTimeout(()=>{el.textContent=''},1800)}
+function buyShard(id){const s=shardById(id);if(!s||meta.shardOwned[id])return;if(meta.credits<s.cost){loadoutNotice('NOT ENOUGH CREDITS');return}meta.credits-=s.cost;meta.shardOwned[id]=true;saveMeta();renderLoadout();tone(640,.14,'sine',.035,260)}
+function toggleShard(id){
+ if(!meta.shardOwned[id])return buyShard(id);
+ const i=meta.equippedShards.indexOf(id);
+ if(i>=0)meta.equippedShards.splice(i,1);
+ else{if(meta.equippedShards.length>=3){loadoutNotice('ALL 3 SHARD SLOTS ARE FULL — UNEQUIP ONE FIRST');return}meta.equippedShards.push(id)}
+ saveMeta();renderLoadout();tone(i>=0?360:560,.09,'sine',.025,i>=0?-80:180);
+}
+function buyOrEquipSkill(group,id){
+ const dict=group==='tactical'?TACTICAL_SKILLS:CHRONO_SKILLS,s=dict[id];if(!s)return;
+ if(!meta.skillOwned[id]){if(meta.credits<s.cost){loadoutNotice('NOT ENOUGH CREDITS');return}meta.credits-=s.cost;meta.skillOwned[id]=true;saveMeta();tone(660,.14,'sine',.035,300)}
+ meta.equippedSkills[group]=id;saveMeta();renderLoadout();refreshAbilityLabels();tone(520,.09,'sine',.024,180);
+}
+function renderSkillGroup(group,elId){
+ const dict=group==='tactical'?TACTICAL_SKILLS:CHRONO_SKILLS,g=$(elId);g.innerHTML='';
+ for(const s of Object.values(dict)){
+   const owned=!!meta.skillOwned[s.id],equipped=meta.equippedSkills[group]===s.id,afford=meta.credits>=s.cost;
+   const d=document.createElement('div');d.className='skillCard'+(equipped?' equipped':'')+(!owned?' locked':'');
+   d.innerHTML=`<div style="display:flex;align-items:center;gap:8px;color:${s.color}"><span style="font-size:19px">${s.icon}</span><div><div class="skillName">${s.name}</div><div class="skillCost">${owned?(equipped?'EQUIPPED':'OWNED'):(`🪙 ${s.cost.toLocaleString()}`)}</div></div></div><div class="skillDesc">${s.desc}</div><div class="skillMeta">${s.meta}</div><button class="lcBtn ${!owned?'buy':equipped?'unequip':''}" ${equipped?'disabled':''}>${equipped?'EQUIPPED':owned?'EQUIP':afford?'BUY & EQUIP':'NOT ENOUGH CREDITS'}</button>`;
+   const b=d.querySelector('button');if(!equipped)b.onclick=()=>buyOrEquipSkill(group,s.id);g.appendChild(d);
+ }
+}
+function renderLoadout(){
+ $('loadoutCredits').textContent=meta.credits.toLocaleString();$('shardEquipCount').textContent=`${meta.equippedShards.length}/3`;
+ const slots=$('equippedShardSlots');slots.innerHTML='';
+ for(let i=0;i<3;i++){const id=meta.equippedShards[i],s=id&&shardById(id),d=document.createElement('div');d.className='shardSlot'+(s?' filled':'');d.innerHTML=s?`<div class="shardOrb" style="color:${s.color}">${s.icon}</div><div><b>${s.name}</b><small>${s.stat}</small></div>`:`<div class="shardOrb">◇</div><div><b>EMPTY SHARD SLOT</b><small>EQUIP ANY OWNED SHARD</small></div>`;if(s)d.onclick=()=>toggleShard(s.id);slots.appendChild(d)}
+ const g=$('shardStoreGrid');g.innerHTML='';
+ for(const s of AUGMENT_SHARDS){const owned=!!meta.shardOwned[s.id],equipped=meta.equippedShards.includes(s.id),afford=meta.credits>=s.cost,d=document.createElement('div');d.className='loadCard'+(equipped?' equipped':'')+(!owned?' locked':'');d.innerHTML=`<div class="lcTop" style="color:${s.color}"><div class="lcIcon">${s.icon}</div><div><div class="lcName">${s.name}</div><div class="lcType">AUGMENT SHARD</div></div></div><div class="lcDesc">${s.desc}</div><div class="lcStat">${s.stat}</div><button class="lcBtn ${!owned?'buy':equipped?'unequip':''}">${!owned?(afford?`BUY — 🪙 ${s.cost.toLocaleString()}`:`🪙 ${s.cost.toLocaleString()} — NOT ENOUGH`):equipped?'UNEQUIP':'EQUIP'}</button>`;d.querySelector('button').onclick=()=>owned?toggleShard(s.id):buyShard(s.id);g.appendChild(d)}
+ renderSkillGroup('tactical','tacticalSkillGrid');renderSkillGroup('chrono','chronoSkillGrid');refreshAbilityLabels();
+ const t=tacticalSkill(),q=chronoSkill(),sh=meta.equippedShards.map(id=>shardById(id)?.name).filter(Boolean);
+ $('loadoutSummary').innerHTML=`<b>SECTOR ${loadoutSector+1}: ${MAPS[loadoutSector].name}</b><br>E: ${t.name} • Q: ${q.name}<br>SHARDS: ${sh.length?sh.join(' / '):'NONE EQUIPPED'}`;
+ $('loadoutStart').textContent=`▶ START SECTOR ${loadoutSector+1}`;
+}
+function openLoadout(map=Math.min(meta.unlocked,4),ret='menu'){loadoutSector=clamp(map,0,4);loadoutReturn=ret;setState('LOADOUT');renderLoadout();showScreen('loadoutPanel');tone(430,.07,'sine',.02,120)}
+function closeLoadout(){if(loadoutReturn==='map'){setState('MAP');renderSmap();showScreen('smap')}else{setState('MENU');showScreen('menu')}}
+$('loadoutBack').onclick=closeLoadout;
+$('loadoutStart').onclick=()=>{audio();startRun(loadoutSector)};
 
 /* ---------------- powerup pickups ---------------- */
 const POWERUPS={
@@ -876,14 +1123,18 @@ function forNearby(grid,x,y,fn){
 for(let i=0;i<170;i++)stars.push({x:Math.random()*W,y:Math.random()*H,z:Math.random(),s:Math.random()*1.8+.2});
 
 const player={};
-function basePlayer(){return{x:W/2,y:H/2,r:13,speed:270,hp:100,maxHp:100,shieldPool:0,maxShield:0,fireRate:.13,shotTimer:0,bulletSpeed:650,damage:18,spread:0,shots:1,pierce:0,split:0,crit:.05,critMult:2,dashCd:0,dashMax:1.25,dashing:0,dashTime:.18,dashSpeed:920,dashInv:0,inv:0,dodge:0,parryCd:0,parryMax:2.2,parryWindow:0,parryWin:.25,chrono:0,chronoMax:100,aegis:0,overdrive:0,critSurge:0,fortify:0,level:1,xp:0,xpNeed:80,regen:0,magnet:120,lifesteal:0,armor:1,dodgeT:0,emergency:false,emCd:0,ripple:false,rippleT:6,blackhole:false,bhT:8,deathmark:false,cburst:false,cbT:10,chain:0,creditMult:1,xpMult:1,luck:0,energyOnKill:0,owned:[],syn:[],pslow:0,transform:0,tier:1,orbitalAngle:0}}
+function basePlayer(){return{x:W/2,y:H/2,r:13,speed:270,hp:100,maxHp:100,shieldPool:0,maxShield:0,fireRate:.13,shotTimer:0,bulletSpeed:650,damage:18,spread:0,shots:1,pierce:0,split:0,crit:.05,critMult:2,dashCd:0,dashMax:1.25,dashing:0,dashTime:.18,dashSpeed:920,dashInv:0,inv:0,dodge:0,parryCd:0,parryMax:2.2,parryWindow:0,parryWin:.25,chrono:0,chronoMax:100,aegis:0,overdrive:0,overclock:0,critSurge:0,fortify:0,level:1,xp:0,xpNeed:80,regen:0,magnet:120,lifesteal:0,armor:1,dodgeT:0,emergency:false,emCd:0,ripple:false,rippleT:6,blackhole:false,bhT:8,deathmark:false,cburst:false,cbT:10,chain:0,creditMult:1,xpMult:1,luck:0,energyOnKill:0,owned:[],syn:[],pslow:0,transform:0,tier:1,orbitalAngle:0}}
 Object.assign(player,basePlayer());
 
 let curMap=0,wave=1,waveTimer=0,spawnTimer=0,toSpawn=0,score=0,kills=0,bossKills=0,combo=1,comboTimer=0,bossAlive=false,bossRef=null,bossIntroT=0,bossDeathT=0,endless=false,tipT=0,tipI=0;
-const TIPS=['Dash through bullets and parry enemy pulses for advantage.','Your shots can intercept enemy bullets — shoot them down.','Defeated bosses drop rare powerups — grab them fast.','A full ⚡ ENERGY bar lets you fracture time with Q.','Parrying bullets charges your energy faster.','Your ship evolves every level — up to APEX at Level 5.','Elite Wardens shield themselves. Break the shield first.'];
+// Endless mode keeps the completed run build and escalates through staged boss chains.
+const ENDLESS_BOSS_ORDER=['sentinel','hydra','reaper','oblivion','titan'];
+let endlessCycle=0,endlessChainActive=false,endlessBossQueue=[],endlessBossTotal=0,endlessBossDefeated=0;
+let endlessNextBossKey=null,endlessNextBossTimer=0;
+const TIPS=['Dash through bullets and use your equipped Tactical Skill to survive pressure.','Your shots can intercept enemy bullets — shoot them down.','Defeated bosses drop rare powerups — grab them fast.','A full ⚡ ENERGY bar lets you fracture time with Q.','Your loadout can be changed before every sector — experiment with skills and shards.','Your ship evolves every level — up to APEX at Level 5.','Elite Wardens shield themselves. Break the shield first.'];
 
 /* ---------------- screen manager ---------------- */
-const SCREENS=['menu','smap','lbPanel','shopPanel','settingsPanel','howtoPanel','pausePanel','upgrade','rewardPanel','gameover','victory'];
+const SCREENS=['menu','smap','lbPanel','shopPanel','loadoutPanel','settingsPanel','howtoPanel','pausePanel','upgrade','rewardPanel','gameover','victory'];
 function showScreen(id){
  for(const s of SCREENS)$(s).classList.toggle('on',s===id);
  $('hud').classList.toggle('on',['PLAYING','LEVEL_UP','BOSS_INTRO','BOSS_DEFEATED','PAUSED'].includes(state));
@@ -897,7 +1148,7 @@ function refreshTopbar(){
  $('mCredits').textContent=meta.credits.toLocaleString();
  $('mShards').textContent=meta.shards.toLocaleString();
  $('mCores').textContent=meta.cores.toLocaleString();
- $('pilotTag').textContent=pilotName();$('avInit').textContent=pilotName()[0];
+ $('pilotTag').innerHTML=esc(pilotName())+(meta.titanCore?' <span class="titanBadge">🔥 TITAN CORE</span>':'');$('avInit').textContent=pilotName()[0];
 }
 const FEATS=[
  ['<path d="M13 2L5 13h5l-2 9 9-12h-5z"/>','FAST-PACED','Intense arena combat'],
@@ -909,12 +1160,43 @@ const FEATS=[
 $('feats').innerHTML=FEATS.map(f=>`<div class="feat"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${f[0]}</svg></div><div><b>${f[1]}</b><span>${f[2]}</span></div></div>`).join('');
 
 /* ---------------- leaderboard ---------------- */
-function boardHTML(limit){
- const b=loadBoard();
- if(!b.length)return '<div class="lbEmpty">NO TIMELINES LOGGED — BE THE FIRST</div>';
- return b.slice(0,limit).map((r,i)=>`<div class="lbRow${i===0?' first':''}"><span class="rk">${String(i+1).padStart(2,'0')}</span><span class="nm">${esc(r.n)}</span><span class="wv">${r.m!=null?'S'+(r.m+1)+' ':''}W${r.w}</span><span class="sc">${r.s.toLocaleString()}</span></div>`).join('');
+let lbMode='scores';
+function fmtRunTime(sec){sec=Math.max(0,Math.floor(+sec||0));return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0')}
+function championRecords(){
+ const rows=loadBoard().filter(r=>r.titanDefeated===true||r.titanCore===true);
+ const bestByPilot=new Map();
+ for(const r of rows){
+   const key=r.pid||('name:'+String(r.n||'ANON').toUpperCase());
+   const prev=bestByPilot.get(key);
+   if(!prev||(r.s||0)>(prev.s||0)||((r.s||0)===(prev.s||0)&&(r.clearTime||1e9)<(prev.clearTime||1e9)))bestByPilot.set(key,r);
+ }
+ return [...bestByPilot.values()].sort((a,b)=>(b.s||0)-(a.s||0)||(+a.clearTime||1e9)-(+b.clearTime||1e9));
 }
-function openLb(){$('lbRows').innerHTML=boardHTML(10);setState('MENU');showScreen('lbPanel')}
+function boardHTML(limit=10,mode='scores'){
+ let b=mode==='titan'?championRecords():loadBoard().sort((x,y)=>(y.s||0)-(x.s||0));
+ if(!b.length)return `<div class="lbEmpty">${mode==='titan'?'NO TITAN CHAMPIONS YET — DEFEAT CHRONOS TITAN TO CLAIM THE FIRST CORE':'NO TIMELINES LOGGED — BE THE FIRST'}</div>`;
+ return b.slice(0,limit).map((r,i)=>{
+   const titan=r.titanDefeated===true||r.titanCore===true;
+   const own=r.pid&&r.pid===LOCAL_PILOT_ID;
+   const currentName=own&&pilotName()!=='ANON'?pilotName():(r.n||'ANON');
+   const badge=titan?'<span class="titanBadge">🔥 TITAN CORE</span>':'';
+   const metaLine=titan?`<span class="lbChampionMeta">CLEAR ${fmtRunTime(r.clearTime)} · LV ${r.level||'?'} · ${r.kills||0} KILLS</span>`:'';
+   const status=titan?'TITAN CLEAR':`${r.m!=null?'S'+(r.m+1)+' ':''}W${r.w||1}`;
+   return `<div class="lbRow${i===0?' first':''}${titan?' titanRow':''}"><span class="rk">${String(i+1).padStart(2,'0')}</span><span class="nm">${esc(currentName)}${badge}${metaLine}</span><span class="wv${titan?' titanStatus':''}">${status}</span><span class="sc">${(+r.s||0).toLocaleString()}</span></div>`;
+ }).join('');
+}
+function renderLeaderboard(mode=lbMode){
+ lbMode=mode;
+ $('lbTopTab').classList.toggle('active',mode==='scores');
+ $('lbTitanTab').classList.toggle('active',mode==='titan');
+ const champs=championRecords();$('titanCount').textContent=champs.length?`(${champs.length})`:'';
+ $('lbModeInfo').textContent=mode==='titan'?'PILOTS WHO DEFEATED CHRONOS TITAN — RANKED BY BEST SCORE':'HIGHEST SCORES ACROSS ALL LOCAL RUNS';
+ $('lbRows').innerHTML=boardHTML(10,mode);
+}
+function openLb(mode='scores'){renderLeaderboard(mode);setState('MENU');showScreen('lbPanel')}
+$('lbTopTab').onclick=()=>{tone(420,.05,'sine',.015,80);renderLeaderboard('scores')};
+$('lbTitanTab').onclick=()=>{tone(520,.06,'sine',.018,100);renderLeaderboard('titan')};
+
 
 /* ---------------- sector map ---------------- */
 const NODE_POS=[[70,220],[200,130],[330,220],[460,130],[580,220]];
@@ -962,7 +1244,7 @@ function renderDetail(){
    <div class="dBoss"><span class="sk">☠</span><div><div class="k" style="font-size:9px;letter-spacing:.18em;opacity:.55;font-weight:900">BOSS</div><b style="color:${b.color}">${b.name}</b></div></div>
    <div class="dRew">💠 ${b.rewards.xp.toLocaleString()} XP&nbsp;&nbsp;🪙 ${b.rewards.credits.toLocaleString()}&nbsp;&nbsp;◆ ${b.rewards.shards} SHARDS</div>
    <button class="btn" id="enterSector" style="width:100%">ENTER SECTOR ›</button>`;
- $('enterSector').onclick=()=>{audio();startRun(i)};
+ $('enterSector').onclick=()=>{audio();openLoadout(i,'map')};
 }
 
 /* ---------------- settings ---------------- */
@@ -980,10 +1262,11 @@ $('setBack').onclick=()=>{if(prevState==='PAUSED'){setState('PAUSED');showScreen
 function openSettings(){bindSettings();showScreen('settingsPanel')}
 
 /* ---------------- menu wiring ---------------- */
-$('btnPlay').onclick=()=>{audio();startRun(Math.min(meta.unlocked,4))};
+$('btnPlay').onclick=()=>{audio();openLoadout(Math.min(meta.unlocked,4),'menu')};
 $('btnMap').onclick=()=>{audio();setState('MAP');renderSmap();showScreen('smap');tone(400,.06,'sine',.02,100)};
 $('btnLb').onclick=()=>{audio();openLb();tone(400,.06,'sine',.02,100)};
 $('btnShop').onclick=()=>{audio();setState('MENU');renderShop();showScreen('shopPanel');tone(400,.06,'sine',.02,100)};
+$('btnLoadout').onclick=()=>{audio();openLoadout(Math.min(meta.unlocked,4),'menu')};
 $('shopBack').onclick=()=>{setState('MENU');showScreen('menu')};
 $('btnSettings').onclick=()=>{audio();setState('MENU');openSettings()};
 $('gearBtn').onclick=()=>{audio();setState('MENU');openSettings()};
@@ -996,6 +1279,7 @@ $('mapBack').onclick=()=>{setState('MENU');showScreen('menu')};
 function onEscape(){
  if(state==='PLAYING'||state==='BOSS_INTRO'){setState('PAUSED');showScreen('pausePanel');tone(300,.08,'sine',.02,-60)}
  else if(state==='PAUSED'){resumeGame()}
+ else if(state==='LOADOUT'){closeLoadout()}
  else if(state==='MAP'||state==='MENU'){setState('MENU');showScreen('menu')}
 }
 function resumeGame(){setState('PLAYING');showScreen(null);tone(420,.06,'sine',.02,120)}
@@ -1019,6 +1303,12 @@ function showMsg(big,sub='',dur=1400){
  const el=$('centerMsg');el.querySelector('.big').textContent=big;el.querySelector('.sub').textContent=sub;el.style.opacity=1;
  clearTimeout(showMsg.t);showMsg.t=setTimeout(()=>el.style.opacity=0,dur);
 }
+function haptic(pattern=35){if(mobile.supported&&navigator.vibrate)try{navigator.vibrate(pattern)}catch(e){}}
+function titanWarn(main,sub='',dur=850){
+ const el=$('titanCombatHint');if(!el)return;
+ $('titanHintMain').textContent=main;$('titanHintSub').textContent=sub;
+ el.classList.add('on');clearTimeout(titanWarn.t);titanWarn.t=setTimeout(()=>el.classList.remove('on'),dur);
+}
 
 /* ---------------- run lifecycle ---------------- */
 function buildNebula(map){
@@ -1027,10 +1317,13 @@ function buildNebula(map){
  asteroids=[];
  if(MAPS[map].asteroids)for(let i=0;i<7;i++)asteroids.push({x:Math.random()*W,y:Math.random()<.5?rand(20,90):rand(H-90,H-20),r:rand(14,34),vx:rand(-14,14),vy:rand(-6,6),rot:Math.random()*6,vr:rand(-.5,.5),seed:Math.random()*10});
 }
+function resetEndlessDirector(){
+ endlessCycle=0;endlessChainActive=false;endlessBossQueue=[];endlessBossTotal=0;endlessBossDefeated=0;endlessNextBossKey=null;endlessNextBossTimer=0;
+}
 function startRun(map){
- curMap=map;endless=false;
+ curMap=map;endless=false;resetEndlessDirector();
  bullets=[];enemyBullets=[];enemies=[];particles=[];rings=[];gems=[];texts=[];pickups=[];hazards=[];
- Object.assign(player,basePlayer());applyPerms();
+ Object.assign(player,basePlayer());applyPerms();applyEquippedShards();refreshAbilityLabels();
  wave=1;waveTimer=0;spawnTimer=.3;toSpawn=waveCount();spawnQueue=compForWave();score=0;kills=0;bossKills=0;combo=1;comboTimer=0;bossAlive=false;bossRef=null;runTime=0;time=0;slow=1;slowTimer=0;flash=0;screenShake=0;hudTimer=0;lastPowerStatus='';lastBossPips='';
  buildNebula(map);
  running=true;setState('PLAYING');showScreen(null);
@@ -1038,18 +1331,34 @@ function startRun(map){
  showMsg('BREACH OPEN',MAPS[map].name+' — SECTOR '+(map+1));
  tone(220,.3,'sawtooth',.03,300);
 }
+function startEndlessContinuation(){
+ // IMPORTANT: do NOT rebuild player here. HP, level, run upgrades, synergies,
+ // equipped skills, shard bonuses, damage, speed, cooldown stats, etc. all carry forward.
+ endless=true;curMap=4;resetEndlessDirector();endless=true;
+ bullets=[];enemyBullets=[];enemies=[];particles=[];rings=[];gems=[];texts=[];pickups=[];hazards=[];
+ bossAlive=false;bossRef=null;bossIntroT=0;bossDeathT=0;slow=1;slowTimer=0;flash=0;screenShake=0;hudTimer=0;lastPowerStatus='';lastBossPips='';
+ // Only reset transient movement/position so the continuation begins cleanly.
+ player.x=W/2;player.y=H*.72;player.dashing=0;player.parryWindow=0;player.inv=Math.max(player.inv,.8);
+ wave=1;waveTimer=0;spawnTimer=.55;toSpawn=waveCount();spawnQueue=compForWave();
+ buildNebula(4);refreshAbilityLabels();
+ running=true;setState('PLAYING');showScreen(null);updateProgress();
+ $('sectorName').textContent='∞ ENDLESS • CHRONOS RIFT • NEXT CHAIN: 2 BOSSES';
+ showMsg('ENDLESS CONTINUATION','BUILD PRESERVED • FIRST BOSS CHAIN: 2',2200);
+ titanWarn('ENDLESS PROTOCOL','YOUR TITAN-CLEAR BUILD CONTINUES',1800);haptic([40,30,70]);
+ tone(180,.35,'sawtooth',.035,360);
+}
 function waveCount(){
- const m=curMap;
- if(wave===1)return 6+m*2;
- if(wave===2)return 8+m*2;
- if(wave===3)return 9+m*3;
- return 8+m*3; // wave 4 elite wave
+ const m=curMap,extra=endless?Math.min(12,endlessCycle*2):0;
+ if(wave===1)return 6+m*2+extra;
+ if(wave===2)return 8+m*2+extra;
+ if(wave===3)return 9+m*3+extra;
+ return 8+m*3+extra; // wave 4 elite wave
 }
 function spawnEnemy(type){
  const T=ETYPES[type];
  let side=Math.floor(Math.random()*4),pad=60,x,y;
  if(side===0){x=rand(0,W);y=-pad}else if(side===1){x=W+pad;y=rand(0,H)}else if(side===2){x=rand(0,W);y=H+pad}else{x=-pad;y=rand(0,H)}
- const scale=(1+curMap*.45)*(1+wave*.08)*(endless?1.35:1);
+ const scale=(1+curMap*.45)*(1+wave*.08)*(endless?(1.25+Math.min(.9,endlessCycle*.12)):1);
  const e={type,x,y,vx:0,vy:0,t:0,hit:0,dead:false,spawn:.4,phase:0,marked:false,slowT:0,
    r:T.r,hp:T.hp*scale,maxHp:T.hp*scale,speed:T.speed,damage:T.damage,color:T.color,xp:T.xp,score:T.score,credits:T.credits,shoot:rand(.5,1.4),shield:T.shielded?T.hp*scale*.4:0,maxShield:T.shielded?T.hp*scale*.4:0};
  if(!pushEnemyEntity(e))return;
@@ -1066,6 +1375,125 @@ function compForWave(){
 }
 let spawnQueue=[];
 
+/* ---------------- endless staged boss gauntlet ---------------- */
+function endlessBossRoster(){
+ const count=Math.min(5,endlessCycle+1); // cycle 1 = 2, cycle 2 = 3 ... cycle 4+ = 5
+ let order=ENDLESS_BOSS_ORDER.slice();
+ if(count===5&&endlessCycle>4){
+   const shift=(endlessCycle-4)%order.length;
+   order=order.slice(shift).concat(order.slice(0,shift));
+ }
+ return order.slice(0,count);
+}
+function setPrimaryEndlessBoss(e){
+ bossRef=e||null;
+ bossAlive=!!e||endlessChainActive;
+ if(e){
+   const b=BOSSES[e.bossKey];
+   $('bossbar').style.display='block';$('bbName').textContent=b.name;$('bbName').parentElement.style.color=b.color;lastBossPips='';
+ }
+}
+function spawnEndlessBoss(key){
+ if(!key)return null;
+ const b=BOSSES[key];
+ const idx=endlessBossTotal-(endlessBossQueue.length+(endlessNextBossKey?1:0));
+ const lanes=[.50,.26,.74,.36,.64];
+ const scale=1.35+Math.min(1.15,(endlessCycle-1)*.16);
+ const e={type:'boss',bossKey:key,name:b.name,x:W*lanes[idx%lanes.length],y:-110,vx:0,vy:0,t:0,hit:0,dead:false,spawn:0,phase:1,
+   r:b.r,hp:b.hp*scale,maxHp:b.hp*scale,speed:b.speed*(1+Math.min(.18,(endlessCycle-1)*.025)),damage:b.damage*(1+Math.min(.4,(endlessCycle-1)*.05)),color:b.color,score:Math.round(b.score*scale),
+   shieldT:0,barrierT:0,chargeT:4,charging:0,dashTele:0,dashAngle:0,cvx:0,cvy:0,lastPhase:1,ab:[{t:2.5},{t:5},{t:8}],spiralA:0,spiralT:.08,pullT:0,overloadT:0,
+   endlessChainIndex:idx,endlessNextTriggered:false};
+ pushEnemyEntity(e);
+ if(!bossRef||bossRef.dead||bossRef.dying)setPrimaryEndlessBoss(e);
+ bossAlive=true;$('bossbar').style.display='block';
+ ring(e.x,120,b.color,280,.8,5);shake(12);
+ showMsg(b.name,'ENDLESS BOSS '+Math.min(endlessBossTotal,endlessBossDefeated+1)+' / '+endlessBossTotal,1200);
+ tone(75,.45,'sawtooth',.035,100);
+ return e;
+}
+function scheduleNextEndlessBoss(delay=.8){
+ if(!endlessChainActive||endlessNextBossKey||!endlessBossQueue.length)return;
+ endlessNextBossKey=endlessBossQueue.shift();endlessNextBossTimer=delay;
+ const b=BOSSES[endlessNextBossKey];
+ titanWarn('NEXT BOSS INBOUND',b.name+' — BREACH SIGNATURE LOCKED',Math.max(900,delay*1000));haptic([35,25,35]);
+}
+function spawnScheduledEndlessBoss(){
+ if(!endlessNextBossKey)return;
+ const key=endlessNextBossKey;endlessNextBossKey=null;endlessNextBossTimer=0;spawnEndlessBoss(key);
+}
+function promoteEndlessBoss(){
+ const next=enemies.filter(e=>e.type==='boss'&&!e.dead&&!e.dying).sort((a,b)=>(a.endlessChainIndex??99)-(b.endlessChainIndex??99))[0]||null;
+ setPrimaryEndlessBoss(next);
+ return next;
+}
+function startEndlessBossChain(){
+ endlessCycle++;endlessChainActive=true;endlessBossDefeated=0;
+ endlessBossQueue=endlessBossRoster();endlessBossTotal=endlessBossQueue.length;endlessNextBossKey=null;endlessNextBossTimer=0;
+ bossAlive=true;bossRef=null;enemyBullets=[];hazards=hazards.filter(h=>h.kind==='well');
+ setState('BOSS_INTRO');bossIntroT=0;
+ $('warnName').textContent=`ENDLESS CHAIN ×${endlessBossTotal}`;$('warnName').style.color='#ff5b6e';$('warn').style.display='grid';
+ $('sectorName').textContent=`∞ ENDLESS • CYCLE ${endlessCycle} • ${endlessBossTotal}-BOSS CHAIN`;
+ tone(55,.9,'sawtooth',.05,100);haptic([60,40,60]);
+}
+function beginEndlessBossChainCombat(){
+ $('warn').style.display='none';setState('PLAYING');
+ const first=endlessBossQueue.shift();spawnEndlessBoss(first);
+ titanWarn(`BOSS CHAIN ${endlessCycle}`,`${endlessBossTotal} BOSSES • NEXT ENTERS AT 18% HP`,1800);
+}
+function finishEndlessBossChain(){
+ endlessChainActive=false;bossAlive=false;bossRef=null;endlessNextBossKey=null;endlessNextBossTimer=0;
+ $('bossbar').style.display='none';enemyBullets=[];hazards=[];
+ const bonus=Math.round(650*endlessBossTotal*(1+endlessCycle*.18));meta.credits+=bonus;saveMeta();
+ wave=1;waveTimer=0;spawnTimer=1.25;toSpawn=waveCount();spawnQueue=compForWave();
+ const nextCount=Math.min(5,endlessCycle+2);
+ $('sectorName').textContent=`∞ ENDLESS • CYCLE ${endlessCycle} CLEARED • NEXT: ${nextCount} BOSSES`;
+ showMsg(`CHAIN ${endlessCycle} CLEARED`,`+${bonus.toLocaleString()} CREDITS • NEXT CHAIN: ${nextCount} BOSSES`,2300);
+ titanWarn('BREACH ESCALATING',nextCount===5?'ALL FIVE BOSSES WILL ENTER THE NEXT CHAIN':`NEXT CHAIN: ${nextCount} BOSSES`,1800);
+ haptic([35,25,70]);tone(520,.3,'sine',.035,340);
+}
+function defeatEndlessBoss(e){
+ if(!e||e.dead||e.dying)return;
+ e.dead=true;bossKills++;endlessBossDefeated++;addScore(e.score);addCombo(1);
+ const b=BOSSES[e.bossKey],reward=Math.round(b.rewards.credits*.05*(1+endlessCycle*.08));
+ meta.credits+=reward;saveMeta();
+ spawnParticle(e.x,e.y,'#fff',42,420);spawnParticle(e.x,e.y,e.color,50,340);ring(e.x,e.y,e.color,300,.85,6);shake(18);flash=Math.max(flash,.65);
+ for(let i=0;i<2;i++)dropPickup(e.x+rand(-55,55),e.y+rand(-55,55));
+ floating(e.x,e.y-34,'BOSS DOWN +'+reward+' CREDITS','#ffd85d',17);tone(45,.7,'sawtooth',.05,170);
+ if(e===bossRef)bossRef=null;
+ const active=promoteEndlessBoss();
+ if(active){
+   titanWarn(`${active.name} TAKES POINT`,`${endlessBossDefeated}/${endlessBossTotal} DEFEATED`,1000);
+ }else if(endlessNextBossKey){
+   // A nearly-dead boss can be finished before the inbound warning completes.
+   endlessNextBossTimer=Math.min(endlessNextBossTimer,.3);
+ }else if(endlessBossQueue.length){
+   scheduleNextEndlessBoss(.4);
+ }else if(endlessBossDefeated>=endlessBossTotal){
+   finishEndlessBossChain();
+ }
+}
+function updateEndlessBossDirector(dt){
+ if(!endless||!endlessChainActive||state!=='PLAYING')return;
+ if(endlessNextBossKey){
+   endlessNextBossTimer-=dt;
+   if(endlessNextBossTimer<=0)spawnScheduledEndlessBoss();
+ }
+ if(!bossRef||bossRef.dead||bossRef.dying)promoteEndlessBoss();
+ const current=bossRef;
+ // At most two bosses overlap: the next boss is summoned only when the current
+ // primary boss is nearly defeated, then that newcomer waits to become primary.
+ if(current&&!current.endlessNextTriggered&&current.hp/current.maxHp<=.18&&(endlessBossQueue.length||endlessNextBossKey)){
+   current.endlessNextTriggered=true;
+   if(!endlessNextBossKey)scheduleNextEndlessBoss(.85);
+ }
+ const activeBosses=enemies.filter(e=>e.type==='boss'&&!e.dead&&!e.dying).length;
+ bossAlive=activeBosses>0||!!endlessNextBossKey||endlessBossQueue.length>0;
+ if(activeBosses===0&&!endlessNextBossKey){
+   if(endlessBossQueue.length)scheduleNextEndlessBoss(.35);
+   else if(endlessBossDefeated>=endlessBossTotal)finishEndlessBossChain();
+ }
+}
+
 /* ---------------- boss spawn / intro ---------------- */
 function startBossIntro(){
  setState('BOSS_INTRO');bossIntroT=0;
@@ -1080,11 +1508,15 @@ function spawnBoss(){
  const scale=endless?1.5:1;
  const e={type:'boss',bossKey:key,name:b.name,x:W/2,y:-110,vx:0,vy:0,t:0,hit:0,dead:false,spawn:0,phase:1,
    r:b.r,hp:b.hp*scale,maxHp:b.hp*scale,speed:b.speed,damage:b.damage,color:b.color,score:b.score,
-   shieldT:0,barrierT:0,chargeT:4,charging:0,cvx:0,cvy:0,ab:[{t:2.5},{t:5},{t:8}],spiralA:0,spiralT:.08,pullT:0,overloadT:0};
+   shieldT:0,barrierT:0,chargeT:4,charging:0,dashTele:0,dashAngle:0,cvx:0,cvy:0,lastPhase:1,ab:[{t:2.5},{t:5},{t:8}],spiralA:0,spiralT:.08,pullT:0,overloadT:0};
  pushEnemyEntity(e);bossRef=e;bossAlive=true;
  $('bossbar').style.display='block';$('bbName').textContent=b.name;$('bbName').parentElement.style.color=b.color;updateProgress();
  shake(16);flash=.5;ring(e.x,120,b.color,300,.9,5);
  setState('PLAYING');
+ if(key==='titan'&&!localStorage.getItem('chronoTitanHintSeen')){
+   localStorage.setItem('chronoTitanHintSeen','1');
+   setTimeout(()=>{if(bossRef===e&&state==='PLAYING'){titanWarn('FINAL BOSS PROTOCOL',`KEEP MOVING • E: ${tacticalSkill().name} • SAVE Q: ${chronoSkill().name} FOR PHASE III`,2800);haptic([40,40,40])}},300);
+ }
 }
 
 /* ---------------- pickups / currency ---------------- */
@@ -1115,7 +1547,7 @@ function applyPower(type,x,y){
  }
  if(type==='nova'){
    for(let b of enemyBullets){b.dead=true;spawnParticle(b.x,b.y,'#ff5df2',3,120)}
-   for(let e of enemies)if(!e.dead&&e.type!=='boss'){e.hp-=130;e.hit=1;if(e.hp<=0)killEnemy(e)}
+   for(let e of enemies)if(!e.dead&&e.type!=='boss'){e.hp-=130;e.hit=1;if(e.hp<=0){if(e.type==='boss')beginBossDeath(e);else killEnemy(e)}}
    else if(!e.dead){e.hp-=60;e.hit=1}
    shake(22);flash=.8;ring(player.x,player.y,'#ff5df2',Math.max(W,H)*.7,1,8);
    showMsg('NOVA DISCHARGE','');
@@ -1178,10 +1610,10 @@ function shoot(){
  let a=Math.atan2(mouse.y-player.y,mouse.x-player.x);
  for(let i=0;i<player.shots&&bullets.length<PERF.maxPlayerBullets;i++){
    let offs=(i-(player.shots-1)/2)*.10+rand(-player.spread,player.spread);
-   let ang=a+offs,critChance=Math.min(.85,player.crit+(player.critSurge>0?.25:0)),crit=Math.random()<critChance;
+   let ang=a+offs,critChance=Math.min(.85,player.crit+(player.critSurge>0?.25:0)+(player.overclock>0?.25:0)),crit=Math.random()<critChance;
    pushPlayerBullet({x:player.x+Math.cos(ang)*20,y:player.y+Math.sin(ang)*20,vx:Math.cos(ang)*player.bulletSpeed,vy:Math.sin(ang)*player.bulletSpeed,r:3.2,life:1.4,damage:player.damage*(crit?player.critMult:1),pierce:player.pierce,crit,split:player.split});
  }
- player.shotTimer=Math.max(.045,player.fireRate*(player.overdrive>0?.48:1));
+ player.shotTimer=Math.max(.045,player.fireRate*(player.overdrive>0?.48:1)*(player.overclock>0?.55:1));
  spawnParticle(player.x+Math.cos(a)*20,player.y+Math.sin(a)*20,player.overdrive>0?'#ffb066':'#7df3ff',2,80);
  tone(190,.035,'square',.014,120);
 }
@@ -1252,18 +1684,40 @@ function bossAbility(e,idx){
    if(idx===1){player.pslow=3;floating(player.x,player.y-30,'TIME FRACTURE','#a76cff',16);ring(player.x,player.y,'#a76cff',200,.7,4);tone(160,.6,'sine',.04,-80)}
    if(idx===2){e.overloadT=1.4;tone(50,1.2,'sawtooth',.05,250)}
  }else if(k==='titan'){
-   if(idx===0){for(let i=0;i<3+e.phase&&hazards.length<PERF.maxHazards;i++)pushHazard({kind:'zone',x:rand(W*.15,W*.85),y:rand(H*.15,H*.85),r:rand(60,110),dmg:16,life:4.5,maxLife:4.5,color:e.color});tone(110,.5,'sawtooth',.03,80)}
-   if(idx===1){for(let i=0;i<2&&hazards.length<PERF.maxHazards;i++)pushHazard({kind:'rift',x:rand(W*.2,W*.8),y:rand(H*.15,H*.5),fireT:.5,life:6,color:'#ff6b85'});tone(140,.4,'square',.02,200)}
-   if(idx===2){let ca=Math.atan2(player.y-e.y,player.x-e.x);e.cvx=Math.cos(ca)*(430+e.phase*60);e.cvy=Math.sin(ca)*(430+e.phase*60);e.charging=.6;ring(e.x,e.y,e.color,170,.4,5);tone(140,.3,'sawtooth',.04,200)}
+   if(idx===0){
+     titanWarn('TIME COLLAPSE','MOVE OUT OF THE RED ZONES',900);haptic([35,30,35]);
+     for(let i=0;i<3+e.phase&&hazards.length<PERF.maxHazards;i++)pushHazard({kind:'zone',x:rand(W*.15,W*.85),y:rand(H*.15,H*.85),r:rand(60,110),dmg:16,tele:.85,life:4.5,maxLife:4.5,color:e.color});
+     tone(110,.5,'sawtooth',.03,80);
+   }
+   if(idx===1){
+     titanWarn('DIMENSION RIFT','RIFTS OPENING — KEEP MOVING',900);haptic([28,24,28]);
+     for(let i=0;i<2&&hazards.length<PERF.maxHazards;i++)pushHazard({kind:'rift',x:rand(W*.2,W*.8),y:rand(H*.15,H*.5),tele:.7,fireT:.5,life:6,color:'#ff6b85'});
+     tone(140,.4,'square',.02,200);
+   }
+   if(idx===2&&e.dashTele<=0&&e.charging<=0){
+     e.dashAngle=Math.atan2(player.y-e.y,player.x-e.x);e.dashTele=.65;
+     titanWarn('TITAN DASH','EVADE — MOVE SIDEWAYS!',720);haptic(65);
+     ring(e.x,e.y,e.color,170,.4,5);tone(140,.3,'sawtooth',.04,200);
+   }
  }
 }
 function updateBoss(e,edt,dt){
- const pct=e.hp/e.maxHp;e.phase=pct>.66?1:pct>.33?2:3;
+ const pct=e.hp/e.maxHp,newPhase=pct>.66?1:pct>.33?2:3;
+ if(newPhase!==e.phase){
+   e.phase=newPhase;
+   if(e.bossKey==='titan'){
+     if(newPhase===2){titanWarn('PHASE II','TIMELINE DESTABILIZING',1500);showMsg('PHASE II','TIMELINE DESTABILIZING',1200);haptic([45,35,45])}
+     if(newPhase===3){titanWarn('FINAL PHASE',`TOTAL COLLAPSE — USE ${chronoSkill().name}!`,1900);showMsg('FINAL PHASE','TOTAL COLLAPSE',1500);haptic([70,40,70,40,90])}
+   }
+ }else e.phase=newPhase;
  e.shieldT=Math.max(0,e.shieldT-edt);e.barrierT=Math.max(0,e.barrierT-edt);
  if(e.y<130){e.y+=90*edt;return}
  const rateMult=e.phase===3?.6:e.phase===2?.8:1;
  // movement
- if(e.charging>0){
+ if(e.bossKey==='titan'&&e.dashTele>0){
+   e.dashTele-=edt;
+   if(e.dashTele<=0){const dashSpd=430+e.phase*60;e.cvx=Math.cos(e.dashAngle)*dashSpd;e.cvy=Math.sin(e.dashAngle)*dashSpd;e.charging=.6;haptic(30)}
+ }else if(e.charging>0){
    e.charging-=edt;e.x+=e.cvx*edt;e.y+=e.cvy*edt;spawnParticle(e.x,e.y,e.color,2,60);
    if(e.charging<=0)e.chargeT=Math.max(2.2,4.5-e.phase*.5);
  }else if(e.bossKey==='titan'){
@@ -1318,7 +1772,7 @@ function updateBoss(e,edt,dt){
 function update(dt){
  if(state==='BOSS_INTRO'){
    bossIntroT+=dt;
-   if(bossIntroT>=2)spawnBoss();
+   if(bossIntroT>=2){if(endless&&endlessChainActive)beginEndlessBossChainCombat();else spawnBoss()}
    return;
  }
  if(state!=='PLAYING')return;
@@ -1329,7 +1783,7 @@ function update(dt){
  flash=Math.max(0,flash-dt*2);screenShake*=Math.pow(.03,dt);
  comboTimer-=dt;if(comboTimer<=0)combo=Math.max(1,combo-dt*.8);
  player.shotTimer-=dt;player.dashCd-=dt;player.parryCd-=dt;player.inv-=dt;player.parryWindow-=dt;
- player.aegis=Math.max(0,player.aegis-dt);player.overdrive=Math.max(0,player.overdrive-dt);player.critSurge=Math.max(0,player.critSurge-dt);player.fortify=Math.max(0,player.fortify-dt);player.emCd=Math.max(0,player.emCd-dt);player.pslow=Math.max(0,player.pslow-dt);
+ player.aegis=Math.max(0,player.aegis-dt);player.overdrive=Math.max(0,player.overdrive-dt);player.overclock=Math.max(0,player.overclock-dt);player.critSurge=Math.max(0,player.critSurge-dt);player.fortify=Math.max(0,player.fortify-dt);player.emCd=Math.max(0,player.emCd-dt);player.pslow=Math.max(0,player.pslow-dt);
  if(player.maxShield>0)player.shieldPool=Math.min(player.maxShield,player.shieldPool+3*dt);
  if(player.regen>0)player.hp=Math.min(player.maxHp,player.hp+player.regen*dt);
  syncMobileAim();
@@ -1339,7 +1793,7 @@ function update(dt){
  let dx=(keys['d']?1:0)-(keys['a']?1:0),dy=(keys['s']?1:0)-(keys['w']?1:0);
  if(mobile.active&&mobile.landscape){dx+=mobile.moveX;dy+=mobile.moveY}
  let m=Math.hypot(dx,dy)||1;dx/=m;dy/=m;
- const invert=player.pslow>0,spdMult=player.pslow>0?.45:1;
+ const invert=player.pslow>0,spdMult=(player.pslow>0?.45:1)*(player.overclock>0?1.25:1);
  if(invert){dx=-dx;dy=-dy}
  const dashPressed=keys[' ']||mobile.dashQueued;
  if(dashPressed&&player.dashCd<=0){
@@ -1356,21 +1810,13 @@ function update(dt){
  player.x=clamp(player.x,20,W-20);player.y=clamp(player.y,20,H-20);
 
  const parryPressed=keys['e']||mobile.parryQueued;
- if(parryPressed&&player.parryCd<=0){
-   mobile.parryQueued=false;
-   player.parryCd=player.parryMax;player.parryWindow=player.parryWin;ring(player.x,player.y,'#fff27a',135,.38,4);tone(420,.12,'square',.024,520);
- }
+ if(parryPressed&&player.parryCd<=0){mobile.parryQueued=false;useTacticalSkill()}
  const ultPressed=keys['q']||mobile.ultQueued;
- if(ultPressed&&player.chrono>=player.chronoMax){
-   mobile.ultQueued=false;
-   player.chrono=0;slow=.13;slowTimer=4.2;player.inv=.45;flash=.9;shake(18);
-   ring(player.x,player.y,'#ffe56a',Math.max(W,H),1.3,7);showMsg('TIME FRACTURE','YOU MOVE. THEY CRAWL.');
-   tone(55,.8,'sawtooth',.04,800);
- }
+ if(ultPressed&&player.chrono>=player.chronoMax){mobile.ultQueued=false;useChronoSkill()}
  if(dashPressed&&player.dashCd>0)mobile.dashQueued=false;
  if(parryPressed&&player.parryCd>0)mobile.parryQueued=false;
  if(ultPressed&&player.chrono<player.chronoMax)mobile.ultQueued=false;
- if(player.parryWindow>0){
+ if(player.parryWindow>0&&tacticalSkill().id==='parry'){
    for(let b of enemyBullets){
      if(!b.dead&&Math.hypot(b.x-player.x,b.y-player.y)<115){
        b.dead=true;let a=Math.atan2(b.y-player.y,b.x-player.x);
@@ -1385,7 +1831,7 @@ function update(dt){
  // special upgrade timers
  if(player.ripple){player.rippleT-=dt;if(player.rippleT<=0){player.rippleT=12;for(let e of enemies)if(!e.dead&&e.type!=='boss')e.slowT=2.5;ring(player.x,player.y,'#57e9ff',Math.max(W,H)*.6,.8,5);tone(220,.3,'sine',.02,-100)}}
  if(player.blackhole){player.bhT-=dt;if(player.bhT<=0){player.bhT=15;let t=enemies.find(e=>!e.dead&&e.type!=='boss');if(t){pushHazard({kind:'well',x:t.x,y:t.y,r:190,life:3,color:'#57e9ff'});ring(t.x,t.y,'#57e9ff',190,.5,3)}}}
- if(player.cburst){player.cbT-=dt;if(player.cbT<=0){player.cbT=20;for(let e of enemies)if(!e.dead&&dist(e,player)<240){e.hp-=60;e.hit=1;if(e.hp<=0)killEnemy(e)}ring(player.x,player.y,'#57e9ff',240,.6,6);shake(8);tone(140,.3,'sawtooth',.03,200)}}
+ if(player.cburst){player.cbT-=dt;if(player.cbT<=0){player.cbT=20;for(let e of enemies)if(!e.dead&&dist(e,player)<240){e.hp-=60;e.hit=1;if(e.hp<=0){if(e.type==='boss')beginBossDeath(e);else killEnemy(e)}}ring(player.x,player.y,'#57e9ff',240,.6,6);shake(8);tone(140,.3,'sawtooth',.03,200)}}
  if(player.deathmark&&!enemies.some(e=>!e.dead&&e.marked)){let t=enemies.find(e=>!e.dead&&e.type!=='boss');if(t)t.marked=true}
 
  let edt=dt*slow;
@@ -1396,7 +1842,7 @@ function update(dt){
      spawnTimer-=edt;
      if(spawnTimer<=0){spawnEnemy(spawnQueue.pop());spawnTimer=Math.max(.14,.7-curMap*.06-wave*.04)}
    }else if(enemies.filter(e=>!e.dead).length===0){
-     if(wave>=4)startBossIntro();
+     if(wave>=4){if(endless)startEndlessBossChain();else startBossIntro()}
      else{wave++;meta.prog[curMap]=Math.max(meta.prog[curMap],wave);saveMeta();toSpawn=waveCount();spawnQueue=compForWave();spawnTimer=.4;showMsg('WAVE '+wave,'BREACH INTENSITY RISING');updateProgress()}
    }
  }
@@ -1413,8 +1859,8 @@ function update(dt){
        let px=h.x+(bx2-h.x)*t,py=h.y+(by2-h.y)*t;
        if(Math.hypot(player.x-px,player.y-py)<h.width/2+player.r&&h.tick!==true){damagePlayer(h.dmg,px,py)}
      }
-   }else if(h.kind==='zone'){h.life-=edt;if(Math.hypot(player.x-h.x,player.y-h.y)<h.r&&player.inv<=0)damagePlayer(h.dmg,h.x,h.y)}
-   else if(h.kind==='rift'){h.life-=edt;h.fireT-=edt;if(h.fireT<=0){h.fireT=1.4;let a=Math.atan2(player.y-h.y,player.x-h.x);pushEnemyBullet({x:h.x,y:h.y,vx:Math.cos(a)*240,vy:Math.sin(a)*240,r:5,life:6,damage:14,color:'#ff6b85'})}}
+   }else if(h.kind==='zone'){if(h.tele>0)h.tele-=edt;else{h.life-=edt;if(Math.hypot(player.x-h.x,player.y-h.y)<h.r&&player.inv<=0)damagePlayer(h.dmg,h.x,h.y)}}
+   else if(h.kind==='rift'){if(h.tele>0)h.tele-=edt;else{h.life-=edt;h.fireT-=edt;if(h.fireT<=0){h.fireT=1.4;let a=Math.atan2(player.y-h.y,player.x-h.x);pushEnemyBullet({x:h.x,y:h.y,vx:Math.cos(a)*240,vy:Math.sin(a)*240,r:5,life:6,damage:14,color:'#ff6b85'})}}}
    else if(h.kind==='well'){h.life-=dt;for(let e of enemies)if(!e.dead&&e.type!=='boss'){let d=Math.hypot(h.x-e.x,h.y-e.y);if(d<h.r&&d>10){let a=Math.atan2(h.y-e.y,h.x-e.x);e.x+=Math.cos(a)*140*dt;e.y+=Math.sin(a)*140*dt}}}
  }
  hazards=hazards.filter(h=>h.kind==='well'?h.life>0:(h.kind==='beam'?h.life>0||h.tele>0:h.life>0));
@@ -1488,7 +1934,7 @@ function update(dt){
      if(b.split>0){for(let k=-1;k<=1;k+=2){let ba=Math.atan2(b.vy,b.vx)+k*1.2;pushPlayerBullet({x:b.x,y:b.y,vx:Math.cos(ba)*500,vy:Math.sin(ba)*500,r:2.5,life:.8,damage:b.damage*.4,pierce:0,crit:false,split:b.split-1})}}
      if(player.chain>0&&Math.random()<player.chain){
        let other=enemies.find(o=>!o.dead&&!o.dying&&o!==e&&dist(o,e)<180);
-       if(other){let cd=b.damage*.55;if(other.shield>0){let ab=Math.min(other.shield,cd);other.shield-=ab;cd-=ab}other.hp-=cd;ring(other.x,other.y,'#76a8ff',35,.2,2);spawnParticle(other.x,other.y,'#76a8ff',5,110);if(other.hp<=0)killEnemy(other)}
+       if(other){let cd=b.damage*.55;if(other.shield>0){let ab=Math.min(other.shield,cd);other.shield-=ab;cd-=ab}other.hp-=cd;ring(other.x,other.y,'#76a8ff',35,.2,2);spawnParticle(other.x,other.y,'#76a8ff',5,110);if(other.hp<=0){if(other.type==='boss')beginBossDeath(other);else killEnemy(other)}}
      }
      if(e.hp<=0){if(e.type==='boss')beginBossDeath(e);else killEnemy(e)}
      if(b.pierce>0)b.pierce--;else b.dead=true;
@@ -1496,6 +1942,7 @@ function update(dt){
      return !b.pierce;
    });
  }
+ updateEndlessBossDirector(dt);
 
  // enemy bullets vs player
  for(let b of enemyBullets){
@@ -1537,6 +1984,8 @@ function update(dt){
 
 /* ---------------- boss death / rewards ---------------- */
 function beginBossDeath(e){
+ if(!e||e.dead||e.dying)return;
+ if(endless&&endlessChainActive){defeatEndlessBoss(e);return}
  e.dying=true;bossAlive=false;bossKills++;
  addScore(e.score);addCombo(1);
  setState('BOSS_DEFEATED');bossDeathT=0;
@@ -1592,27 +2041,49 @@ $('rwContinue').onclick=()=>{
 };
 
 /* ---------------- victory ---------------- */
+let victoryRecordId=null;
+function newRecordId(){return 'run-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8)}
+function addLocalRunRecord({name,titan=false}={}){
+ const n=(name||localStorage.getItem('chronoName')||'ANON').trim().slice(0,12).toUpperCase()||'ANON';
+ const rec={rid:newRecordId(),pid:LOCAL_PILOT_ID,n,s:score,w:wave,m:curMap,d:Date.now(),completedAt:Date.now(),level:player.level,kills,bossKills,clearTime:runTime,titanDefeated:!!titan,titanCore:!!titan};
+ const b=loadBoard();b.push(rec);saveBoard(b);best=Math.max(best,score);localStorage.setItem('chronoBest',best);return rec.rid;
+}
+function renameLocalPilotRecords(n){
+ n=(n||'').trim().slice(0,12).toUpperCase()||'ANON';
+ const b=loadBoard();for(const r of b)if(r.pid===LOCAL_PILOT_ID)r.n=n;saveBoard(b);localStorage.setItem('chronoName',n);refreshTopbar();
+}
 function showVictory(r){
- setState('VICTORY');
+ setState('VICTORY');running=false;
  $('vScore').textContent=score.toLocaleString();
  const mins=Math.floor(runTime/60),secs=Math.floor(runTime%60);
  $('vRows').innerHTML=`<div class="rwRow"><span>TOTAL ENEMIES</span><b>${kills}</b></div>
    <div class="rwRow"><span>BOSSES DEFEATED</span><b>${bossKills}</b></div>
-   <div class="rwRow"><span>TIME</span><b>${mins}:${String(secs).padStart(2,'0')}</b></div>
+   <div class="rwRow"><span>CLEAR TIME</span><b>${mins}:${String(secs).padStart(2,'0')}</b></div>
+   <div class="rwRow"><span>SHIP LEVEL</span><b>${player.level}</b></div>
    <div class="rwRow"><span>UPGRADES</span><b>${player.owned.length}${player.syn.length?' +'+player.syn.length+' SYN':''}</b></div>
    <div class="rwRow"><span>🪙 CREDITS</span><b>+${r.credits.toLocaleString()}</b></div>
    <div class="rwRow"><span>◆ CHRONO SHARDS</span><b>+${r.shards}</b></div>`;
- logScore();
- showScreen('victory');tone(440,.6,'sine',.05,440);
+ const current=(localStorage.getItem('chronoName')||'').trim().slice(0,12).toUpperCase();
+ victoryRecordId=addLocalRunRecord({name:current||'ANON',titan:true});
+ $('vPilotName').value=current;
+ $('vNameEntry').style.display=current?'none':'flex';
+ $('vClaimed').textContent=current?`${current} — TITAN CORE REGISTERED`:'ENTER A CALLSIGN TO REGISTER YOUR TITAN CORE';
+ showScreen('victory');haptic([80,60,80,60,140]);tone(440,.6,'sine',.05,440);setTimeout(()=>tone(660,.5,'sine',.035,330),180);
 }
+$('vClaim').onclick=()=>{
+ const n=($('vPilotName').value||'').trim().slice(0,12).toUpperCase()||'ANON';renameLocalPilotRecords(n);
+ $('vNameEntry').style.display='none';$('vClaimed').textContent=`${n} — TITAN CORE REGISTERED`;tone(720,.22,'sine',.035,360);haptic([35,25,70]);
+};
+$('vPilotName').addEventListener('keydown',e=>{if(e.key==='Enter')$('vClaim').click()});
+$('vLeaderboard').onclick=()=>{audio();openLb('titan')};
 $('vNew').onclick=()=>{audio();startRun(0)};
-$('vEndless').onclick=()=>{audio();startRun(4);endless=true;showMsg('ENDLESS MODE','SURVIVE THE COLLAPSE')};
+$('vEndless').onclick=()=>{audio();startEndlessContinuation()};
 $('vMenu').onclick=()=>{endRunToMenu()};
 
 /* ---------------- game over ---------------- */
 function logScore(){
  best=Math.max(best,score);localStorage.setItem('chronoBest',best);
- const b=loadBoard(),qualifies=score>0&&(b.length<10||score>b[b.length-1].s);
+ const b=loadBoard().sort((x,y)=>(y.s||0)-(x.s||0)),qualifies=score>0&&(b.length<10||score>(b[9]?.s||0));
  $('nameEntry').style.display=qualifies?'flex':'none';
  $('pilotName').value=localStorage.getItem('chronoName')||'';
  return qualifies;
@@ -1625,15 +2096,14 @@ function gameOver(){
  $('finalScore').textContent=score.toLocaleString();
  $('newBest').style.display=isBest&&score>=best?'block':'none';
  const mins=Math.floor(runTime/60),secs=Math.floor(runTime%60);
- $('finalMeta').innerHTML=`${MAPS[curMap].name} · Wave <b>${wave}</b> · Level <b>${player.level}</b><br>Enemies defeated <b>${kills}</b> · Bosses <b>${bossKills}</b> · Survived <b>${mins}:${String(secs).padStart(2,'0')}</b><br>Best timeline: <b>${best.toLocaleString()}</b>`;
- $('goLb').innerHTML=boardHTML(5);
+ $('finalMeta').innerHTML=`${endless?`ENDLESS · Cycle <b>${Math.max(1,endlessCycle)}</b> · Chain <b>${endlessBossDefeated}/${endlessBossTotal||2}</b>`:`${MAPS[curMap].name} · Wave <b>${wave}</b>`} · Level <b>${player.level}</b><br>Enemies defeated <b>${kills}</b> · Bosses <b>${bossKills}</b> · Survived <b>${mins}:${String(secs).padStart(2,'0')}</b><br>Best timeline: <b>${best.toLocaleString()}</b>`;
+ $('goLb').innerHTML=boardHTML(5,'scores');
  showScreen('gameover');tone(48,1,'sawtooth',.05,-20);
 }
 $('saveScore').onclick=()=>{
- const n=($('pilotName').value||'').trim().slice(0,12)||'ANON';
- localStorage.setItem('chronoName',n);
- const b=loadBoard();b.push({n,s:score,w:wave,m:curMap,d:Date.now()});b.sort((x,y)=>y.s-x.s);saveBoard(b);
- $('nameEntry').style.display='none';$('goLb').innerHTML=boardHTML(5);refreshTopbar();
+ const n=(($('pilotName').value||'').trim().slice(0,12)||'ANON').toUpperCase();
+ renameLocalPilotRecords(n);addLocalRunRecord({name:n,titan:false});
+ $('nameEntry').style.display='none';$('goLb').innerHTML=boardHTML(5,'scores');refreshTopbar();
  tone(520,.15,'sine',.03,300);
 };
 $('goRetry').onclick=()=>{audio();startRun(curMap)};
@@ -1783,11 +2253,11 @@ function drawBoss(e){
  ctx.shadowBlur=46;ctx.shadowColor=e.color;
  ctx.strokeStyle=e.color;ctx.globalAlpha=.28+.1*Math.sin(e.t*3);ctx.lineWidth=3;
  ctx.beginPath();ctx.arc(0,0,e.r*1.5*ap,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;
- // dash telegraph
- if((e.bossKey==='titan')&&e.chargeT<.7&&e.charging<=0){
-   let ca=Math.atan2(player.y-e.y,player.x-e.x);
-   ctx.strokeStyle=`rgba(255,46,77,${.3+.3*Math.sin(e.t*14)})`;ctx.lineWidth=4;ctx.setLineDash([12,9]);
-   ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(Math.cos(ca)*460,Math.sin(ca)*460);ctx.stroke();ctx.setLineDash([]);
+ // dash telegraph — locked direction before the Titan commits
+ if((e.bossKey==='titan')&&e.dashTele>0&&e.charging<=0){
+   const ca=e.dashAngle,reach=Math.max(W,H)*1.3,pulse=.4+.4*Math.abs(Math.sin(e.dashTele*22));
+   ctx.strokeStyle=`rgba(255,46,77,${pulse})`;ctx.lineWidth=5;ctx.setLineDash([16,10]);
+   ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(Math.cos(ca)*reach,Math.sin(ca)*reach);ctx.stroke();ctx.setLineDash([]);
  }
  ctx.rotate(e.t*.14);
  ctx.fillStyle=e.hit>0?'#fff':e.color;
@@ -1893,14 +2363,20 @@ function draw(dt){
        ctx.restore();
      }
    }else if(h.kind==='zone'){
-     ctx.globalAlpha=.25+.15*Math.sin(time*6);ctx.fillStyle=h.color;
-     ctx.beginPath();ctx.arc(h.x,h.y,h.r,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
-     ctx.strokeStyle=h.color;ctx.lineWidth=2;ctx.beginPath();ctx.arc(h.x,h.y,h.r*(0.9+0.1*Math.sin(time*4)),0,Math.PI*2);ctx.stroke();
+     if(h.tele>0){
+       const p=clamp(h.tele/.85,0,1);ctx.save();ctx.globalAlpha=.45+.4*Math.abs(Math.sin(time*12));ctx.strokeStyle=h.color;ctx.lineWidth=3;ctx.setLineDash([10,7]);
+       ctx.beginPath();ctx.arc(h.x,h.y,h.r,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+       ctx.globalAlpha=.85;ctx.lineWidth=5;ctx.beginPath();ctx.arc(h.x,h.y,h.r*(.25+.75*p),0,Math.PI*2);ctx.stroke();ctx.restore();
+     }else{
+       ctx.globalAlpha=.25+.15*Math.sin(time*6);ctx.fillStyle=h.color;ctx.beginPath();ctx.arc(h.x,h.y,h.r,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+       ctx.strokeStyle=h.color;ctx.lineWidth=2;ctx.beginPath();ctx.arc(h.x,h.y,h.r*(0.9+0.1*Math.sin(time*4)),0,Math.PI*2);ctx.stroke();
+     }
    }else if(h.kind==='rift'){
      ctx.save();ctx.translate(h.x,h.y);ctx.rotate(time*2);
-     ctx.shadowBlur=allowGlow?20:0;ctx.shadowColor=h.color;ctx.strokeStyle=h.color;ctx.lineWidth=2.5;
-     poly([[0,-14],[10,0],[0,14],[-10,0]]);ctx.stroke();
-     ctx.fillStyle='rgba(255,107,133,.3)';ctx.fill();ctx.restore();
+     ctx.shadowBlur=allowGlow?20:0;ctx.shadowColor=h.color;ctx.strokeStyle=h.color;ctx.lineWidth=h.tele>0?4:2.5;
+     if(h.tele>0){ctx.globalAlpha=.5+.45*Math.abs(Math.sin(time*14));ctx.setLineDash([7,5]);ctx.scale(1.7,1.7)}
+     poly([[0,-14],[10,0],[0,14],[-10,0]]);ctx.stroke();ctx.setLineDash([]);
+     ctx.fillStyle=h.tele>0?'rgba(255,107,133,.10)':'rgba(255,107,133,.3)';ctx.fill();ctx.restore();
    }else if(h.kind==='well'||h.kind==='grav'){
      ctx.strokeStyle=h.kind==='well'?'#57e9ff':`rgba(${gc},.4)`;ctx.lineWidth=1.5;
      for(let i=1;i<=3;i++){ctx.globalAlpha=.5-i*.12;ctx.beginPath();ctx.arc(h.x,h.y,h.r*i/3*((time*.8+i*.3)%1),0,Math.PI*2);ctx.stroke()}
@@ -1986,15 +2462,21 @@ function updateHUD(){
  $('lvT').textContent=player.level+' — '+SHIP_NAMES[player.tier-1];
  const enPct=Math.floor(clamp(player.chrono/player.chronoMax*100,0,100));
  $('enF').style.width=enPct+'%';$('enT').textContent=enPct+'%';
- $('hudWave').textContent=bossAlive?'⚠ BOSS':'WAVE '+wave;
- $('spWave').textContent=bossAlive?'⚠ BOSS FIGHT':'WAVE '+wave;
+ if(endless&&endlessChainActive){
+   $('hudWave').textContent=`∞ CHAIN ${endlessCycle} • ${Math.min(endlessBossTotal,endlessBossDefeated+1)}/${endlessBossTotal}`;
+   $('spWave').textContent=`∞ ${endlessBossDefeated}/${endlessBossTotal} BOSSES DOWN`;
+ }else{
+   $('hudWave').textContent=bossAlive?'⚠ BOSS':'WAVE '+wave;
+   $('spWave').textContent=endless?`∞ CYCLE ${Math.max(1,endlessCycle+1)} • WAVE ${wave}`:(bossAlive?'⚠ BOSS FIGHT':'WAVE '+wave);
+ }
  const rem=spawnQueue.length+enemies.filter(e=>!e.dead&&e.type!=='boss').length;
- const remEl=$('hudEnemies');remEl.textContent='ENEMIES REMAINING: '+rem;
+ const remEl=$('hudEnemies');remEl.textContent=endless&&endlessChainActive?`BOSSES LEFT: ${Math.max(0,endlessBossTotal-endlessBossDefeated)}`:'ENEMIES REMAINING: '+rem;
  remEl.classList.toggle('low',rem<=3&&rem>0);
  $('spScore').textContent=score.toLocaleString();
  const cb=$('spCombo');cb.textContent='x'+combo.toFixed(1);cb.classList.toggle('hot',combo>=3);
  // abilities
  const dEl=$('abDash'),pEl=$('abParry'),uEl=$('abUlt');
+ const tSkill=tacticalSkill(),qSkill=chronoSkill();pEl.querySelector('.nm').textContent=tSkill.name;uEl.querySelector('.nm').textContent=qSkill.name;
  if(player.dashCd>0){dEl.classList.remove('ready');dEl.querySelector('.cd').textContent=player.dashCd.toFixed(1)+'s'}
  else{dEl.classList.add('ready');dEl.querySelector('.cd').textContent='READY'}
  if(player.parryCd>0){pEl.classList.remove('ready');pEl.querySelector('.cd').textContent=player.parryCd.toFixed(1)+'s'}
@@ -2004,7 +2486,7 @@ function updateHUD(){
  // boss bar
  if(bossAlive&&bossRef){
    $('bbFill').style.width=clamp(bossRef.hp/bossRef.maxHp*100,0,100)+'%';
-   $('bbPhase').textContent='PHASE '+bossRef.phase;
+   $('bbPhase').textContent=endless&&endlessChainActive?`PHASE ${bossRef.phase} • BOSS ${Math.min(endlessBossTotal,endlessBossDefeated+1)}/${endlessBossTotal}`:'PHASE '+bossRef.phase;
    const pips=[1,2,3].map(i=>`<span style="color:${i<=bossRef.phase?bossRef.color:'rgba(255,255,255,.2)'}">●</span>`).join(' ');
    if(pips!==lastBossPips){$('bbPips').innerHTML=pips;lastBossPips=pips}
    $('bbPct').textContent=Math.ceil(clamp(bossRef.hp/bossRef.maxHp*100,0,100))+'%';
@@ -2013,6 +2495,7 @@ function updateHUD(){
  let ps='';
  if(player.aegis>0)ps+=`<div class="pchip" style="border-color:#5ce8ff;color:#5ce8ff">⬡ AEGIS ${player.aegis.toFixed(0)}s</div>`;
  if(player.overdrive>0)ps+=`<div class="pchip" style="border-color:#ff9a3d;color:#ff9a3d">» OVERDRIVE ${player.overdrive.toFixed(0)}s</div>`;
+ if(player.overclock>0)ps+=`<div class="pchip" style="border-color:#ffb15d;color:#ffb15d">⚡ OVERCLOCK ${player.overclock.toFixed(0)}s</div>`;
  if(player.critSurge>0)ps+=`<div class="pchip" style="border-color:#fff08a;color:#fff08a">◎ CRIT SURGE ${player.critSurge.toFixed(0)}s</div>`;
  if(player.fortify>0)ps+=`<div class="pchip" style="border-color:#9dff72;color:#9dff72">⬢ FORTIFY ${player.fortify.toFixed(0)}s</div>`;
  if(player.pslow>0)ps+=`<div class="pchip" style="border-color:#a76cff;color:#a76cff">⏳ FRACTURED ${player.pslow.toFixed(0)}s</div>`;
