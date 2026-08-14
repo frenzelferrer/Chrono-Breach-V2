@@ -105,12 +105,13 @@ export function createApp(db: Database, config: AppConfig) {
     try {
       const run = runSchema.parse(request.body); if (!isPlausibleRun(run)) throw new ApiError(422, 'IMPLAUSIBLE_RUN', 'Run values exceed accepted game limits');
       const result = await db.transaction(async tx => {
-        const inserted = await tx.insert(runs).values({ id: randomUUID(), pilotId: request.pilot!.id, clientEventId: run.clientEventId, score: run.score, sector: run.sector, wave: run.wave, mode: run.mode, level: run.level, kills: run.kills, bossKills: run.bossKills, clearTime: run.clearTime, titan: run.titan }).onConflictDoNothing().returning();
+        const inserted = await tx.insert(runs).values({ id: randomUUID(), pilotId: request.pilot!.id, clientEventId: run.clientEventId, score: run.score, sector: run.sector, wave: run.wave, mode: run.mode, level: run.level, kills: run.kills, bossKills: run.bossKills, clearTime: run.clearTime, titan: run.titan, paradox: run.paradox, eternalLevel: run.eternalLevel }).onConflictDoNothing().returning();
         if (!inserted[0]) { const current = await tx.select().from(pilots).where(eq(pilots.id, request.pilot!.id)).limit(1); return { pilot: current[0]!, duplicate: true }; }
         const currentPilot = await tx.select().from(pilots).where(eq(pilots.id, request.pilot!.id)).limit(1);
         const stale = run.baseRevision !== undefined && run.baseRevision !== currentPilot[0]!.revision;
         const updated = await tx.update(pilots).set({ ...(stale ? {} : { saveData: run.save }), bestScore: Math.max(currentPilot[0]!.bestScore, run.score), revision: sql`${pilots.revision} + 1`, updatedAt: new Date() }).where(eq(pilots.id, request.pilot!.id)).returning();
-        for (const category of (run.titan ? ['scores', 'titan'] : ['scores']) as Array<'scores' | 'titan'>) {
+        const categories: Array<'scores' | 'titan' | 'paradox'> = ['scores']; if (run.titan) categories.push('titan'); if (run.paradox) categories.push('paradox');
+        for (const category of categories) {
           const current = await tx.select().from(leaderboardEntries).where(and(eq(leaderboardEntries.pilotId, request.pilot!.id), eq(leaderboardEntries.category, category))).limit(1);
           if (!current[0]) await tx.insert(leaderboardEntries).values({ pilotId: request.pilot!.id, category, runId: inserted[0].id, score: run.score });
           else if (shouldReplaceScore(current[0].score, run)) await tx.update(leaderboardEntries).set({ runId: inserted[0].id, score: run.score, achievedAt: new Date() }).where(and(eq(leaderboardEntries.pilotId, request.pilot!.id), eq(leaderboardEntries.category, category)));
@@ -123,8 +124,8 @@ export function createApp(db: Database, config: AppConfig) {
 
   app.get('/api/v1/leaderboard', async (request, response, next) => {
     try {
-      const category = request.query.mode === 'titan' ? 'titan' : 'scores', rawLimit = Number(request.query.limit ?? 10), limit = Number.isInteger(rawLimit) ? Math.min(50, Math.max(1, rawLimit)) : 10;
-      const rows = await db.select({ displayName: pilots.displayName, discriminator: pilots.discriminator, score: runs.score, sector: runs.sector, wave: runs.wave, mode: runs.mode, level: runs.level, kills: runs.kills, bossKills: runs.bossKills, clearTime: runs.clearTime, titan: runs.titan, achievedAt: leaderboardEntries.achievedAt })
+      const category = request.query.mode === 'paradox' ? 'paradox' : request.query.mode === 'titan' ? 'titan' : 'scores', rawLimit = Number(request.query.limit ?? 10), limit = Number.isInteger(rawLimit) ? Math.min(50, Math.max(1, rawLimit)) : 10;
+      const rows = await db.select({ displayName: pilots.displayName, discriminator: pilots.discriminator, score: runs.score, sector: runs.sector, wave: runs.wave, mode: runs.mode, level: runs.level, kills: runs.kills, bossKills: runs.bossKills, clearTime: runs.clearTime, titan: runs.titan, paradox: runs.paradox, eternalLevel: runs.eternalLevel, achievedAt: leaderboardEntries.achievedAt })
         .from(leaderboardEntries).innerJoin(pilots, eq(leaderboardEntries.pilotId, pilots.id)).innerJoin(runs, eq(leaderboardEntries.runId, runs.id)).where(and(eq(leaderboardEntries.category, category), eq(pilots.leaderboardHidden, false), eq(pilots.suspended, false))).orderBy(desc(leaderboardEntries.score), asc(leaderboardEntries.achievedAt)).limit(limit);
       response.json({ data: { entries: rows.map((row, index) => ({ ...row, rank: index + 1, achievedAt: row.achievedAt.toISOString() })) } });
     } catch (error) { next(error); }

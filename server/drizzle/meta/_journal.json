@@ -15,6 +15,13 @@
       "when": 1786730000000,
       "tag": "0001_admin_cms",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1786755000000,
+      "tag": "0002_paradox_leaderboard",
+      "breakpoints": true
     }
   ]
 }

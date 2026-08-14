@@ -14,8 +14,10 @@ export const updateSaveSchema = z.object({ save: saveSchema, baseRevision: z.num
 export const runSchema = z.object({
   clientEventId: z.string().uuid(), score: z.number().int().min(0).max(100_000_000), sector: z.number().int().min(1).max(5), wave: z.number().int().min(1).max(1000),
   mode: z.enum(['standard', 'endless']), level: z.number().int().min(1).max(5), kills: z.number().int().min(0).max(100_000), bossKills: z.number().int().min(0).max(1000),
-  clearTime: z.number().finite().min(0).max(86_400), titan: z.boolean(), save: saveSchema, baseRevision: z.number().int().positive().optional(),
-}).refine(run => !run.titan || run.sector === 5, { message: 'Titan records require sector 5', path: ['titan'] });
+  clearTime: z.number().finite().min(0).max(86_400), titan: z.boolean(), paradox: z.boolean().default(false), eternalLevel: z.number().int().min(0).max(10_000).default(0), save: saveSchema, baseRevision: z.number().int().positive().optional(),
+}).refine(run => !run.titan || run.sector === 5, { message: 'Titan records require sector 5', path: ['titan'] })
+  .refine(run => !run.paradox || run.titan, { message: 'Paradox records require a Titan clear', path: ['paradox'] })
+  .refine(run => run.eternalLevel === 0 || run.paradox, { message: 'Eternal levels require a Paradox record', path: ['eternalLevel'] });
 
 export type RunInput = z.infer<typeof runSchema>;
 export function isPlausibleRun(run: RunInput): boolean {

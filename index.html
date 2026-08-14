@@ -117,6 +117,14 @@ button{font-family:inherit}
 .menuBtns{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap}
 .menuBtns2{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap}
 .menuBtns2 .btn{padding:10px 18px;font-size:11px}
+#btnEndless{position:relative}
+.menuBtns #btnEndless{padding:14px 26px;font-size:14px;min-width:210px}
+#btnEndless:not(:disabled){border-color:rgba(194,114,255,.68);color:#f3e8ff;background:linear-gradient(90deg,rgba(93,45,165,.38),rgba(255,61,242,.17));box-shadow:0 0 24px rgba(194,114,255,.16),inset 0 0 22px rgba(194,114,255,.04)}
+#btnEndless:not(:disabled):hover{border-color:#d79bff;filter:brightness(1.1);box-shadow:0 0 34px rgba(194,114,255,.27)}
+#btnEndless:disabled{opacity:.58;border-color:rgba(110,88,135,.34);background:rgba(25,18,36,.58);color:#857395}
+#btnEndless.endlessReady::after{content:'TITAN BUILD';margin-left:7px;padding:2px 6px;border-radius:999px;border:1px solid rgba(255,216,93,.38);color:#ffd85d;font-size:8px;letter-spacing:.08em}
+@media(max-width:720px){.menuBtns #btnEndless{min-width:0;flex:1 1 210px}}
+
 .feats{display:flex;gap:26px;margin-top:38px;flex-wrap:wrap}
 .feat{display:flex;gap:10px;align-items:center;max-width:190px}
 .feat .fi{width:38px;height:38px;flex:none;border-radius:10px;background:rgba(20,45,75,.6);border:1px solid rgba(87,233,255,.35);display:grid;place-items:center;color:var(--cy)}
@@ -285,7 +293,7 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 
 
 /* ==================== TITAN TELEGRAPHS + CHAMPIONS ==================== */
-.lbTabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 14px}
+.lbTabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 14px}
 .lbTab{border:1px solid rgba(87,233,255,.24);border-radius:10px;padding:10px 12px;background:rgba(8,18,32,.7);color:#8ca9bd;font-size:11px;font-weight:1000;letter-spacing:.12em;cursor:pointer}
 .lbTab.active{color:#fff;border-color:rgba(87,233,255,.65);background:rgba(87,233,255,.1);box-shadow:0 0 18px rgba(87,233,255,.12)}
 .lbTab.titan.active{color:#ffb067;border-color:rgba(255,91,61,.65);background:rgba(255,91,61,.1);box-shadow:0 0 18px rgba(255,91,61,.14)}
@@ -315,6 +323,43 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
  #titanCombatHint{top:13%;font-size:10px;padding:8px 10px}
 }
 
+
+
+
+/* ==================== PARADOX SOVEREIGN / TRUE ENDGAME ==================== */
+.lbTab.paradox.active{color:#efe2ff;border-color:rgba(194,114,255,.72);background:linear-gradient(135deg,rgba(116,65,255,.18),rgba(255,61,242,.12));box-shadow:0 0 22px rgba(174,88,255,.18)}
+.paradoxBadge{display:inline-flex;align-items:center;gap:4px;margin-left:6px;padding:2px 7px;border:1px solid rgba(194,114,255,.55);border-radius:999px;background:linear-gradient(90deg,rgba(116,65,255,.13),rgba(255,61,242,.10));color:#e9c7ff;font-size:9px;font-weight:1000;letter-spacing:.08em;vertical-align:middle;white-space:nowrap;text-shadow:0 0 12px rgba(194,114,255,.45)}
+.lbRow.paradoxRow{background:linear-gradient(90deg,rgba(116,65,255,.11),rgba(255,61,242,.045),rgba(87,233,255,.035))}
+.lbRow .wv.paradoxStatus{color:#d9adff;opacity:1;font-weight:900}
+.paradoxCeremony{margin:16px auto 14px;padding:20px 18px;border:1px solid rgba(194,114,255,.52);border-radius:18px;background:radial-gradient(circle at 50% 0%,rgba(171,74,255,.22),rgba(255,61,242,.07) 42%,rgba(5,10,22,.28) 72%);box-shadow:inset 0 0 38px rgba(139,69,255,.08),0 0 38px rgba(174,88,255,.14)}
+.paradoxCoreIcon{width:90px;height:90px;margin:0 auto 10px;display:grid;place-items:center;border-radius:50%;font-size:46px;background:conic-gradient(from 0deg,rgba(87,233,255,.25),rgba(194,114,255,.34),rgba(255,61,242,.30),rgba(255,216,93,.22),rgba(87,233,255,.25));border:1px solid rgba(232,202,255,.62);box-shadow:0 0 34px rgba(194,114,255,.30),inset 0 0 26px rgba(255,255,255,.08);animation:paradoxCorePulse 1.35s ease-in-out infinite}
+@keyframes paradoxCorePulse{0%,100%{transform:scale(1) rotate(0deg);filter:brightness(1)}50%{transform:scale(1.07) rotate(4deg);filter:brightness(1.28)}}
+.paradoxEyebrow{font-size:10px;color:#d9adff;font-weight:1000;letter-spacing:.24em}
+.paradoxTitle{font-size:24px;font-weight:1000;letter-spacing:.12em;color:#f5e9ff;margin-top:4px;text-shadow:0 0 24px rgba(194,114,255,.5)}
+.paradoxText{font-size:11px;color:#acc5d7;line-height:1.55;margin-top:7px}
+.choiceGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.choiceBtn{pointer-events:auto;border-radius:14px;padding:15px 13px;border:1px solid rgba(87,233,255,.3);background:rgba(7,16,29,.8);color:#fff;cursor:pointer;text-align:left;transition:.16s}
+.choiceBtn:hover{transform:translateY(-2px);border-color:#57e9ff;box-shadow:0 10px 30px rgba(87,233,255,.10)}
+.choiceBtn.defy{border-color:rgba(194,114,255,.45);background:linear-gradient(145deg,rgba(92,38,150,.18),rgba(10,15,32,.88))}
+.choiceBtn.defy:hover{border-color:#c272ff;box-shadow:0 10px 34px rgba(194,114,255,.14)}
+.choiceBtn b{display:block;font-size:14px;letter-spacing:.14em;margin-bottom:5px}
+.choiceBtn span{display:block;font-size:10px;color:#8faabd;line-height:1.45;letter-spacing:.02em}
+.trueEnding{width:min(670px,94vw);text-align:center;padding:38px}
+.trueEnding .endingTitle{font-size:clamp(27px,4.2vw,44px);font-weight:1000;letter-spacing:.16em;color:#fff;text-shadow:0 0 28px rgba(194,114,255,.42)}
+.trueEnding .endingSub{font-size:11px;letter-spacing:.22em;color:#d3afff;margin-top:8px}
+.unlockList{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:18px 0;text-align:left}
+.unlockItem{padding:10px 12px;border-radius:10px;border:1px solid rgba(194,114,255,.23);background:rgba(100,50,150,.06);font-size:11px;color:#b9ccda}
+.unlockItem b{display:block;color:#f2e5ff;font-size:11px;letter-spacing:.08em;margin-bottom:2px}
+#paradoxVictory .rwPanel{max-height:95vh;overflow:auto}
+#ascendEnding .panel{max-height:95vh;overflow:auto}
+@media(max-width:760px){
+ .lbTabs{grid-template-columns:1fr;gap:6px}
+ .choiceGrid{grid-template-columns:1fr}
+ .unlockList{grid-template-columns:1fr}
+ .paradoxCoreIcon{width:68px;height:68px;font-size:36px}
+ .paradoxTitle{font-size:19px}
+ .paradoxBadge{font-size:8px;padding:2px 5px;margin-left:3px}
+}
 
 
 /* ==================== BREACH LOADOUT // EQUIPMENT SHARDS + ACTIVE SKILLS ==================== */
@@ -446,6 +491,7 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     <div class="tag">A high-speed arena roguelite where you bend time itself. Dash through bullets, parry attacks, collect powerful upgrades, evolve your ship, and defeat massive bosses across unstable sectors of the Chrono Breach.</div>
     <div class="menuBtns">
       <button class="btn" id="btnPlay">▶&nbsp; ENTER THE BREACH</button>
+      <button class="btn ghost endlessLandingBtn" id="btnEndless" disabled title="Defeat Chronos Titan to unlock Endless Mode">🔒&nbsp; ENDLESS MODE</button>
       <button class="btn ghost" id="btnMap">✦&nbsp; SECTOR MAP</button>
       <button class="btn ghost" id="btnLb">🏆&nbsp; LEADERBOARD</button>
       <button class="btn ghost" id="btnShop">⬆&nbsp; UPGRADES</button>
@@ -454,6 +500,7 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     <div class="menuBtns2">
       <button class="btn ghost" id="btnSettings">⚙&nbsp; SETTINGS</button>
       <button class="btn ghost" id="btnHow">?&nbsp; HOW TO PLAY</button>
+      <button class="btn ghost" id="btnNGPlus" style="display:none">◈&nbsp; NEW GAME+</button>
     </div>
     <div class="feats" id="feats"></div>
   </div>
@@ -481,10 +528,11 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 <div id="lbPanel" class="screen dim">
   <div class="panel glass" style="width:min(680px,94vw)">
     <h2 class="pTitle">LEADERBOARD</h2>
-    <div class="pSub">LOCAL PILOT RECORDS // GLOBAL-READY FORMAT</div>
+    <div class="pSub">GLOBAL PILOT RECORDS // CACHED FOR OFFLINE PLAY</div>
     <div class="lbTabs">
       <button class="lbTab active" id="lbTopTab" type="button">TOP SCORES</button>
       <button class="lbTab titan" id="lbTitanTab" type="button">🔥 TITAN CHAMPIONS <span id="titanCount"></span></button>
+      <button class="lbTab paradox" id="lbParadoxTab" type="button">◈ PARADOX CONQUERORS <span id="paradoxCount"></span></button>
     </div>
     <div class="lbModeInfo" id="lbModeInfo">HIGHEST SCORES ACROSS ALL LOCAL RUNS</div>
     <div class="lbTable" id="lbRows"></div>
@@ -667,6 +715,62 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
       <button class="btn ghost" id="vMenu">MAIN MENU</button>
     </div>
   </div>
+
+</div>
+
+<!-- ==================== PARADOX SOVEREIGN VICTORY ==================== -->
+<div id="paradoxVictory" class="screen dim">
+  <div class="rwPanel glass" style="width:min(680px,95vw)">
+    <div class="rwSub" style="color:#d9adff">THE IMPOSSIBLE HAS FALLEN</div>
+    <div class="rwTitle" style="color:#f4e9ff;text-shadow:0 0 34px rgba(194,114,255,.55)">THE PARADOX SOVEREIGN DEFEATED</div>
+    <div class="paradoxCeremony">
+      <div class="paradoxCoreIcon">◈</div>
+      <div class="paradoxEyebrow">MYTHIC RELIC ACQUIRED</div>
+      <div class="paradoxTitle">PARADOX CORE</div>
+      <div class="paradoxText">You defeated all five Ascended bosses at once and destroyed the entity born from their merged cores. This pilot is now a PARADOX CONQUEROR.</div>
+    </div>
+    <div class="scorebig" id="pvScore">0</div>
+    <div class="rwRows" id="pvRows"></div>
+    <div class="rwUnlock" style="border-color:#c272ff;color:#e6c8ff;background:rgba(125,70,220,.08)">◈ PARADOX CORE • PARADOX CONQUEROR • ETERNAL BREACH ACCESS</div>
+    <div class="choiceGrid">
+      <button class="choiceBtn" id="pvAscend" type="button">
+        <b>✦ ASCEND</b>
+        <span>End this timeline, record the true victory, unlock New Game+, and return as a Paradox Conqueror.</span>
+      </button>
+      <button class="choiceBtn defy" id="pvDefy" type="button">
+        <b>∞ DEFY THE END</b>
+        <span>Keep this exact build and enter Eternal Breach. Difficulty and modified bosses scale forever until you fall.</span>
+      </button>
+    </div>
+    <div class="btnRow">
+      <button class="btn ghost" id="pvLeaderboard">🏆 PARADOX CONQUERORS</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TRUE ENDING / ASCENSION ==================== -->
+<div id="ascendEnding" class="screen dim">
+  <div class="panel glass trueEnding">
+    <div class="endingSub">TRUE ENDING</div>
+    <div class="endingTitle">TIMELINE RESTORED</div>
+    <div class="paradoxCoreIcon" style="margin-top:20px">◈</div>
+    <div class="paradoxTitle">PARADOX CONQUEROR</div>
+    <div class="paradoxText" style="font-size:13px">The Breach has finally collapsed. Your victory is permanently recorded.</div>
+    <div class="unlockList">
+      <div class="unlockItem"><b>◈ PARADOX CORE</b>Permanent mythic pilot badge</div>
+      <div class="unlockItem"><b>✦ PARADOX CONQUEROR</b>Prestige title on local records</div>
+      <div class="unlockItem"><b>◈ PRISMATIC APEX</b>Paradox Core ship aura, orbiting cores, and mythic engine trail</div>
+      <div class="unlockItem"><b>◈ NEW GAME+</b>Campaign enemies and bosses return empowered</div>
+      <div class="unlockItem"><b>∞ ETERNAL BREACH</b>Available after every future Paradox victory</div>
+    </div>
+    <div class="rwRows" id="aeRows"></div>
+    <div class="btnRow">
+      <button class="btn" id="aeNGPlus">◈ START NEW GAME+</button>
+      <button class="btn ghost" id="aeLeaderboard">🏆 PARADOX CONQUERORS</button>
+      <button class="btn ghost" id="aeMenu">MAIN MENU</button>
+    </div>
+  </div>
+
 </div>
 <script src="config.js"></script>
 <script>
@@ -829,7 +933,7 @@ function tone(freq=440,d=.05,type='sine',vol=.025,slide=0){
 function jload(k,def){try{let v=JSON.parse(localStorage.getItem(k));return v==null?def:v}catch(e){return def}}
 function jsave(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 const PERM_DEFAULTS={hull:0,weapons:0,thrusters:0,dashmod:0,magnet:0,conduit:0,regen:0,aegis:0,precision:0,ballistics:0,salvage:0,learning:0,parrycap:0,reactive:0,scanner:0,reserve:0};
-const meta=Object.assign({credits:0,shards:0,cores:0,unlocked:0,best:[0,0,0,0,0],prog:[0,0,0,0,0],cleared:[false,false,false,false,false],titanCore:false,perm:{},shardOwned:{},equippedShards:[],skillOwned:{},equippedSkills:{}},jload('chronoMeta',{}));
+const meta=Object.assign({credits:0,shards:0,cores:0,unlocked:0,best:[0,0,0,0,0],prog:[0,0,0,0,0],cleared:[false,false,false,false,false],titanCore:false,paradoxCore:false,paradoxDefeats:0,paradoxFragments:0,ngPlusUnlocked:false,bestEternal:0,bestEternalScore:0,perm:{},shardOwned:{},equippedShards:[],skillOwned:{},equippedSkills:{}},jload('chronoMeta',{}));
 meta.perm=Object.assign({},PERM_DEFAULTS,meta.perm||{});
 meta.shardOwned=Object.assign({},meta.shardOwned||{});
 meta.equippedShards=Array.isArray(meta.equippedShards)?meta.equippedShards.filter(Boolean).slice(0,3):[];
@@ -838,9 +942,43 @@ meta.equippedSkills=Object.assign({tactical:'parry',chrono:'fracture'},meta.equi
 const settings=Object.assign({volume:1,shake:true,density:2,reducedMotion:false},jload('chronoSettings',{}));
 function saveMeta(){jsave('chronoMeta',meta);refreshTopbar();window.chronoCloud?.queueSave()}
 function saveSettings(){jsave('chronoSettings',settings);window.chronoCloud?.queueSave()}
+
+const TITAN_BUILD_KEY='chronoTitanClearBuildV1';
+function saveTitanClearBuild(){
+ try{
+   const snap={
+     version:1,savedAt:Date.now(),
+     player:JSON.parse(JSON.stringify(player)),
+     run:{score,kills,bossKills,runTime,time,combo,comboTimer},
+     equippedSkills:Object.assign({},meta.equippedSkills||{}),
+     equippedShards:[...(meta.equippedShards||[])]
+   };
+   localStorage.setItem(TITAN_BUILD_KEY,JSON.stringify(snap));
+   return true;
+ }catch(e){return false}
+}
+function loadTitanClearBuild(){
+ try{
+   const snap=JSON.parse(localStorage.getItem(TITAN_BUILD_KEY)||'null');
+   if(!snap||!snap.player||!snap.run)return null;
+   return snap;
+ }catch(e){return null}
+}
+function hasTitanClearBuild(){return !!loadTitanClearBuild()}
+function restoreTitanClearBuild(){
+ const snap=loadTitanClearBuild();if(!snap)return false;
+ Object.assign(player,basePlayer(),snap.player);
+ score=+snap.run.score||0;kills=+snap.run.kills||0;bossKills=+snap.run.bossKills||0;
+ runTime=+snap.run.runTime||0;time=+snap.run.time||0;combo=Math.max(1,+snap.run.combo||1);comboTimer=+snap.run.comboTimer||0;
+ if(snap.equippedSkills)meta.equippedSkills=Object.assign({},meta.equippedSkills||{},snap.equippedSkills);
+ if(Array.isArray(snap.equippedShards))meta.equippedShards=[...snap.equippedShards];
+ saveMeta();refreshAbilityLabels();
+ return true;
+}
+
 let best=+(localStorage.getItem('chronoBest')||0);
 function loadBoard(){let b=jload('chronoBoard',[]);return Array.isArray(b)?b:[]}
-function saveBoard(b){const sorted=[...b].sort((x,y)=>(y.s||0)-(x.s||0)),keep=sorted.slice(0,100),champ=sorted.filter(r=>r.titanDefeated===true||r.titanCore===true).slice(0,50),seen=new Set(keep.map(r=>r.rid||[r.n,r.s,r.d].join(':')));for(const r of champ){const k=r.rid||[r.n,r.s,r.d].join(':');if(!seen.has(k)){keep.push(r);seen.add(k)}}jsave('chronoBoard',keep.slice(0,150))}
+function saveBoard(b){const sorted=[...b].sort((x,y)=>(y.s||0)-(x.s||0)),keep=sorted.slice(0,120),prestige=sorted.filter(r=>r.titanDefeated===true||r.titanCore===true||r.paradoxDefeated===true||r.paradoxCore===true).slice(0,80),seen=new Set(keep.map(r=>r.rid||[r.n,r.s,r.d].join(':')));for(const r of prestige){const k=r.rid||[r.n,r.s,r.d].join(':');if(!seen.has(k)){keep.push(r);seen.add(k)}}jsave('chronoBoard',keep.slice(0,200))}
 function getPilotId(){let id=localStorage.getItem('chronoPilotId');if(!id){id=(typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():'pilot-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9);localStorage.setItem('chronoPilotId',id)}return id}
 const LOCAL_PILOT_ID=getPilotId();
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -849,7 +987,7 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const cloudSync=(()=>{
  const API=(window.CHRONO_API_URL||'').replace(/\/$/,'');
  const TK='chronoCloudTokenV2',PK='chronoCloudProfileV2',OK='chronoCloudOutboxV2',BK='chronoCloudBoardsV2';
- let token=localStorage.getItem(TK)||'',profile=jload(PK,null),outbox=jload(OK,[]),boards=jload(BK,{scores:[],titan:[]}),busy=false,status=API?(token?'OFFLINE':'LOCAL'):'NOT CONFIGURED',recovery='';
+ let token=localStorage.getItem(TK)||'',profile=jload(PK,null),outbox=jload(OK,[]),boards=jload(BK,{scores:[],titan:[],paradox:[]}),busy=false,status=API?(token?'OFFLINE':'LOCAL'):'NOT CONFIGURED',recovery='';
  const snapshot=()=>JSON.parse(JSON.stringify({meta,settings}));
  const persist=()=>jsave(OK,outbox);
  function emit(){renderPanel();refreshTopbar()}
@@ -863,9 +1001,9 @@ const cloudSync=(()=>{
  async function recover(){const code=prompt('Enter your CHRONO//BREACH recovery code:');if(!code)return;setStatus('SYNCING');try{const d=await api('/api/v1/pilots/recover',{method:'POST',body:JSON.stringify({recoveryCode:code})});token=d.sessionToken;recovery=d.recoveryCode;localStorage.setItem(TK,token);outbox=[];persist();accept(d.profile,true);localStorage.setItem('chronoName',d.profile.displayName);setStatus('SYNCED')}catch(e){setStatus('AUTH ERROR');alert(e.message)}}
  async function rotate(){if(!token)return;setStatus('SYNCING');try{const d=await api('/api/v1/profile/recovery-code',{method:'POST'});recovery=d.recoveryCode;setStatus('SYNCED')}catch(e){setStatus(e.status===401?'AUTH ERROR':'OFFLINE');alert(e.message)}}
  function queueSave(){if(!token)return;outbox=outbox.filter(x=>x.type!=='save');outbox.push({type:'save',save:snapshot(),baseRevision:profile?.revision});persist();setTimeout(sync,250)}
- function queueRun(rec){if(!token)return;outbox.push({type:'run',run:{clientEventId:crypto.randomUUID(),score:Math.max(0,Math.round(rec.s||0)),sector:Math.max(1,Math.min(5,(rec.m||0)+1)),wave:Math.max(1,Math.round(rec.w||1)),mode:endless?'endless':'standard',level:Math.max(1,Math.min(5,Math.round(rec.level||1))),kills:Math.max(0,Math.round(rec.kills||0)),bossKills:Math.max(0,Math.round(rec.bossKills||0)),clearTime:Math.max(0,+rec.clearTime||0),titan:!!rec.titanDefeated,save:snapshot(),baseRevision:profile?.revision}});persist();sync()}
+ function queueRun(rec){if(!token)return;outbox.push({type:'run',run:{clientEventId:crypto.randomUUID(),score:Math.max(0,Math.round(rec.s||0)),sector:Math.max(1,Math.min(5,(rec.m||0)+1)),wave:Math.max(1,Math.round(rec.w||1)),mode:(rec.eternal||endless)?'endless':'standard',level:Math.max(1,Math.min(5,Math.round(rec.level||1))),kills:Math.max(0,Math.round(rec.kills||0)),bossKills:Math.max(0,Math.round(rec.bossKills||0)),clearTime:Math.max(0,+rec.clearTime||0),titan:!!rec.titanDefeated,paradox:!!rec.paradoxDefeated,eternalLevel:Math.max(0,Math.round(rec.eternalLevel||0)),save:snapshot(),baseRevision:profile?.revision}});persist();sync()}
  async function sync(){if(!token||busy||!API)return;busy=true;setStatus('SYNCING');try{while(outbox.length){const x=outbox[0],d=x.type==='run'?await api('/api/v1/runs',{method:'POST',body:JSON.stringify(x.run)}):await api('/api/v1/profile/save',{method:'PATCH',body:JSON.stringify({save:x.save,baseRevision:x.baseRevision})});outbox.shift();persist();accept(d.profile,true)}const d=await api('/api/v1/profile');accept(d.profile,true);setStatus('SYNCED')}catch(e){setStatus(e.status===401?'AUTH ERROR':'OFFLINE')}finally{busy=false;if(outbox.length&&navigator.onLine)setTimeout(sync,500)}}
- async function fetchBoard(mode){if(!API)return boards[mode]||[];try{const d=await api('/api/v1/leaderboard?limit=50&mode='+mode);boards[mode]=d.entries.map((r,i)=>({rid:'cloud-'+mode+'-'+i,pid:'cloud-'+r.displayName+'-'+r.discriminator,n:r.displayName+'#'+r.discriminator,s:r.score,w:r.wave,m:r.sector-1,d:Date.parse(r.achievedAt),level:r.level,kills:r.kills,bossKills:r.bossKills,clearTime:r.clearTime,titanDefeated:r.titan,titanCore:r.titan}));jsave(BK,boards);return boards[mode]}catch(e){return boards[mode]||[]}}
+ async function fetchBoard(mode){if(!API)return boards[mode]||[];try{const d=await api('/api/v1/leaderboard?limit=50&mode='+mode);boards[mode]=d.entries.map((r,i)=>({rid:'cloud-'+mode+'-'+i,pid:'cloud-'+r.displayName+'-'+r.discriminator,n:r.displayName+'#'+r.discriminator,s:r.score,w:r.wave,m:r.sector-1,d:Date.parse(r.achievedAt),level:r.level,kills:r.kills,bossKills:r.bossKills,clearTime:r.clearTime,titanDefeated:r.titan,titanCore:r.titan,paradoxDefeated:r.paradox,paradoxCore:r.paradox,eternal:!!r.eternalLevel,eternalLevel:r.eternalLevel||0}));jsave(BK,boards);return boards[mode]}catch(e){return boards[mode]||[]}}
  function renderPanel(){if(!$('cloudStatus'))return;$('cloudStatus').textContent=status;$('cloudIdentity').textContent=profile?profile.displayName+'#'+profile.discriminator:'LOCAL PILOT';$('cloudCreateRow').style.display=token&&status!=='AUTH ERROR'?'none':'flex';$('cloudLinkedRow').style.display=token&&status!=='AUTH ERROR'?'flex':'none';$('cloudRecovery').textContent=recovery?'SAVE THIS NEW CODE: '+recovery:(token?'Recovery codes appear only when created or rotated.':'')}
  async function fetchAnnouncement(){if(!API)return;try{const d=await api('/api/v1/announcements'),a=d.announcements[0];if(!a)return;const bar=$('liveAnnouncement');bar.className='liveAnnouncement on '+a.severity;$('announcementTitle').textContent=a.title;$('announcementMessage').textContent=a.message;$('announcementClose').onclick=()=>bar.classList.remove('on')}catch(e){}}
  function init(){$('cloudCreate').onclick=create;$('cloudRecover').onclick=recover;$('cloudSync').onclick=sync;$('cloudRotate').onclick=rotate;window.addEventListener('online',sync);renderPanel();fetchAnnouncement();if(token)sync()}
@@ -903,6 +1041,8 @@ const BOSSES={
    abilities:['CHAOS BARRAGE','TIME FRACTURE','CORE OVERLOAD'],rewards:{xp:8000,credits:16000,shards:40}},
  titan:{name:'CHRONOS TITAN',color:'#ff2e4d',hp:12500,r:70,speed:80,damage:38,score:30000,spikes:8,
    abilities:['TIME COLLAPSE','DIMENSION RIFT','TITAN DASH'],rewards:{xp:15000,credits:30000,shards:100}},
+ paradox:{name:'THE PARADOX SOVEREIGN',color:'#c272ff',hp:90000,r:122,speed:62,damage:72,score:250000,spikes:12,
+   abilities:['SOVEREIGN BEAM','HYDRA ASCENDANT','VOID DOMINION','CHAOS CROWN','CHRONOS ASCENDANT'],rewards:{xp:50000,credits:100000,shards:500}},
 };
 
 /* ---------------- data: upgrades ---------------- */
@@ -1107,13 +1247,13 @@ function renderLoadout(){
  for(const s of AUGMENT_SHARDS){const owned=!!meta.shardOwned[s.id],equipped=meta.equippedShards.includes(s.id),afford=meta.credits>=s.cost,d=document.createElement('div');d.className='loadCard'+(equipped?' equipped':'')+(!owned?' locked':'');d.innerHTML=`<div class="lcTop" style="color:${s.color}"><div class="lcIcon">${s.icon}</div><div><div class="lcName">${s.name}</div><div class="lcType">AUGMENT SHARD</div></div></div><div class="lcDesc">${s.desc}</div><div class="lcStat">${s.stat}</div><button class="lcBtn ${!owned?'buy':equipped?'unequip':''}">${!owned?(afford?`BUY — 🪙 ${s.cost.toLocaleString()}`:`🪙 ${s.cost.toLocaleString()} — NOT ENOUGH`):equipped?'UNEQUIP':'EQUIP'}</button>`;d.querySelector('button').onclick=()=>owned?toggleShard(s.id):buyShard(s.id);g.appendChild(d)}
  renderSkillGroup('tactical','tacticalSkillGrid');renderSkillGroup('chrono','chronoSkillGrid');refreshAbilityLabels();
  const t=tacticalSkill(),q=chronoSkill(),sh=meta.equippedShards.map(id=>shardById(id)?.name).filter(Boolean);
- $('loadoutSummary').innerHTML=`<b>SECTOR ${loadoutSector+1}: ${MAPS[loadoutSector].name}</b><br>E: ${t.name} • Q: ${q.name}<br>SHARDS: ${sh.length?sh.join(' / '):'NONE EQUIPPED'}`;
- $('loadoutStart').textContent=`▶ START SECTOR ${loadoutSector+1}`;
+ $('loadoutSummary').innerHTML=`<b>${loadoutRunMode==='ngplus'?'◈ NEW GAME+ • ':''}SECTOR ${loadoutSector+1}: ${MAPS[loadoutSector].name}</b><br>E: ${t.name} • Q: ${q.name}<br>SHARDS: ${sh.length?sh.join(' / '):'NONE EQUIPPED'}`;
+ $('loadoutStart').textContent=loadoutRunMode==='ngplus'?`◈ START NEW GAME+ — SECTOR ${loadoutSector+1}`:`▶ START SECTOR ${loadoutSector+1}`;
 }
-function openLoadout(map=Math.min(meta.unlocked,4),ret='menu'){loadoutSector=clamp(map,0,4);loadoutReturn=ret;setState('LOADOUT');renderLoadout();showScreen('loadoutPanel');tone(430,.07,'sine',.02,120)}
+function openLoadout(map=Math.min(meta.unlocked,4),ret='menu',mode='normal'){loadoutSector=clamp(map,0,4);loadoutReturn=ret;loadoutRunMode=mode;setState('LOADOUT');renderLoadout();showScreen('loadoutPanel');tone(430,.07,'sine',.02,120)}
 function closeLoadout(){if(loadoutReturn==='map'){setState('MAP');renderSmap();showScreen('smap')}else{setState('MENU');showScreen('menu')}}
 $('loadoutBack').onclick=closeLoadout;
-$('loadoutStart').onclick=()=>{audio();startRun(loadoutSector)};
+$('loadoutStart').onclick=()=>{audio();startRun(loadoutSector,loadoutRunMode)};
 
 /* ---------------- powerup pickups ---------------- */
 const POWERUPS={
@@ -1173,11 +1313,14 @@ let curMap=0,wave=1,waveTimer=0,spawnTimer=0,toSpawn=0,score=0,kills=0,bossKills
 // Endless mode keeps the completed run build and escalates through staged boss chains.
 const ENDLESS_BOSS_ORDER=['sentinel','hydra','reaper','oblivion','titan'];
 let endlessCycle=0,endlessChainActive=false,endlessBossQueue=[],endlessBossTotal=0,endlessBossDefeated=0;
-let endlessNextBossKey=null,endlessNextBossTimer=0;
+let endlessNextBossKey=null,endlessNextBossTimer=0,endlessResolutionStarted=false,endlessCombinedMaxHp=0;
+let paradoxActive=false,paradoxIntroT=0,paradoxIntroStage=0,paradoxRecordId=null;
+let eternal=false,eternalLevel=0,eternalFightActive=false,eternalBossTotal=0,eternalBossDefeated=0,eternalCombinedMaxHp=0;
+let ngPlus=false,loadoutRunMode='normal';
 const TIPS=['Dash through bullets and use your equipped Tactical Skill to survive pressure.','Your shots can intercept enemy bullets — shoot them down.','Defeated bosses drop rare powerups — grab them fast.','A full ⚡ ENERGY bar lets you fracture time with Q.','Your loadout can be changed before every sector — experiment with skills and shards.','Your ship evolves every level — up to APEX at Level 5.','Elite Wardens shield themselves. Break the shield first.'];
 
 /* ---------------- screen manager ---------------- */
-const SCREENS=['menu','smap','lbPanel','shopPanel','loadoutPanel','settingsPanel','howtoPanel','pausePanel','upgrade','rewardPanel','gameover','victory'];
+const SCREENS=['menu','smap','lbPanel','shopPanel','loadoutPanel','settingsPanel','howtoPanel','pausePanel','upgrade','rewardPanel','gameover','victory','paradoxVictory','ascendEnding'];
 function showScreen(id){
  for(const s of SCREENS)$(s).classList.toggle('on',s===id);
  $('hud').classList.toggle('on',['PLAYING','LEVEL_UP','BOSS_INTRO','BOSS_DEFEATED','PAUSED'].includes(state));
@@ -1191,7 +1334,15 @@ function refreshTopbar(){
  $('mCredits').textContent=meta.credits.toLocaleString();
  $('mShards').textContent=meta.shards.toLocaleString();
  $('mCores').textContent=meta.cores.toLocaleString();
- $('pilotTag').innerHTML=esc(pilotName())+(meta.titanCore?' <span class="titanBadge">🔥 TITAN CORE</span>':'');$('avInit').textContent=pilotName()[0];
+ $('pilotTag').innerHTML=esc(pilotName())+(meta.paradoxCore?' <span class="paradoxBadge">◈ PARADOX CONQUEROR</span>':'')+(meta.titanCore?' <span class="titanBadge">🔥 TITAN CORE</span>':'')+((meta.bestEternal||0)>0?` <span class="paradoxBadge">∞ ETERNAL ${meta.bestEternal}</span>`:'');$('avInit').textContent=pilotName()[0];
+ if($('btnNGPlus'))$('btnNGPlus').style.display=meta.ngPlusUnlocked?'inline-flex':'none';
+ if($('btnEndless')){
+   const unlocked=!!meta.titanCore,ready=unlocked&&hasTitanClearBuild();
+   $('btnEndless').disabled=!ready;
+   $('btnEndless').classList.toggle('endlessReady',ready);
+   $('btnEndless').innerHTML=ready?'∞&nbsp; ENDLESS MODE':unlocked?'∞&nbsp; ENDLESS — SAVE A TITAN BUILD':'🔒&nbsp; ENDLESS MODE';
+   $('btnEndless').title=ready?'Resume your saved Chronos Titan-winning build in Endless Mode':unlocked?'Defeat Chronos Titan once in this build to save a resumable Endless loadout':'Defeat Chronos Titan to unlock Endless Mode';
+ }
 }
 const FEATS=[
  ['<path d="M13 2L5 13h5l-2 9 9-12h-5z"/>','FAST-PACED','Intense arena combat'],
@@ -1203,43 +1354,60 @@ const FEATS=[
 $('feats').innerHTML=FEATS.map(f=>`<div class="feat"><div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${f[0]}</svg></div><div><b>${f[1]}</b><span>${f[2]}</span></div></div>`).join('');
 
 /* ---------------- leaderboard ---------------- */
-let lbMode='scores';
+let lbMode='scores',lbReturn='menu';
 function fmtRunTime(sec){sec=Math.max(0,Math.floor(+sec||0));return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0')}
-function championRecords(){
- const rows=loadBoard().filter(r=>r.titanDefeated===true||r.titanCore===true);
- const bestByPilot=new Map();
+function bestPrestigeRecords(predicate){
+ const rows=loadBoard().filter(predicate),bestByPilot=new Map();
  for(const r of rows){
-   const key=r.pid||('name:'+String(r.n||'ANON').toUpperCase());
-   const prev=bestByPilot.get(key);
+   const key=r.pid||('name:'+String(r.n||'ANON').toUpperCase()),prev=bestByPilot.get(key);
    if(!prev||(r.s||0)>(prev.s||0)||((r.s||0)===(prev.s||0)&&(r.clearTime||1e9)<(prev.clearTime||1e9)))bestByPilot.set(key,r);
  }
  return [...bestByPilot.values()].sort((a,b)=>(b.s||0)-(a.s||0)||(+a.clearTime||1e9)-(+b.clearTime||1e9));
 }
- function boardHTML(limit=10,mode='scores'){
-  const cloud=cloudSync.getBoard(mode);let b=cloud.length?cloud:(mode==='titan'?championRecords():loadBoard().sort((x,y)=>(y.s||0)-(x.s||0)));
- if(!b.length)return `<div class="lbEmpty">${mode==='titan'?'NO TITAN CHAMPIONS YET — DEFEAT CHRONOS TITAN TO CLAIM THE FIRST CORE':'NO TIMELINES LOGGED — BE THE FIRST'}</div>`;
+function championRecords(){return bestPrestigeRecords(r=>r.titanDefeated===true||r.titanCore===true||r.paradoxDefeated===true||r.paradoxCore===true)}
+function paradoxRecords(){return bestPrestigeRecords(r=>r.paradoxDefeated===true||r.paradoxCore===true)}
+function boardHTML(limit=10,mode='scores'){
+ const cloud=cloudSync.getBoard(mode);let b=cloud.length?cloud:(mode==='paradox'?paradoxRecords():mode==='titan'?championRecords():loadBoard().sort((x,y)=>(y.s||0)-(x.s||0)));
+ if(!b.length){
+   const msg=mode==='paradox'?'NO PARADOX CONQUERORS YET — SURVIVE THE FIVE-BOSS CONVERGENCE AND DEFEAT THE SOVEREIGN':
+     mode==='titan'?'NO TITAN CHAMPIONS YET — DEFEAT CHRONOS TITAN TO CLAIM THE FIRST CORE':'NO TIMELINES LOGGED — BE THE FIRST';
+   return `<div class="lbEmpty">${msg}</div>`;
+ }
  return b.slice(0,limit).map((r,i)=>{
-   const titan=r.titanDefeated===true||r.titanCore===true;
-   const own=r.pid&&r.pid===LOCAL_PILOT_ID;
-   const currentName=own&&pilotName()!=='ANON'?pilotName():(r.n||'ANON');
-   const badge=titan?'<span class="titanBadge">🔥 TITAN CORE</span>':'';
-   const metaLine=titan?`<span class="lbChampionMeta">CLEAR ${fmtRunTime(r.clearTime)} · LV ${r.level||'?'} · ${r.kills||0} KILLS</span>`:'';
-   const status=titan?'TITAN CLEAR':`${r.m!=null?'S'+(r.m+1)+' ':''}W${r.w||1}`;
-   return `<div class="lbRow${i===0?' first':''}${titan?' titanRow':''}"><span class="rk">${String(i+1).padStart(2,'0')}</span><span class="nm">${esc(currentName)}${badge}${metaLine}</span><span class="wv${titan?' titanStatus':''}">${status}</span><span class="sc">${(+r.s||0).toLocaleString()}</span></div>`;
+   const paradox=r.paradoxDefeated===true||r.paradoxCore===true,titan=paradox||r.titanDefeated===true||r.titanCore===true;
+   const own=r.pid&&r.pid===LOCAL_PILOT_ID,currentName=own&&pilotName()!=='ANON'?pilotName():(r.n||'ANON');
+   const badge=paradox?'<span class="paradoxBadge">◈ PARADOX CORE</span>':titan?'<span class="titanBadge">🔥 TITAN CORE</span>':'';
+   const eternalMeta=r.eternalLevel?` · ETERNAL ${r.eternalLevel}`:'';
+   const metaLine=paradox?`<span class="lbChampionMeta">CLEAR ${fmtRunTime(r.clearTime)} · LV ${r.level||'?'}${eternalMeta}</span>`:
+     titan?`<span class="lbChampionMeta">CLEAR ${fmtRunTime(r.clearTime)} · LV ${r.level||'?'} · ${r.kills||0} KILLS</span>`:'';
+   const status=paradox?'PARADOX':titan?'TITAN CLEAR':`${r.m!=null?'S'+(r.m+1)+' ':''}W${r.w||1}`;
+   return `<div class="lbRow${i===0?' first':''}${paradox?' paradoxRow':titan?' titanRow':''}"><span class="rk">${String(i+1).padStart(2,'0')}</span><span class="nm">${esc(currentName)}${badge}${metaLine}</span><span class="wv${paradox?' paradoxStatus':titan?' titanStatus':''}">${status}</span><span class="sc">${(+r.s||0).toLocaleString()}</span></div>`;
  }).join('');
 }
 function renderLeaderboard(mode=lbMode,skipFetch=false){
  lbMode=mode;
  $('lbTopTab').classList.toggle('active',mode==='scores');
  $('lbTitanTab').classList.toggle('active',mode==='titan');
- const champs=cloudSync.getBoard('titan').length?cloudSync.getBoard('titan'):championRecords();$('titanCount').textContent=champs.length?`(${champs.length})`:'';
- $('lbModeInfo').textContent=mode==='titan'?'GLOBAL PILOTS WHO DEFEATED CHRONOS TITAN — RANKED BY BEST SCORE':'GLOBAL BEST PILOT SCORES // CACHED WHEN OFFLINE';
+ $('lbParadoxTab').classList.toggle('active',mode==='paradox');
+ const champs=cloudSync.getBoard('titan').length?cloudSync.getBoard('titan'):championRecords(),paradox=cloudSync.getBoard('paradox').length?cloudSync.getBoard('paradox'):paradoxRecords();
+ $('titanCount').textContent=champs.length?`(${champs.length})`:'';
+ $('paradoxCount').textContent=paradox.length?`(${paradox.length})`:'';
+ $('lbModeInfo').textContent=mode==='paradox'?'GLOBAL PILOTS WHO DEFEATED THE PARADOX SOVEREIGN':
+   mode==='titan'?'GLOBAL PILOTS WHO DEFEATED CHRONOS TITAN — RANKED BY BEST SCORE':'GLOBAL BEST PILOT SCORES // CACHED WHEN OFFLINE';
  $('lbRows').innerHTML=boardHTML(10,mode);
  if(!skipFetch)cloudSync.fetchBoard(mode).then(()=>{if($('lbPanel').classList.contains('on')&&lbMode===mode)renderLeaderboard(mode,true)});
 }
-function openLb(mode='scores'){renderLeaderboard(mode);setState('MENU');showScreen('lbPanel')}
+function openLb(mode='scores',returnTo='menu'){lbReturn=returnTo;renderLeaderboard(mode);setState('MENU');showScreen('lbPanel')}
+function closeLeaderboard(){
+ if(lbReturn==='victory'){setState('VICTORY');showScreen('victory')}
+ else if(lbReturn==='paradoxVictory'){setState('PARADOX_VICTORY');showScreen('paradoxVictory')}
+ else if(lbReturn==='ascendEnding'){setState('ASCEND_ENDING');showScreen('ascendEnding')}
+ else{setState('MENU');showScreen('menu')}
+ lbReturn='menu';
+}
 $('lbTopTab').onclick=()=>{tone(420,.05,'sine',.015,80);renderLeaderboard('scores')};
 $('lbTitanTab').onclick=()=>{tone(520,.06,'sine',.018,100);renderLeaderboard('titan')};
+$('lbParadoxTab').onclick=()=>{tone(620,.07,'sine',.02,160);renderLeaderboard('paradox')};
 
 
 /* ---------------- sector map ---------------- */
@@ -1315,8 +1483,10 @@ $('shopBack').onclick=()=>{setState('MENU');showScreen('menu')};
 $('btnSettings').onclick=()=>{audio();setState('MENU');openSettings()};
 $('gearBtn').onclick=()=>{audio();setState('MENU');openSettings()};
 $('btnHow').onclick=()=>{audio();setState('MENU');showScreen('howtoPanel')};
+$('btnEndless').onclick=()=>{audio();if(meta.titanCore&&hasTitanClearBuild())startEndlessContinuation(true)};
+$('btnNGPlus').onclick=()=>{audio();if(meta.ngPlusUnlocked)openLoadout(0,'menu','ngplus')};
 $('howBack').onclick=()=>{setState('MENU');showScreen('menu')};
-$('lbBack').onclick=()=>{setState('MENU');showScreen('menu')};
+$('lbBack').onclick=closeLeaderboard;
 $('mapBack').onclick=()=>{setState('MENU');showScreen('menu')};
 
 /* ---------------- pause ---------------- */
@@ -1329,7 +1499,7 @@ function onEscape(){
 function resumeGame(){setState('PLAYING');showScreen(null);tone(420,.06,'sine',.02,120)}
 $('pResume').onclick=resumeGame;
 $('pSettings').onclick=()=>{openSettings()};
-$('pRestart').onclick=()=>{audio();startRun(curMap)};
+$('pRestart').onclick=()=>{audio();startRun(curMap,ngPlus?'ngplus':'normal')};
 $('pMenu').onclick=()=>{endRunToMenu()};
 function endRunToMenu(){running=false;setState('MENU');refreshTopbar();showScreen('menu')}
 
@@ -1362,23 +1532,29 @@ function buildNebula(map){
  if(MAPS[map].asteroids)for(let i=0;i<7;i++)asteroids.push({x:Math.random()*W,y:Math.random()<.5?rand(20,90):rand(H-90,H-20),r:rand(14,34),vx:rand(-14,14),vy:rand(-6,6),rot:Math.random()*6,vr:rand(-.5,.5),seed:Math.random()*10});
 }
 function resetEndlessDirector(){
- endlessCycle=0;endlessChainActive=false;endlessBossQueue=[];endlessBossTotal=0;endlessBossDefeated=0;endlessNextBossKey=null;endlessNextBossTimer=0;
+ endlessCycle=0;endlessChainActive=false;endlessBossQueue=[];endlessBossTotal=0;endlessBossDefeated=0;endlessNextBossKey=null;endlessNextBossTimer=0;endlessResolutionStarted=false;
+ paradoxActive=false;paradoxIntroT=0;paradoxIntroStage=0;endlessCombinedMaxHp=0;eternal=false;eternalLevel=0;eternalFightActive=false;eternalBossTotal=0;eternalBossDefeated=0;eternalCombinedMaxHp=0;
 }
-function startRun(map){
- curMap=map;endless=false;resetEndlessDirector();
+function startRun(map,mode='normal'){
+ curMap=map;endless=false;ngPlus=mode==='ngplus';resetEndlessDirector();
  bullets=[];enemyBullets=[];enemies=[];particles=[];rings=[];gems=[];texts=[];pickups=[];hazards=[];
  Object.assign(player,basePlayer());applyPerms();applyEquippedShards();refreshAbilityLabels();
  wave=1;waveTimer=0;spawnTimer=.3;toSpawn=waveCount();spawnQueue=compForWave();score=0;kills=0;bossKills=0;combo=1;comboTimer=0;bossAlive=false;bossRef=null;runTime=0;time=0;slow=1;slowTimer=0;flash=0;screenShake=0;hudTimer=0;lastPowerStatus='';lastBossPips='';
  buildNebula(map);
  running=true;setState('PLAYING');showScreen(null);
  updateProgress();$('sectorName').textContent=`SECTOR ${map+1} • ${MAPS[map].name}`;
- showMsg('BREACH OPEN',MAPS[map].name+' — SECTOR '+(map+1));
+ showMsg(ngPlus?'NEW GAME+':'BREACH OPEN',(ngPlus?'EMPOWERED TIMELINE • ':'')+MAPS[map].name+' — SECTOR '+(map+1));
  tone(220,.3,'sawtooth',.03,300);
 }
-function startEndlessContinuation(){
- // IMPORTANT: do NOT rebuild player here. HP, level, run upgrades, synergies,
- // equipped skills, shard bonuses, damage, speed, cooldown stats, etc. all carry forward.
- endless=true;curMap=4;resetEndlessDirector();endless=true;
+function startEndlessContinuation(fromSavedBuild=false){
+ // IMPORTANT: Endless does not rebuild the pilot. It continues the Titan-winning build.
+ // From the victory screen the current player is already that build; from the main menu
+ // (or after a browser reload) we restore the saved Titan-clear snapshot.
+ if(fromSavedBuild&&!restoreTitanClearBuild()){
+   showMsg('ENDLESS BUILD MISSING','DEFEAT CHRONOS TITAN AGAIN TO SAVE YOUR BUILD',2200);
+   tone(120,.18,'square',.025,-60);return false;
+ }
+ endless=true;curMap=4;ngPlus=false;resetEndlessDirector();endless=true;
  bullets=[];enemyBullets=[];enemies=[];particles=[];rings=[];gems=[];texts=[];pickups=[];hazards=[];
  bossAlive=false;bossRef=null;bossIntroT=0;bossDeathT=0;slow=1;slowTimer=0;flash=0;screenShake=0;hudTimer=0;lastPowerStatus='';lastBossPips='';
  // Only reset transient movement/position so the continuation begins cleanly.
@@ -1390,9 +1566,10 @@ function startEndlessContinuation(){
  showMsg('ENDLESS CONTINUATION','BUILD PRESERVED • FIRST BOSS CHAIN: 2',2200);
  titanWarn('ENDLESS PROTOCOL','YOUR TITAN-CLEAR BUILD CONTINUES',1800);haptic([40,30,70]);
  tone(180,.35,'sawtooth',.035,360);
+ return true;
 }
 function waveCount(){
- const m=curMap,extra=endless?Math.min(12,endlessCycle*2):0;
+ const m=curMap,extra=eternal?Math.min(36,8+eternalLevel*2):endless?Math.min(20,endlessCycle*3):(ngPlus?6:0);
  if(wave===1)return 6+m*2+extra;
  if(wave===2)return 8+m*2+extra;
  if(wave===3)return 9+m*3+extra;
@@ -1402,7 +1579,7 @@ function spawnEnemy(type){
  const T=ETYPES[type];
  let side=Math.floor(Math.random()*4),pad=60,x,y;
  if(side===0){x=rand(0,W);y=-pad}else if(side===1){x=W+pad;y=rand(0,H)}else if(side===2){x=rand(0,W);y=H+pad}else{x=-pad;y=rand(0,H)}
- const scale=(1+curMap*.45)*(1+wave*.08)*(endless?(1.25+Math.min(.9,endlessCycle*.12)):1);
+ const scale=(1+curMap*.45)*(1+wave*.08)*(ngPlus?1.8:1)*(eternal?(1.8+Math.min(4,eternalLevel*.16)):endless?(1.45+Math.min(1.6,endlessCycle*.22)):1);
  const e={type,x,y,vx:0,vy:0,t:0,hit:0,dead:false,spawn:.4,phase:0,marked:false,slowT:0,
    r:T.r,hp:T.hp*scale,maxHp:T.hp*scale,speed:T.speed,damage:T.damage,color:T.color,xp:T.xp,score:T.score,credits:T.credits,shoot:rand(.5,1.4),shield:T.shielded?T.hp*scale*.4:0,maxShield:T.shielded?T.hp*scale*.4:0};
  if(!pushEnemyEntity(e))return;
@@ -1419,124 +1596,308 @@ function compForWave(){
 }
 let spawnQueue=[];
 
-/* ---------------- endless staged boss gauntlet ---------------- */
+/* ---------------- ENDLESS CONVERGENCE / PARADOX / ETERNAL BREACH ---------------- */
 function endlessBossRoster(){
- const count=Math.min(5,endlessCycle+1); // cycle 1 = 2, cycle 2 = 3 ... cycle 4+ = 5
- let order=ENDLESS_BOSS_ORDER.slice();
- if(count===5&&endlessCycle>4){
-   const shift=(endlessCycle-4)%order.length;
-   order=order.slice(shift).concat(order.slice(0,shift));
- }
- return order.slice(0,count);
+ const count=Math.min(5,endlessCycle+1); // cycle 1=2, 2=3, 3=4, 4=5
+ return ENDLESS_BOSS_ORDER.slice(0,count);
 }
+function activeBossList(){return enemies.filter(e=>e.type==='boss'&&!e.dead&&!e.dying)}
 function setPrimaryEndlessBoss(e){
- bossRef=e||null;
- bossAlive=!!e||endlessChainActive;
+ bossRef=e||null;bossAlive=!!e||endlessChainActive||eternalFightActive||paradoxActive;
  if(e){
-   const b=BOSSES[e.bossKey];
-   $('bossbar').style.display='block';$('bbName').textContent=b.name;$('bbName').parentElement.style.color=b.color;lastBossPips='';
+   $('bossbar').style.display='block';$('bbName').textContent=e.name||BOSSES[e.bossKey]?.name||'BOSS';
+   $('bbName').parentElement.style.color=e.color||'#fff';lastBossPips='';
  }
 }
-function spawnEndlessBoss(key){
- if(!key)return null;
- const b=BOSSES[key];
- const idx=endlessBossTotal-(endlessBossQueue.length+(endlessNextBossKey?1:0));
- const lanes=[.50,.26,.74,.36,.64];
- const scale=1.35+Math.min(1.15,(endlessCycle-1)*.16);
- const e={type:'boss',bossKey:key,name:b.name,x:W*lanes[idx%lanes.length],y:-110,vx:0,vy:0,t:0,hit:0,dead:false,spawn:0,phase:1,
-   r:b.r,hp:b.hp*scale,maxHp:b.hp*scale,speed:b.speed*(1+Math.min(.18,(endlessCycle-1)*.025)),damage:b.damage*(1+Math.min(.4,(endlessCycle-1)*.05)),color:b.color,score:Math.round(b.score*scale),
-   shieldT:0,barrierT:0,chargeT:4,charging:0,dashTele:0,dashAngle:0,cvx:0,cvy:0,lastPhase:1,ab:[{t:2.5},{t:5},{t:8}],spiralA:0,spiralT:.08,pullT:0,overloadT:0,
-   endlessChainIndex:idx,endlessNextTriggered:false};
- pushEnemyEntity(e);
- if(!bossRef||bossRef.dead||bossRef.dying)setPrimaryEndlessBoss(e);
- bossAlive=true;$('bossbar').style.display='block';
- ring(e.x,120,b.color,280,.8,5);shake(12);
- showMsg(b.name,'ENDLESS BOSS '+Math.min(endlessBossTotal,endlessBossDefeated+1)+' / '+endlessBossTotal,1200);
- tone(75,.45,'sawtooth',.035,100);
+function bossLane(idx,total){
+ const layouts={
+   1:[.50],2:[.30,.70],3:[.20,.50,.80],4:[.16,.39,.61,.84],5:[.12,.31,.50,.69,.88]
+ };
+ return (layouts[total]||layouts[5])[idx]||.5;
+}
+function applyBossPowerScale(e,cycle=endlessCycle){
+ const hpScale=1.55+cycle*.34+Math.min(.55,player.level*.018);
+ const dmgScale=1.08+cycle*.13;
+ e.hp*=hpScale;e.maxHp*=hpScale;e.damage*=dmgScale;
+ e.speed*=1+Math.min(.28,cycle*.045);
+ e.cooldownMult=Math.max(.50,.91-cycle*.075);
+ e.projectileMult=1+Math.min(.55,cycle*.10);
+ e.endlessPower=true;
  return e;
 }
-function scheduleNextEndlessBoss(delay=.8){
- if(!endlessChainActive||endlessNextBossKey||!endlessBossQueue.length)return;
- endlessNextBossKey=endlessBossQueue.shift();endlessNextBossTimer=delay;
- const b=BOSSES[endlessNextBossKey];
- titanWarn('NEXT BOSS INBOUND',b.name+' — BREACH SIGNATURE LOCKED',Math.max(900,delay*1000));haptic([35,25,35]);
-}
-function spawnScheduledEndlessBoss(){
- if(!endlessNextBossKey)return;
- const key=endlessNextBossKey;endlessNextBossKey=null;endlessNextBossTimer=0;spawnEndlessBoss(key);
-}
-function promoteEndlessBoss(){
- const next=enemies.filter(e=>e.type==='boss'&&!e.dead&&!e.dying).sort((a,b)=>(a.endlessChainIndex??99)-(b.endlessChainIndex??99))[0]||null;
- setPrimaryEndlessBoss(next);
- return next;
+function spawnEndlessBoss(key,idx,total){
+ const b=BOSSES[key],x=W*bossLane(idx,total);
+ const e={type:'boss',bossKey:key,name:'ASCENDED '+b.name,x,y:-110,vx:0,vy:0,t:0,hit:0,dead:false,spawn:0,phase:1,
+   r:b.r,hp:b.hp,maxHp:b.hp,speed:b.speed,damage:b.damage,color:b.color,score:Math.round(b.score*(1.5+endlessCycle*.35)),
+   shieldT:0,barrierT:0,chargeT:rand(2.5,4.2),charging:0,dashTele:0,dashAngle:0,cvx:0,cvy:0,lastPhase:1,
+   ab:[{t:rand(1.5,3.1)},{t:rand(3,5.4)},{t:rand(5,8)}],spiralA:rand(0,6.28),spiralT:rand(.05,.12),pullT:0,overloadT:0,
+   endlessChainIndex:idx};
+ applyBossPowerScale(e,endlessCycle);pushEnemyEntity(e);ring(x,120,b.color,260,.75,5);return e;
 }
 function startEndlessBossChain(){
- endlessCycle++;endlessChainActive=true;endlessBossDefeated=0;
+ endlessCycle++;endlessChainActive=true;endlessBossDefeated=0;endlessResolutionStarted=false;
  endlessBossQueue=endlessBossRoster();endlessBossTotal=endlessBossQueue.length;endlessNextBossKey=null;endlessNextBossTimer=0;
- bossAlive=true;bossRef=null;enemyBullets=[];hazards=hazards.filter(h=>h.kind==='well');
- setState('BOSS_INTRO');bossIntroT=0;
- $('warnName').textContent=`ENDLESS CHAIN ×${endlessBossTotal}`;$('warnName').style.color='#ff5b6e';$('warn').style.display='grid';
- $('sectorName').textContent=`∞ ENDLESS • CYCLE ${endlessCycle} • ${endlessBossTotal}-BOSS CHAIN`;
- tone(55,.9,'sawtooth',.05,100);haptic([60,40,60]);
+ bossAlive=true;bossRef=null;enemyBullets=[];hazards=[];setState('BOSS_INTRO');bossIntroT=0;
+ $('warnName').textContent=`CONVERGENCE ×${endlessBossTotal}`;$('warnName').style.color=endlessBossTotal===5?'#e7c7ff':'#ff5b6e';$('warn').style.display='grid';
+ $('sectorName').textContent=`∞ ENDLESS • CYCLE ${endlessCycle} • ${endlessBossTotal} BOSSES SIMULTANEOUS`;
+ tone(48,.95,'sawtooth',.055,120);haptic([80,40,80]);
 }
 function beginEndlessBossChainCombat(){
  $('warn').style.display='none';setState('PLAYING');
- const first=endlessBossQueue.shift();spawnEndlessBoss(first);
- titanWarn(`BOSS CHAIN ${endlessCycle}`,`${endlessBossTotal} BOSSES • NEXT ENTERS AT 18% HP`,1800);
+ const roster=endlessBossQueue.splice(0);
+ roster.forEach((key,i)=>spawnEndlessBoss(key,i,roster.length));
+ endlessCombinedMaxHp=activeBossList().reduce((s,e)=>s+e.maxHp,0);
+ setPrimaryEndlessBoss(activeBossList()[0]||null);
+ titanWarn(`CONVERGENCE ×${roster.length}`,'ALL BOSSES DEPLOYED SIMULTANEOUSLY',2100);
+ showMsg(roster.length===5?'THE CONVERGENCE':'BOSS CONVERGENCE',`${roster.length} ASCENDED BOSSES — SURVIVE`,1800);
+ haptic([80,35,80,35,120]);
 }
 function finishEndlessBossChain(){
- endlessChainActive=false;bossAlive=false;bossRef=null;endlessNextBossKey=null;endlessNextBossTimer=0;
- $('bossbar').style.display='none';enemyBullets=[];hazards=[];
- const bonus=Math.round(650*endlessBossTotal*(1+endlessCycle*.18));meta.credits+=bonus;saveMeta();
- wave=1;waveTimer=0;spawnTimer=1.25;toSpawn=waveCount();spawnQueue=compForWave();
+ if(endlessResolutionStarted)return;endlessResolutionStarted=true;
+ endlessChainActive=false;bossAlive=false;bossRef=null;$('bossbar').style.display='none';enemyBullets=[];hazards=[];
+ const bonus=Math.round(1000*endlessBossTotal*(1+endlessCycle*.28));meta.credits+=bonus;saveMeta();
+ wave=1;waveTimer=0;spawnTimer=1.2;toSpawn=waveCount();spawnQueue=compForWave();
  const nextCount=Math.min(5,endlessCycle+2);
  $('sectorName').textContent=`∞ ENDLESS • CYCLE ${endlessCycle} CLEARED • NEXT: ${nextCount} BOSSES`;
- showMsg(`CHAIN ${endlessCycle} CLEARED`,`+${bonus.toLocaleString()} CREDITS • NEXT CHAIN: ${nextCount} BOSSES`,2300);
- titanWarn('BREACH ESCALATING',nextCount===5?'ALL FIVE BOSSES WILL ENTER THE NEXT CHAIN':`NEXT CHAIN: ${nextCount} BOSSES`,1800);
- haptic([35,25,70]);tone(520,.3,'sine',.035,340);
+ showMsg(`CONVERGENCE ${endlessCycle} CLEARED`,`+${bonus.toLocaleString()} CREDITS • NEXT: ${nextCount} BOSSES AT ONCE`,2300);
+ titanWarn('BREACH ESCALATING',nextCount===5?'THE FIVE-BOSS CONVERGENCE IS NEXT':`${nextCount} ASCENDED BOSSES NEXT`,1900);
+ haptic([40,25,80]);tone(560,.35,'sine',.04,360);
 }
 function defeatEndlessBoss(e){
  if(!e||e.dead||e.dying)return;
- e.dead=true;bossKills++;endlessBossDefeated++;addScore(e.score);addCombo(1);
- const b=BOSSES[e.bossKey],reward=Math.round(b.rewards.credits*.05*(1+endlessCycle*.08));
+ e.dead=true;bossKills++;endlessBossDefeated++;addScore(e.score);addCombo(1.2);
+ const b=BOSSES[e.bossKey],reward=Math.round(b.rewards.credits*.08*(1+endlessCycle*.16));
  meta.credits+=reward;saveMeta();
- spawnParticle(e.x,e.y,'#fff',42,420);spawnParticle(e.x,e.y,e.color,50,340);ring(e.x,e.y,e.color,300,.85,6);shake(18);flash=Math.max(flash,.65);
+ spawnParticle(e.x,e.y,'#fff',38,420);spawnParticle(e.x,e.y,e.color,48,360);ring(e.x,e.y,e.color,300,.85,6);shake(18);flash=Math.max(flash,.55);
  for(let i=0;i<2;i++)dropPickup(e.x+rand(-55,55),e.y+rand(-55,55));
- floating(e.x,e.y-34,'BOSS DOWN +'+reward+' CREDITS','#ffd85d',17);tone(45,.7,'sawtooth',.05,170);
- if(e===bossRef)bossRef=null;
- const active=promoteEndlessBoss();
- if(active){
-   titanWarn(`${active.name} TAKES POINT`,`${endlessBossDefeated}/${endlessBossTotal} DEFEATED`,1000);
- }else if(endlessNextBossKey){
-   // A nearly-dead boss can be finished before the inbound warning completes.
-   endlessNextBossTimer=Math.min(endlessNextBossTimer,.3);
- }else if(endlessBossQueue.length){
-   scheduleNextEndlessBoss(.4);
- }else if(endlessBossDefeated>=endlessBossTotal){
-   finishEndlessBossChain();
+ floating(e.x,e.y-34,`BOSS DOWN ${endlessBossDefeated}/${endlessBossTotal}`,'#ffd85d',18);tone(45,.6,'sawtooth',.045,180);
+ const alive=activeBossList();setPrimaryEndlessBoss(alive[0]||null);
+ if(endlessBossDefeated>=endlessBossTotal&&!endlessResolutionStarted){
+   if(endlessBossTotal===5&&endlessCycle>=4)beginParadoxEmergence();
+   else finishEndlessBossChain();
+ }else if(alive.length){
+   titanWarn(`${alive.length} BOSSES REMAIN`,`CONVERGENCE ${endlessBossDefeated}/${endlessBossTotal} DESTROYED`,900);
  }
 }
-function updateEndlessBossDirector(dt){
+function updateEndlessBossDirector(){
  if(!endless||!endlessChainActive||state!=='PLAYING')return;
- if(endlessNextBossKey){
-   endlessNextBossTimer-=dt;
-   if(endlessNextBossTimer<=0)spawnScheduledEndlessBoss();
- }
- if(!bossRef||bossRef.dead||bossRef.dying)promoteEndlessBoss();
- const current=bossRef;
- // At most two bosses overlap: the next boss is summoned only when the current
- // primary boss is nearly defeated, then that newcomer waits to become primary.
- if(current&&!current.endlessNextTriggered&&current.hp/current.maxHp<=.18&&(endlessBossQueue.length||endlessNextBossKey)){
-   current.endlessNextTriggered=true;
-   if(!endlessNextBossKey)scheduleNextEndlessBoss(.85);
- }
- const activeBosses=enemies.filter(e=>e.type==='boss'&&!e.dead&&!e.dying).length;
- bossAlive=activeBosses>0||!!endlessNextBossKey||endlessBossQueue.length>0;
- if(activeBosses===0&&!endlessNextBossKey){
-   if(endlessBossQueue.length)scheduleNextEndlessBoss(.35);
-   else if(endlessBossDefeated>=endlessBossTotal)finishEndlessBossChain();
+ const alive=activeBossList();bossAlive=alive.length>0;
+ if((!bossRef||bossRef.dead||bossRef.dying)&&alive.length)setPrimaryEndlessBoss(alive[0]);
+ if(!alive.length&&endlessBossDefeated>=endlessBossTotal&&!endlessResolutionStarted){
+   if(endlessBossTotal===5&&endlessCycle>=4)beginParadoxEmergence();else finishEndlessBossChain();
  }
 }
+
+/* ----- Five cores merge: the real final boss ----- */
+const PARADOX_CORE_COLORS=['#ff3df2','#38b6ff','#ffb03d','#a76cff','#ff2e4d'];
+function beginParadoxEmergence(){
+ if(endlessResolutionStarted)return;endlessResolutionStarted=true;
+ endlessChainActive=false;bossAlive=false;bossRef=null;enemyBullets=[];bullets=[];hazards=[];enemies=enemies.filter(e=>e.type!=='boss');
+ paradoxActive=false;paradoxIntroT=0;paradoxIntroStage=0;running=true;
+ setState('PARADOX_INTRO');$('bossbar').style.display='none';
+ $('sectorName').textContent='◈ THE CONVERGENCE • REALITY FAILURE';
+ $('warn').style.display='none';
+ titanWarn('BREACH STABILITY: 0%','THE BREACH IS NOT COLLAPSING — IT IS EVOLVING',2800);
+ showMsg('FIVE CORES DETECTED','SIGNATURES MERGING',2200);haptic([90,50,90,50,150]);
+ tone(42,1.8,'sawtooth',.05,260);
+}
+function spawnParadoxSovereign(){
+ const b=BOSSES.paradox;
+ const levelScale=1+Math.min(.65,Math.max(0,player.level-5)*.025);
+ const e={type:'boss',bossKey:'paradox',name:b.name,x:W/2,y:-170,vx:0,vy:0,t:0,hit:0,dead:false,spawn:0,phase:1,
+   r:Math.min(b.r,Math.max(92,H*.17)),hp:b.hp*levelScale,maxHp:b.hp*levelScale,speed:b.speed,damage:b.damage,color:b.color,score:b.score,
+   shieldT:0,barrierT:0,chargeT:3,charging:0,cvx:0,cvy:0,pullT:0,spiralA:0,spiralT:.07,paradoxInv:0,finalProtocolDone:false,
+   pTimers:[1.6,2.7,4.1,5.4,7.2],pDashTele:0,pDashAngle:0,pCharging:0,pChronoT:7,lastPhase:1};
+ enemies=enemies.filter(e=>e.type!=='boss');pushEnemyEntity(e);paradoxActive=true;bossRef=e;bossAlive=true;
+ $('bossbar').style.display='block';$('bbName').textContent=b.name;$('bbName').parentElement.style.color='#e5c8ff';
+ setState('PLAYING');showScreen(null);
+ $('sectorName').textContent='◈ THE PARADOX SOVEREIGN • THE BREACH INCARNATE';
+ titanWarn('THE PARADOX SOVEREIGN','THIS ENTITY SHOULD NOT EXIST',2600);
+ showMsg('THE PARADOX SOVEREIGN','THE BREACH INCARNATE',2300);shake(28);flash=1;haptic([120,50,120,50,180]);
+ ring(e.x,Math.min(160,H*.25),'#c272ff',Math.min(W,H)*.48,1.3,8);tone(38,1.4,'sawtooth',.055,400);
+}
+function paradoxBeam(e){
+ const base=Math.atan2(player.y-e.y,player.x-e.x),count=e.phase>=3?3:2;
+ for(let i=0;i<count;i++){const off=(i-(count-1)/2)*.28;pushHazard({kind:'beam',x:e.x,y:e.y,angle:base+off,len:Math.max(W,H)*1.35,width:e.phase===4?66:52,dmg:e.damage*.75,tele:.75,life:1,maxLife:1,color:'#ff65e9'})}
+ titanWarn('SOVEREIGN BEAM','SENTINEL MATRIX ONLINE',650);
+}
+function paradoxHydra(e){
+ const a=Math.atan2(player.y-e.y,player.x-e.x),count=e.phase>=3?8:6;
+ for(let i=0;i<count&&enemyBullets.length<PERF.maxEnemyBullets;i++){
+   const q=a+(i-(count-1)/2)*.15,s=260*(e.projectileMult||1);
+   pushEnemyBullet({x:e.x,y:e.y,vx:Math.cos(q)*s,vy:Math.sin(q)*s,r:6,life:6,damage:e.damage*.45,color:'#58c8ff',homing:1.5+(e.phase*.25)});
+ }
+}
+function paradoxVoid(e){
+ e.pullT=e.phase===4?2.2:1.5;
+ for(let i=0;i<(e.phase>=3?2:1)&&hazards.length<PERF.maxHazards;i++)pushHazard({kind:'zone',x:clamp(player.x+rand(-120,120),80,W-80),y:clamp(player.y+rand(-90,90),80,H-80),r:rand(70,105),dmg:e.damage*.34,tele:.8,life:3.3,maxLife:3.3,color:'#ffb03d'});
+ titanWarn('VOID DOMINION','REAPER GRAVITY ENGAGED',700);
+}
+function paradoxChaos(e){
+ const count=e.phase===4?30:e.phase>=2?24:18;
+ for(let i=0;i<count&&enemyBullets.length<PERF.maxEnemyBullets;i++){
+   const q=Math.PI*2*i/count+e.t*.42,s=rand(165,265)*(e.projectileMult||1);
+   pushEnemyBullet({x:e.x,y:e.y,vx:Math.cos(q)*s,vy:Math.sin(q)*s,r:5.5,life:6,damage:e.damage*.34,color:i%2?'#b473ff':'#ff6add'});
+ }
+ if(e.phase>=3)player.pslow=Math.max(player.pslow,1.1);
+}
+function paradoxChronos(e){
+ titanWarn('CHRONOS ASCENDANT','TIME COLLAPSE + DIMENSION RIFTS',800);
+ for(let i=0;i<(e.phase===4?6:4)&&hazards.length<PERF.maxHazards;i++)pushHazard({kind:'zone',x:rand(W*.12,W*.88),y:rand(H*.18,H*.82),r:rand(65,105),dmg:e.damage*.34,tele:.75,life:3.8,maxLife:3.8,color:'#ff314f'});
+ for(let i=0;i<2&&hazards.length<PERF.maxHazards;i++)pushHazard({kind:'rift',x:rand(W*.18,W*.82),y:rand(H*.18,H*.55),tele:.65,fireT:.35,life:5.2,color:'#ff6b85',riftDamage:e.damage*.24,riftSpeed:285});
+ if(e.pDashTele<=0&&e.pCharging<=0){e.pDashAngle=Math.atan2(player.y-e.y,player.x-e.x);e.pDashTele=.7}
+}
+function triggerParadoxFinalProtocol(e){
+ if(e.finalProtocolDone)return;
+ e.finalProtocolDone=true;e.phase=4;e.paradoxInv=2.4;e.hp=Math.max(e.hp,e.maxHp*.10);
+ enemyBullets=[];hazards=[];player.dashCd=0;player.parryCd=0;player.chrono=player.chronoMax;player.inv=Math.max(player.inv,.7);
+ titanWarn('FINAL PROTOCOL','THE LAST TIMELINE — ALL SYSTEMS READY',2500);
+ showMsg('THE LAST TIMELINE',`${tacticalSkill().name} READY • ${chronoSkill().name} 100%`,2200);
+ ring(player.x,player.y,'#fff27a',260,.9,7);haptic([100,45,100,45,140]);tone(55,1,'sawtooth',.05,650);
+}
+function updateParadoxBoss(e,edt,dt){
+ const pct=e.hp/e.maxHp,newPhase=pct>.70?1:pct>.40?2:pct>.10?3:4;
+ if(newPhase===4&&!e.finalProtocolDone)triggerParadoxFinalProtocol(e);
+ if(newPhase!==e.phase&&newPhase<4){
+   e.phase=newPhase;
+   if(newPhase===2){titanWarn('PARADOX PHASE II','VOID DOMINION',1700);showMsg('PHASE II','VOID DOMINION',1300)}
+   if(newPhase===3){titanWarn('PARADOX PHASE III','CHRONOS ASCENDANT',1800);showMsg('PHASE III','CHRONOS ASCENDANT',1400)}
+   haptic([65,35,65]);
+ }else if(e.finalProtocolDone)e.phase=4;
+ e.paradoxInv=Math.max(0,e.paradoxInv-edt);
+ if(e.y<Math.min(145,H*.24)){e.y+=105*edt;return}
+ // Movement and Titan-style charge.
+ if(e.pDashTele>0){
+   e.pDashTele-=edt;
+   if(e.pDashTele<=0){const sp=540;e.cvx=Math.cos(e.pDashAngle)*sp;e.cvy=Math.sin(e.pDashAngle)*sp;e.pCharging=.52;haptic(35)}
+ }else if(e.pCharging>0){
+   e.pCharging-=edt;e.x+=e.cvx*edt;e.y+=e.cvy*edt;spawnParticle(e.x,e.y,'#c272ff',3,80);
+ }else{
+   const tx=W/2+Math.cos(e.t*.42)*W*.24,ty=H*.24+Math.sin(e.t*.55)*H*.12;
+   e.x+=(tx-e.x)*Math.min(1,edt*.9);e.y+=(ty-e.y)*Math.min(1,edt*.9);
+ }
+ e.x=clamp(e.x,e.r*.7,W-e.r*.7);e.y=clamp(e.y,80,H*.55);
+ // Reaper inheritance.
+ if(e.pullT>0){
+   e.pullT-=edt;let a=Math.atan2(e.y-player.y,e.x-player.x);
+   player.x+=Math.cos(a)*(e.phase===4?180:145)*dt;player.y+=Math.sin(a)*(e.phase===4?180:145)*dt;
+ }
+ const speed=e.phase===4?.57:e.phase===3?.70:e.phase===2?.84:1;
+ for(let i=0;i<5;i++){
+   e.pTimers[i]-=edt;
+   if(e.pTimers[i]>0)continue;
+   if(i===0)paradoxBeam(e);
+   if(i===1)paradoxHydra(e);
+   if(i===2&&e.phase>=2)paradoxVoid(e);
+   if(i===3&&e.phase>=2)paradoxChaos(e);
+   if(i===4&&e.phase>=3)paradoxChronos(e);
+   const base=[4.1,3.5,5.4,4.6,6.2][i];
+   e.pTimers[i]=base*speed*rand(.86,1.12);
+ }
+ // A controlled spiral: dangerous but still respects projectile caps.
+ if(e.phase>=2){
+   e.spiralT-=edt;
+   if(e.spiralT<=0){e.spiralT=e.phase===4?.05:e.phase===3?.07:.10;e.spiralA+=e.phase===4?.39:.31;const q=e.spiralA,s=230;
+     pushEnemyBullet({x:e.x,y:e.y,vx:Math.cos(q)*s,vy:Math.sin(q)*s,r:5.5,life:5.2,damage:e.damage*.28,color:'#d07cff'})}
+ }
+}
+function beginParadoxDeath(e){
+ if(!e||e.dead||e.dying)return;
+ if(!e.finalProtocolDone){triggerParadoxFinalProtocol(e);return}
+ e.dead=true;paradoxActive=false;bossAlive=false;bossRef=null;running=false;enemyBullets=[];hazards=[];bullets=[];
+ bossKills++;addScore(e.score);score+=500000;shake(36);flash=1;spawnParticle(e.x,e.y,'#fff',80,500);spawnParticle(e.x,e.y,'#c272ff',90,420);
+ ring(e.x,e.y,'#c272ff',Math.max(W,H)*.7,1.4,10);haptic([140,60,140,60,200]);tone(34,1.5,'sawtooth',.055,500);
+ meta.paradoxCore=true;meta.paradoxDefeats=(meta.paradoxDefeats||0)+1;meta.paradoxFragments=(meta.paradoxFragments||0)+1;meta.cores+=1;meta.credits+=100000;meta.shards+=500;meta.ngPlusUnlocked=true;saveMeta();
+ paradoxRecordId=addLocalRunRecord({name:pilotName(),titan:true,paradox:true});
+ showParadoxVictory();
+}
+function showParadoxVictory(){
+ setState('PARADOX_VICTORY');running=false;
+ $('pvScore').textContent=score.toLocaleString();
+ $('pvRows').innerHTML=`<div class="rwRow"><span>FIVE-BOSS CONVERGENCE</span><b>DESTROYED</b></div>
+   <div class="rwRow"><span>PARADOX SOVEREIGN</span><b>DEFEATED</b></div>
+   <div class="rwRow"><span>SHIP LEVEL</span><b>${player.level}</b></div>
+   <div class="rwRow"><span>RUN TIME</span><b>${fmtRunTime(runTime)}</b></div>
+   <div class="rwRow"><span>BOSSES DEFEATED</span><b>${bossKills}</b></div>
+   <div class="rwRow"><span>MYTHIC REWARD</span><b>◈ PARADOX CORE</b></div>
+   <div class="rwRow"><span>REWARD</span><b>🪙 +100,000 • ◆ +500</b></div>`;
+ showScreen('paradoxVictory');refreshTopbar();
+}
+function ascendParadox(){
+ meta.ngPlusUnlocked=true;saveMeta();
+ $('aeRows').innerHTML=`<div class="rwRow"><span>PILOT</span><b>${esc(pilotName())}</b></div>
+   <div class="rwRow"><span>FINAL SCORE</span><b>${score.toLocaleString()}</b></div>
+   <div class="rwRow"><span>FINAL LEVEL</span><b>${player.level}</b></div>
+   <div class="rwRow"><span>CLEAR TIME</span><b>${fmtRunTime(runTime)}</b></div>
+   <div class="rwRow"><span>PRESTIGE</span><b>◈ PARADOX CONQUEROR</b></div>`;
+ setState('ASCEND_ENDING');showScreen('ascendEnding');refreshTopbar();tone(660,.6,'sine',.04,440);
+}
+
+/* ----- Eternal Breach: no ending; scale until death ----- */
+const ETERNAL_MODIFIERS=[
+ {id:'berserker',name:'BERSERKER',desc:'FASTER ABILITIES',apply:e=>{e.cooldownMult*=.63;e.projectileMult*=1.15;e.damage*=1.08}},
+ {id:'colossal',name:'COLOSSAL',desc:'MASSIVE HULL',apply:e=>{e.hp*=1.75;e.maxHp*=1.75;e.r*=1.22;e.speed*=.88}},
+ {id:'void',name:'VOID TOUCHED',desc:'FASTER PROJECTILES',apply:e=>{e.projectileMult*=1.38;e.damage*=1.12}},
+ {id:'chrono',name:'CHRONO INFUSED',desc:'TEMPORAL PULSES',apply:e=>{e.chronoPulseT=rand(5,8)}},
+ {id:'mirror',name:'MIRRORED',desc:'SUMMONS A MIRROR AT HALF HP',apply:e=>{e.mirrorModifier=true;e.mirrorSpawned=false}},
+ {id:'vampiric',name:'VAMPIRIC',desc:'REGENERATES NEAR YOU',apply:e=>{e.vampiric=true}}
+];
+function applyEternalModifier(e,mod){
+ e.eternalModifier=mod.id;e.modifierName=mod.name;e.name=`${mod.name} ${BOSSES[e.bossKey].name}`;mod.apply(e);return e;
+}
+function updateEternalModifier(e,edt){
+ if(e.chronoPulseT!=null){e.chronoPulseT-=edt;if(e.chronoPulseT<=0){e.chronoPulseT=rand(5,8);player.pslow=Math.max(player.pslow,1.25);titanWarn('CHRONO INFUSED','TEMPORAL DRAG',550)}}
+ if(e.vampiric&&Math.hypot(player.x-e.x,player.y-e.y)<240)e.hp=Math.min(e.maxHp,e.hp+e.maxHp*.0022*edt);
+ if(e.mirrorModifier&&!e.mirrorSpawned&&e.hp/e.maxHp<=.5){e.mirrorSpawned=true;let a=Math.random()*Math.PI*2;
+   pushEnemyEntity({type:'clone',x:e.x+Math.cos(a)*100,y:e.y+Math.sin(a)*100,vx:0,vy:0,t:0,hit:0,dead:false,spawn:.3,marked:false,slowT:0,r:34,hp:e.maxHp*.10,maxHp:e.maxHp*.10,speed:145,damage:e.damage*.45,color:e.color,xp:40,score:500,credits:8,shoot:.7,lifeT:18});
+   titanWarn('MIRRORED','A FRACTURED COPY HAS EMERGED',700);
+ }
+}
+function startEternalBreach(){
+ eternal=true;endless=true;endlessChainActive=false;eternalLevel=1;eternalFightActive=false;eternalBossDefeated=0;eternalBossTotal=0;endlessResolutionStarted=false;
+ bullets=[];enemyBullets=[];enemies=[];particles=[];rings=[];gems=[];texts=[];pickups=[];hazards=[];bossAlive=false;bossRef=null;
+ player.x=W/2;player.y=H*.72;player.dashing=0;player.parryWindow=0;player.inv=Math.max(player.inv,1);player.dashCd=0;player.parryCd=0;player.chrono=player.chronoMax;
+ wave=1;waveTimer=0;spawnTimer=.5;toSpawn=waveCount();spawnQueue=compForWave();buildNebula(4);running=true;setState('PLAYING');showScreen(null);
+ $('sectorName').textContent='∞ ETERNAL BREACH 1 • NO FINAL TIMELINE';
+ showMsg('DEFY THE END','ETERNAL BREACH 1',2200);titanWarn('ETERNAL PROTOCOL','DIFFICULTY NOW SCALES FOREVER',2000);haptic([90,40,120]);
+}
+function spawnEternalBoss(key,idx,total){
+ const b=BOSSES[key],scale=2.0+eternalLevel*.18+Math.min(1.4,player.level*.022);
+ const e={type:'boss',bossKey:key,name:b.name,x:W*bossLane(idx,total),y:-110,vx:0,vy:0,t:0,hit:0,dead:false,spawn:0,phase:1,
+   r:b.r,hp:b.hp*scale,maxHp:b.hp*scale,speed:b.speed*(1+Math.min(.35,eternalLevel*.018)),damage:b.damage*(1.25+Math.min(.9,eternalLevel*.045)),color:b.color,score:Math.round(b.score*scale),
+   shieldT:0,barrierT:0,chargeT:rand(2.4,4),charging:0,dashTele:0,dashAngle:0,cvx:0,cvy:0,lastPhase:1,
+   ab:[{t:rand(1.4,2.7)},{t:rand(2.7,4.6)},{t:rand(4.5,7.2)}],spiralA:rand(0,6.28),spiralT:.08,pullT:0,overloadT:0,
+   cooldownMult:Math.max(.43,.78-eternalLevel*.012),projectileMult:1+Math.min(.8,eternalLevel*.035)};
+ const mod=ETERNAL_MODIFIERS[(idx+eternalLevel+Math.floor(Math.random()*ETERNAL_MODIFIERS.length))%ETERNAL_MODIFIERS.length];
+ applyEternalModifier(e,mod);pushEnemyEntity(e);return e;
+}
+function startEternalBossFight(){
+ eternalFightActive=true;eternalBossDefeated=0;enemyBullets=[];hazards=[];bossAlive=true;
+ eternalBossTotal=Math.min(5,1+Math.floor((eternalLevel-1)/3));
+ const pool=[...ENDLESS_BOSS_ORDER].sort(()=>Math.random()-.5),chosen=pool.slice(0,eternalBossTotal);
+ chosen.forEach((k,i)=>spawnEternalBoss(k,i,chosen.length));
+ eternalCombinedMaxHp=activeBossList().reduce((s,e)=>s+e.maxHp,0);
+ setPrimaryEndlessBoss(activeBossList()[0]||null);
+ $('sectorName').textContent=`∞ ETERNAL ${eternalLevel} • ${eternalBossTotal} MODIFIED BOSS${eternalBossTotal>1?'ES':''}`;
+ showMsg(`ETERNAL ${eternalLevel}`,`${eternalBossTotal} MODIFIED BOSS${eternalBossTotal>1?'ES':''}`,1600);
+ titanWarn('ETERNAL BOSS WAVE','RANDOM MUTATIONS ACTIVE',1200);
+}
+function defeatEternalBoss(e){
+ if(!e||e.dead||e.dying)return;e.dead=true;bossKills++;eternalBossDefeated++;addScore(e.score);addCombo(1.4);
+ spawnParticle(e.x,e.y,e.color,45,380);ring(e.x,e.y,e.color,280,.75,5);tone(52,.45,'sawtooth',.04,150);
+ const alive=activeBossList();setPrimaryEndlessBoss(alive[0]||null);
+ if(eternalBossDefeated>=eternalBossTotal){completeEternalLevel()}
+}
+function completeEternalLevel(){
+ eternalFightActive=false;bossAlive=false;bossRef=null;enemyBullets=[];hazards=[];$('bossbar').style.display='none';
+ meta.bestEternal=Math.max(meta.bestEternal||0,eternalLevel);meta.bestEternalScore=Math.max(meta.bestEternalScore||0,score);saveMeta();
+ const bonus=1500+eternalLevel*500;meta.credits+=bonus;saveMeta();
+ eternalLevel++;wave=1;waveTimer=0;spawnTimer=1.1;toSpawn=waveCount();spawnQueue=compForWave();
+ $('sectorName').textContent=`∞ ETERNAL BREACH ${eternalLevel} • ESCALATING`;
+ showMsg(`ETERNAL ${eternalLevel-1} SURVIVED`,`+${bonus.toLocaleString()} CREDITS • ETERNAL ${eternalLevel} BEGINS`,2000);
+ titanWarn('THE BREACH ADAPTS',`DIFFICULTY LEVEL ${eternalLevel}`,1200);
+}
+
 
 /* ---------------- boss spawn / intro ---------------- */
 function startBossIntro(){
@@ -1549,7 +1910,7 @@ function startBossIntro(){
 function spawnBoss(){
  $('warn').style.display='none';
  const key=MAPS[curMap].boss,b=BOSSES[key];
- const scale=endless?1.5:1;
+ const scale=ngPlus?1.85:1;
  const e={type:'boss',bossKey:key,name:b.name,x:W/2,y:-110,vx:0,vy:0,t:0,hit:0,dead:false,spawn:0,phase:1,
    r:b.r,hp:b.hp*scale,maxHp:b.hp*scale,speed:b.speed,damage:b.damage,color:b.color,score:b.score,
    shieldT:0,barrierT:0,chargeT:4,charging:0,dashTele:0,dashAngle:0,cvx:0,cvy:0,lastPhase:1,ab:[{t:2.5},{t:5},{t:8}],spiralA:0,spiralT:.08,pullT:0,overloadT:0};
@@ -1663,12 +2024,12 @@ function shoot(){
 }
 function enemyFire(e,pattern=0){
  if(enemyBullets.length>=PERF.maxEnemyBullets)return;
- let a=Math.atan2(player.y-e.y,player.x-e.x);
- if(pattern===0)pushEnemyBullet({x:e.x,y:e.y,vx:Math.cos(a)*270,vy:Math.sin(a)*270,r:5,life:5,damage:e.damage,color:e.color});
- else if(pattern===1)for(let i=-2;i<=2&&enemyBullets.length<PERF.maxEnemyBullets;i++){let q=a+i*.17;pushEnemyBullet({x:e.x,y:e.y,vx:Math.cos(q)*250,vy:Math.sin(q)*250,r:5,life:5,damage:e.damage,color:e.color})}
- else if(pattern===2)for(let i=0;i<18&&enemyBullets.length<PERF.maxEnemyBullets;i++){let q=(Math.PI*2/18)*i+e.t*.7;pushEnemyBullet({x:e.x,y:e.y,vx:Math.cos(q)*190,vy:Math.sin(q)*190,r:5,life:5.5,damage:e.damage*.7,color:e.color})}
- else if(pattern===3)for(let i=-1;i<=1&&enemyBullets.length<PERF.maxEnemyBullets;i++){let q=a+i*.28;pushEnemyBullet({x:e.x,y:e.y,vx:Math.cos(q)*300,vy:Math.sin(q)*300,r:6,life:5,damage:e.damage,color:e.color})}
- else if(pattern===4)for(let i=0;i<4&&enemyBullets.length<PERF.maxEnemyBullets;i++){let q=a+rand(-.5,.5);pushEnemyBullet({x:e.x,y:e.y,vx:Math.cos(q)*180,vy:Math.sin(q)*180,r:6,life:6,damage:e.damage*.8,color:'#7df3ff',homing:2.2})}
+ let a=Math.atan2(player.y-e.y,player.x-e.x),pm=e.projectileMult||1;
+ if(pattern===0)pushEnemyBullet({x:e.x,y:e.y,vx:Math.cos(a)*270*pm,vy:Math.sin(a)*270*pm,r:5,life:5,damage:e.damage,color:e.color});
+ else if(pattern===1)for(let i=-2;i<=2&&enemyBullets.length<PERF.maxEnemyBullets;i++){let q=a+i*.17;pushEnemyBullet({x:e.x,y:e.y,vx:Math.cos(q)*250*pm,vy:Math.sin(q)*250*pm,r:5,life:5,damage:e.damage,color:e.color})}
+ else if(pattern===2)for(let i=0;i<18&&enemyBullets.length<PERF.maxEnemyBullets;i++){let q=(Math.PI*2/18)*i+e.t*.7;pushEnemyBullet({x:e.x,y:e.y,vx:Math.cos(q)*190*pm,vy:Math.sin(q)*190*pm,r:5,life:5.5,damage:e.damage*.7,color:e.color})}
+ else if(pattern===3)for(let i=-1;i<=1&&enemyBullets.length<PERF.maxEnemyBullets;i++){let q=a+i*.28;pushEnemyBullet({x:e.x,y:e.y,vx:Math.cos(q)*300*pm,vy:Math.sin(q)*300*pm,r:6,life:5,damage:e.damage,color:e.color})}
+ else if(pattern===4)for(let i=0;i<4&&enemyBullets.length<PERF.maxEnemyBullets;i++){let q=a+rand(-.5,.5);pushEnemyBullet({x:e.x,y:e.y,vx:Math.cos(q)*180*pm,vy:Math.sin(q)*180*pm,r:6,life:6,damage:e.damage*.8,color:'#7df3ff',homing:2.2})}
  tone(pattern===2?90:125,.08,'sawtooth',.01,-35);
 }
 function killEnemy(e){
@@ -1746,6 +2107,8 @@ function bossAbility(e,idx){
  }
 }
 function updateBoss(e,edt,dt){
+ if(e.bossKey==='paradox'){updateParadoxBoss(e,edt,dt);return}
+ if(eternal&&e.eternalModifier)updateEternalModifier(e,edt);
  const pct=e.hp/e.maxHp,newPhase=pct>.66?1:pct>.33?2:3;
  if(newPhase!==e.phase){
    e.phase=newPhase;
@@ -1756,7 +2119,7 @@ function updateBoss(e,edt,dt){
  }else e.phase=newPhase;
  e.shieldT=Math.max(0,e.shieldT-edt);e.barrierT=Math.max(0,e.barrierT-edt);
  if(e.y<130){e.y+=90*edt;return}
- const rateMult=e.phase===3?.6:e.phase===2?.8:1;
+ const rateMult=(e.phase===3?.6:e.phase===2?.8:1)*(e.cooldownMult||1);
  // movement
  if(e.bossKey==='titan'&&e.dashTele>0){
    e.dashTele-=edt;
@@ -1814,6 +2177,13 @@ function updateBoss(e,edt,dt){
 
 /* ---------------- main update ---------------- */
 function update(dt){
+ if(state==='PARADOX_INTRO'){
+   paradoxIntroT+=dt;time+=dt;
+   if(paradoxIntroT>1.15&&paradoxIntroStage===0){paradoxIntroStage=1;titanWarn('SIGNATURES MERGING','SENTINEL • HYDRA • REAPER • OBLIVION • TITAN',1800)}
+   if(paradoxIntroT>2.7&&paradoxIntroStage===1){paradoxIntroStage=2;titanWarn('TEMPORAL ANOMALY','THE BREACH INCARNATE IS FORMING',1500)}
+   if(paradoxIntroT>=4.0)spawnParadoxSovereign();
+   return;
+ }
  if(state==='BOSS_INTRO'){
    bossIntroT+=dt;
    if(bossIntroT>=2){if(endless&&endlessChainActive)beginEndlessBossChainCombat();else spawnBoss()}
@@ -1886,7 +2256,7 @@ function update(dt){
      spawnTimer-=edt;
      if(spawnTimer<=0){spawnEnemy(spawnQueue.pop());spawnTimer=Math.max(.14,.7-curMap*.06-wave*.04)}
    }else if(enemies.filter(e=>!e.dead).length===0){
-     if(wave>=4){if(endless)startEndlessBossChain();else startBossIntro()}
+     if(wave>=4){if(eternal)startEternalBossFight();else if(endless)startEndlessBossChain();else startBossIntro()}
      else{wave++;meta.prog[curMap]=Math.max(meta.prog[curMap],wave);saveMeta();toSpawn=waveCount();spawnQueue=compForWave();spawnTimer=.4;showMsg('WAVE '+wave,'BREACH INTENSITY RISING');updateProgress()}
    }
  }
@@ -1904,7 +2274,7 @@ function update(dt){
        if(Math.hypot(player.x-px,player.y-py)<h.width/2+player.r&&h.tick!==true){damagePlayer(h.dmg,px,py)}
      }
    }else if(h.kind==='zone'){if(h.tele>0)h.tele-=edt;else{h.life-=edt;if(Math.hypot(player.x-h.x,player.y-h.y)<h.r&&player.inv<=0)damagePlayer(h.dmg,h.x,h.y)}}
-   else if(h.kind==='rift'){if(h.tele>0)h.tele-=edt;else{h.life-=edt;h.fireT-=edt;if(h.fireT<=0){h.fireT=1.4;let a=Math.atan2(player.y-h.y,player.x-h.x);pushEnemyBullet({x:h.x,y:h.y,vx:Math.cos(a)*240,vy:Math.sin(a)*240,r:5,life:6,damage:14,color:'#ff6b85'})}}}
+   else if(h.kind==='rift'){if(h.tele>0)h.tele-=edt;else{h.life-=edt;h.fireT-=edt;if(h.fireT<=0){h.fireT=1.4;let a=Math.atan2(player.y-h.y,player.x-h.x);pushEnemyBullet({x:h.x,y:h.y,vx:Math.cos(a)*(h.riftSpeed||240),vy:Math.sin(a)*(h.riftSpeed||240),r:5,life:6,damage:h.riftDamage||14,color:'#ff6b85'})}}}
    else if(h.kind==='well'){h.life-=dt;for(let e of enemies)if(!e.dead&&e.type!=='boss'){let d=Math.hypot(h.x-e.x,h.y-e.y);if(d<h.r&&d>10){let a=Math.atan2(h.y-e.y,h.x-e.x);e.x+=Math.cos(a)*140*dt;e.y+=Math.sin(a)*140*dt}}}
  }
  hazards=hazards.filter(h=>h.kind==='well'?h.life>0:(h.kind==='beam'?h.life>0||h.tele>0:h.life>0));
@@ -1968,6 +2338,7 @@ function update(dt){
    const b=bullets[bi];if(b.dead)continue;
    forNearby(enemyGrid,b.x,b.y,e=>{
      if(e.dead||e.dying||b.dead||e.spawn>0||!sqHit(b.x,b.y,b.r,e.x,e.y,e.r))return false;
+     if(e.type==='boss'&&e.bossKey==='paradox'&&e.paradoxInv>0){spawnParticle(b.x,b.y,'#d9adff',5,110);floating(e.x,e.y-e.r-14,'REALITY LOCK','#e5c8ff',12);b.dead=true;return true}
      if(e.type==='boss'&&e.shieldT>0){spawnParticle(b.x,b.y,'#fff',4,100);floating(e.x,e.y-e.r-10,'SHIELDED','#fff',12);b.dead=true;return true}
      let dmg=b.damage;
      if(e.type==='boss'&&e.barrierT>0)dmg*=.5;
@@ -1986,7 +2357,7 @@ function update(dt){
      return !b.pierce;
    });
  }
- updateEndlessBossDirector(dt);
+ updateEndlessBossDirector();
 
  // enemy bullets vs player
  for(let b of enemyBullets){
@@ -2029,6 +2400,8 @@ function update(dt){
 /* ---------------- boss death / rewards ---------------- */
 function beginBossDeath(e){
  if(!e||e.dead||e.dying)return;
+ if(e.bossKey==='paradox'){beginParadoxDeath(e);return}
+ if(eternal&&eternalFightActive){defeatEternalBoss(e);return}
  if(endless&&endlessChainActive){defeatEndlessBoss(e);return}
  e.dying=true;bossAlive=false;bossKills++;
  addScore(e.score);addCombo(1);
@@ -2087,9 +2460,10 @@ $('rwContinue').onclick=()=>{
 /* ---------------- victory ---------------- */
 let victoryRecordId=null;
 function newRecordId(){return 'run-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8)}
-function addLocalRunRecord({name,titan=false}={}){
+function addLocalRunRecord({name,titan=false,paradox=false,eternalRun=false}={}){
  const n=(name||localStorage.getItem('chronoName')||'ANON').trim().slice(0,12).toUpperCase()||'ANON';
- const rec={rid:newRecordId(),pid:LOCAL_PILOT_ID,n,s:score,w:wave,m:curMap,d:Date.now(),completedAt:Date.now(),level:player.level,kills,bossKills,clearTime:runTime,titanDefeated:!!titan,titanCore:!!titan};
+ const rec={rid:newRecordId(),pid:LOCAL_PILOT_ID,n,s:score,w:wave,m:curMap,d:Date.now(),completedAt:Date.now(),level:player.level,kills,bossKills,clearTime:runTime,
+   titanDefeated:!!titan||!!paradox,titanCore:!!titan||!!paradox,paradoxDefeated:!!paradox,paradoxCore:!!paradox,eternal:!!eternalRun,eternalLevel:eternalRun?eternalLevel:0};
  const b=loadBoard();b.push(rec);saveBoard(b);best=Math.max(best,score);localStorage.setItem('chronoBest',best);cloudSync.queueRun(rec);return rec.rid;
 }
 function renameLocalPilotRecords(n){
@@ -2097,6 +2471,7 @@ function renameLocalPilotRecords(n){
  const b=loadBoard();for(const r of b)if(r.pid===LOCAL_PILOT_ID)r.n=n;saveBoard(b);localStorage.setItem('chronoName',n);refreshTopbar();
 }
 function showVictory(r){
+ saveTitanClearBuild();
  setState('VICTORY');running=false;
  $('vScore').textContent=score.toLocaleString();
  const mins=Math.floor(runTime/60),secs=Math.floor(runTime%60);
@@ -2119,12 +2494,20 @@ $('vClaim').onclick=()=>{
  $('vNameEntry').style.display='none';$('vClaimed').textContent=`${n} — TITAN CORE REGISTERED`;tone(720,.22,'sine',.035,360);haptic([35,25,70]);
 };
 $('vPilotName').addEventListener('keydown',e=>{if(e.key==='Enter')$('vClaim').click()});
-$('vLeaderboard').onclick=()=>{audio();openLb('titan')};
-$('vNew').onclick=()=>{audio();startRun(0)};
-$('vEndless').onclick=()=>{audio();startEndlessContinuation()};
+$('vLeaderboard').onclick=()=>{audio();openLb('titan','victory')};
+$('vNew').onclick=()=>{audio();startRun(0,'normal')};
+$('vEndless').onclick=()=>{audio();startEndlessContinuation(false)};
 $('vMenu').onclick=()=>{endRunToMenu()};
+$('pvLeaderboard').onclick=()=>{audio();openLb('paradox','paradoxVictory')};
+$('pvAscend').onclick=()=>{audio();ascendParadox()};
+$('pvDefy').onclick=()=>{audio();startEternalBreach()};
+$('aeNGPlus').onclick=()=>{audio();openLoadout(0,'menu','ngplus')};
+$('aeLeaderboard').onclick=()=>{audio();openLb('paradox','ascendEnding')};
+$('aeMenu').onclick=()=>{endRunToMenu()};
+
 
 /* ---------------- game over ---------------- */
+let gameOverRecordId=null;
 function logScore(){
  best=Math.max(best,score);localStorage.setItem('chronoBest',best);
  const b=loadBoard().sort((x,y)=>(y.s||0)-(x.s||0)),qualifies=score>0&&(b.length<10||score>(b[9]?.s||0));
@@ -2134,23 +2517,26 @@ function logScore(){
 }
 function gameOver(){
  running=false;
- meta.best[curMap]=Math.max(meta.best[curMap],score);saveMeta();
+ meta.best[curMap]=Math.max(meta.best[curMap],score);
  const isBest=logScore();
+ if(eternal){meta.bestEternal=Math.max(meta.bestEternal||0,eternalLevel);meta.bestEternalScore=Math.max(meta.bestEternalScore||0,score);saveMeta();gameOverRecordId=addLocalRunRecord({name:pilotName(),titan:true,paradox:true,eternalRun:true})}
+ else{saveMeta();gameOverRecordId=score>0?addLocalRunRecord({name:pilotName()}):null}
+ if(eternal)$('nameEntry').style.display='none';
  setState('GAME_OVER');
  $('finalScore').textContent=score.toLocaleString();
  $('newBest').style.display=isBest&&score>=best?'block':'none';
  const mins=Math.floor(runTime/60),secs=Math.floor(runTime%60);
- $('finalMeta').innerHTML=`${endless?`ENDLESS · Cycle <b>${Math.max(1,endlessCycle)}</b> · Chain <b>${endlessBossDefeated}/${endlessBossTotal||2}</b>`:`${MAPS[curMap].name} · Wave <b>${wave}</b>`} · Level <b>${player.level}</b><br>Enemies defeated <b>${kills}</b> · Bosses <b>${bossKills}</b> · Survived <b>${mins}:${String(secs).padStart(2,'0')}</b><br>Best timeline: <b>${best.toLocaleString()}</b>`;
+ $('finalMeta').innerHTML=`${eternal?`∞ ETERNAL BREACH <b>${eternalLevel}</b> · PARADOX CONQUEROR`:endless?`ENDLESS · Cycle <b>${Math.max(1,endlessCycle)}</b> · Convergence <b>${endlessBossDefeated}/${endlessBossTotal||2}</b>`:`${ngPlus?'◈ NEW GAME+ · ':''}${MAPS[curMap].name} · Wave <b>${wave}</b>`} · Level <b>${player.level}</b><br>Enemies defeated <b>${kills}</b> · Bosses <b>${bossKills}</b> · Survived <b>${mins}:${String(secs).padStart(2,'0')}</b><br>${eternal?`Highest Eternal: <b>${Math.max(meta.bestEternal||0,eternalLevel)}</b> · `:''}Best timeline: <b>${best.toLocaleString()}</b>`;
  $('goLb').innerHTML=boardHTML(5,'scores');
  showScreen('gameover');tone(48,1,'sawtooth',.05,-20);
 }
 $('saveScore').onclick=()=>{
  const n=(($('pilotName').value||'').trim().slice(0,12)||'ANON').toUpperCase();
- renameLocalPilotRecords(n);addLocalRunRecord({name:n,titan:false});
+ renameLocalPilotRecords(n);
  $('nameEntry').style.display='none';$('goLb').innerHTML=boardHTML(5,'scores');refreshTopbar();
  tone(520,.15,'sine',.03,300);
 };
-$('goRetry').onclick=()=>{audio();startRun(curMap)};
+$('goRetry').onclick=()=>{audio();startRun(curMap,ngPlus?'ngplus':'normal')};
 $('goMap').onclick=()=>{setState('MAP');renderSmap();showScreen('smap')};
 $('goMenu').onclick=()=>{endRunToMenu()};
 
@@ -2189,19 +2575,19 @@ function drawIcon(type,x,y,s,color){
 
 /* ---- player ship: LEVEL 1-5 visual evolution ---- */
 function drawShip(tier,tm,px,py,angle,ghost){
- const L=tier,moving=keys['w']||keys['a']||keys['s']||keys['d']||player.dashing>0;
+ const L=tier,moving=keys['w']||keys['a']||keys['s']||keys['d']||player.dashing>0,paradoxSkin=!!meta.paradoxCore;
  ctx.save();ctx.translate(px,py);ctx.rotate(angle);
  if(ghost)ctx.globalAlpha=.85;
- const glowC=player.parryWindow>0?'#ffe96d':player.aegis>0?'#8affff':player.critSurge>0?'#fff08a':player.fortify>0?'#9dff72':player.overdrive>0?'#ffb066':'#58eaff';
+ const glowC=player.parryWindow>0?'#ffe96d':player.aegis>0?'#8affff':player.critSurge>0?'#fff08a':player.fortify>0?'#9dff72':player.overdrive>0?'#ffb066':paradoxSkin?`hsl(${(tm*70)%360} 95% 72%)`:'#58eaff';
  ctx.shadowBlur=player.parryWindow>0?32:18+tier*3;ctx.shadowColor=glowC;
  // thrusters (1/2/2/3/4)
  const thCount=[1,2,2,3,4][tier-1];
  for(let i=0;i<thCount;i++){
    const oy=thCount===1?0:(i-(thCount-1)/2)*(5+tier*1.6);
    const fl=(moving?1:.45)*(8+tier*2)+Math.sin(tm*40+i*2)*3;
-   ctx.fillStyle='rgba(255,158,64,.9)';ctx.shadowColor='#ff9e40';ctx.shadowBlur=12;
+   ctx.fillStyle=paradoxSkin?'rgba(194,114,255,.95)':'rgba(255,158,64,.9)';ctx.shadowColor=paradoxSkin?'#c272ff':'#ff9e40';ctx.shadowBlur=12;
    poly([[-8-tier*1.5,oy-3],[-8-tier*1.5-fl,oy],[-8-tier*1.5,oy+3]]);ctx.fill();
-   ctx.fillStyle='rgba(255,240,180,.9)';poly([[-8-tier*1.5,oy-1.4],[-8-tier*1.5-fl*.55,oy],[-8-tier*1.5,oy+1.4]]);ctx.fill();
+   ctx.fillStyle=paradoxSkin?'rgba(120,238,255,.95)':'rgba(255,240,180,.9)';poly([[-8-tier*1.5,oy-1.4],[-8-tier*1.5-fl*.55,oy],[-8-tier*1.5,oy+1.4]]);ctx.fill();
  }
  ctx.shadowColor=glowC;ctx.shadowBlur=18+tier*3;
  const nose=16+tier*2.2,wing=8+tier*2.6,tail=8+tier*1.8;
@@ -2244,6 +2630,11 @@ function drawShip(tier,tm,px,py,angle,ghost){
  ctx.beginPath();ctx.arc(nose*.3,0,2+tier*.3,0,Math.PI*2);ctx.fill();
  // gun barrel
  ctx.fillStyle='#eaffff';ctx.fillRect(nose*.45,-2.5,12+tier,5);
+ // Mythic Paradox Core prestige orbit — cosmetic only, no balance advantage.
+ if(paradoxSkin&&!ghost){
+   for(let i=0;i<5;i++){const aa=-angle+tm*1.7+i*Math.PI*2/5,rr=wing*1.72,ox=Math.cos(aa)*rr,oy=Math.sin(aa)*rr;
+     ctx.shadowBlur=10;ctx.shadowColor=PARADOX_CORE_COLORS[i];ctx.fillStyle=PARADOX_CORE_COLORS[i];ctx.beginPath();ctx.arc(ox,oy,1.8+tier*.12,0,Math.PI*2);ctx.fill()}
+ }
  ctx.restore();
 }
 
@@ -2288,13 +2679,61 @@ function drawEnemy(e){
  if(e.maxShield>0&&e.shield>0){const w=e.r*2.2;ctx.fillStyle='rgba(196,77,255,.85)';ctx.fillRect(e.x-w/2,e.y-e.r-16,w*clamp(e.shield/e.maxShield,0,1),2.5)}
 }
 
+/* ---- Paradox Sovereign: fusion of all five boss silhouettes ---- */
+function drawParadoxEmergence(){
+ const cx=W/2,cy=H*.34,t=paradoxIntroT;
+ ctx.save();
+ for(let i=0;i<5;i++){
+   const a=t*(1.1+i*.06)+i*Math.PI*2/5,r=Math.max(22,Math.min(W,H)*(.24-.035*Math.min(t,3)));
+   const x=cx+Math.cos(a)*r,y=cy+Math.sin(a)*r*.58,col=PARADOX_CORE_COLORS[i];
+   ctx.shadowBlur=24;ctx.shadowColor=col;ctx.fillStyle=col;ctx.globalAlpha=.75;
+   ctx.beginPath();ctx.arc(x,y,10+Math.sin(t*5+i)*2,0,Math.PI*2);ctx.fill();
+   ctx.strokeStyle=col;ctx.globalAlpha=.28;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(cx,cy);ctx.stroke();
+ }
+ ctx.globalAlpha=.25+.18*Math.sin(t*7);ctx.strokeStyle='#d9adff';ctx.lineWidth=3;
+ ctx.beginPath();ctx.arc(cx,cy,24+t*11,0,Math.PI*2);ctx.stroke();
+ ctx.globalAlpha=1;ctx.shadowBlur=35;ctx.shadowColor='#c272ff';ctx.fillStyle='#090512';ctx.beginPath();ctx.arc(cx,cy,18+t*2,0,Math.PI*2);ctx.fill();
+ ctx.restore();
+}
+function drawParadoxBoss(e){
+ ctx.save();ctx.translate(e.x,e.y);
+ const pulse=1+Math.sin(e.t*3.4)*.045;
+ // Oblivion temporal crown / outer rings
+ for(let j=0;j<3;j++){ctx.save();ctx.rotate(e.t*(j%2?.22:-.18)+j);ctx.strokeStyle=PARADOX_CORE_COLORS[(j+3)%5];ctx.globalAlpha=.28;ctx.lineWidth=3-j*.5;
+   ctx.beginPath();ctx.ellipse(0,0,e.r*(1.25+j*.18)*pulse,e.r*(.66+j*.09),0,0,Math.PI*2);ctx.stroke();ctx.restore()}
+ ctx.globalAlpha=1;ctx.shadowBlur=45;ctx.shadowColor='#c272ff';
+ // Sentinel armor / Titan crown / Reaper blades
+ for(let i=0;i<12;i++){ctx.save();ctx.rotate(i*Math.PI/6+e.t*.08);ctx.fillStyle=PARADOX_CORE_COLORS[i%5];ctx.globalAlpha=.75;
+   const len=e.r*(i%3===0?1.42:1.14),wid=e.r*(i%2?.11:.16);
+   poly([[e.r*.48,-wid],[len,0],[e.r*.48,wid]]);ctx.fill();ctx.restore()}
+ ctx.globalAlpha=1;
+ // Main body
+ const grad=ctx.createRadialGradient(0,0,e.r*.1,0,0,e.r);
+ grad.addColorStop(0,e.paradoxInv>0?'#ffffff':'#e8c8ff');grad.addColorStop(.26,'#703bd0');grad.addColorStop(.62,'#28124f');grad.addColorStop(1,'#090512');
+ ctx.fillStyle=grad;ctx.beginPath();ctx.arc(0,0,e.r*.82,0,Math.PI*2);ctx.fill();
+ ctx.strokeStyle='#e6caff';ctx.globalAlpha=.55;ctx.lineWidth=2.5;ctx.beginPath();ctx.arc(0,0,e.r*.62,0,Math.PI*2);ctx.stroke();
+ // Five inherited cores orbit inside the sovereign
+ for(let i=0;i<5;i++){const a=-e.t*.42+i*Math.PI*2/5,rr=e.r*.47,x=Math.cos(a)*rr,y=Math.sin(a)*rr;
+   ctx.shadowBlur=14;ctx.shadowColor=PARADOX_CORE_COLORS[i];ctx.fillStyle=PARADOX_CORE_COLORS[i];ctx.globalAlpha=.9;ctx.beginPath();ctx.arc(x,y,e.r*.075,0,Math.PI*2);ctx.fill()}
+ // Paradox eye
+ ctx.globalAlpha=1;ctx.shadowBlur=(settings.reducedMotion||enemyBullets.length>250)?10:30;ctx.shadowColor='#fff';ctx.fillStyle='#05020a';ctx.beginPath();ctx.arc(0,0,e.r*.30,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle=e.phase===4?'#fff27a':e.phase===3?'#ff4757':e.phase===2?'#ff79e8':'#d9adff';
+ ctx.beginPath();ctx.arc(0,0,e.r*.13*(1+Math.sin(e.t*6)*.16),0,Math.PI*2);ctx.fill();
+ // Locked dash direction
+ if(e.pDashTele>0){ctx.strokeStyle='rgba(255,70,90,.75)';ctx.lineWidth=5;ctx.setLineDash([16,10]);ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(Math.cos(e.pDashAngle)*Math.max(W,H)*1.2,Math.sin(e.pDashAngle)*Math.max(W,H)*1.2);ctx.stroke();ctx.setLineDash([])}
+ ctx.restore();
+ // Four phase indicators
+ for(let i=0;i<4;i++){ctx.fillStyle=i<e.phase?['#d9adff','#ff79e8','#ff4757','#fff27a'][i]:'rgba(255,255,255,.14)';ctx.beginPath();ctx.arc(e.x-27+i*18,e.y-e.r*1.25-18,4.5,0,Math.PI*2);ctx.fill()}
+}
+
 /* ---- boss body ---- */
 function drawBoss(e){
+ if(e.bossKey==='paradox'){drawParadoxBoss(e);return}
  const B=BOSSES[e.bossKey]||{spikes:4};
  ctx.save();ctx.translate(e.x,e.y);
  if(e.dying){let j=4;ctx.translate(rand(-j,j),rand(-j,j))}
  const ap=1+Math.sin(e.t*3)*.06;
- ctx.shadowBlur=46;ctx.shadowColor=e.color;
+ ctx.shadowBlur=(settings.reducedMotion||enemyBullets.length>230||activeBossList().length>2)?12:46;ctx.shadowColor=e.color;
  ctx.strokeStyle=e.color;ctx.globalAlpha=.28+.1*Math.sin(e.t*3);ctx.lineWidth=3;
  ctx.beginPath();ctx.arc(0,0,e.r*1.5*ap,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;
  // dash telegraph — locked direction before the Titan commits
@@ -2428,6 +2867,7 @@ function draw(dt){
      ctx.beginPath();ctx.arc(h.x,h.y,4,0,Math.PI*2);ctx.fill();
    }
  }
+ if(state==='PARADOX_INTRO')drawParadoxEmergence();
  // rings
  for(let r of rings){ctx.globalAlpha=clamp(r.life/r.maxLife,0,1);ctx.strokeStyle=r.color;ctx.lineWidth=r.w;ctx.beginPath();ctx.arc(r.x,r.y,r.r,0,Math.PI*2);ctx.stroke()}ctx.globalAlpha=1;
  // gems
@@ -2506,15 +2946,20 @@ function updateHUD(){
  $('lvT').textContent=player.level+' — '+SHIP_NAMES[player.tier-1];
  const enPct=Math.floor(clamp(player.chrono/player.chronoMax*100,0,100));
  $('enF').style.width=enPct+'%';$('enT').textContent=enPct+'%';
- if(endless&&endlessChainActive){
-   $('hudWave').textContent=`∞ CHAIN ${endlessCycle} • ${Math.min(endlessBossTotal,endlessBossDefeated+1)}/${endlessBossTotal}`;
-   $('spWave').textContent=`∞ ${endlessBossDefeated}/${endlessBossTotal} BOSSES DOWN`;
+ if(paradoxActive){
+   $('hudWave').textContent='◈ PARADOX SOVEREIGN';$('spWave').textContent='◈ TRUE FINAL BOSS';
+ }else if(eternal&&eternalFightActive){
+   $('hudWave').textContent=`∞ ETERNAL ${eternalLevel} • ${eternalBossDefeated}/${eternalBossTotal}`;$('spWave').textContent=`∞ ${eternalBossTotal-eternalBossDefeated} MODIFIED BOSSES`;
+ }else if(endless&&endlessChainActive){
+   $('hudWave').textContent=`∞ CONVERGENCE ${endlessCycle} • ${endlessBossDefeated}/${endlessBossTotal}`;
+   $('spWave').textContent=`∞ ${endlessBossTotal-endlessBossDefeated} BOSSES ALIVE`;
  }else{
    $('hudWave').textContent=bossAlive?'⚠ BOSS':'WAVE '+wave;
-   $('spWave').textContent=endless?`∞ CYCLE ${Math.max(1,endlessCycle+1)} • WAVE ${wave}`:(bossAlive?'⚠ BOSS FIGHT':'WAVE '+wave);
+   $('spWave').textContent=eternal?`∞ ETERNAL ${eternalLevel} • WAVE ${wave}`:endless?`∞ CYCLE ${Math.max(1,endlessCycle+1)} • WAVE ${wave}`:(ngPlus?`◈ NG+ • WAVE ${wave}`:(bossAlive?'⚠ BOSS FIGHT':'WAVE '+wave));
  }
  const rem=spawnQueue.length+enemies.filter(e=>!e.dead&&e.type!=='boss').length;
- const remEl=$('hudEnemies');remEl.textContent=endless&&endlessChainActive?`BOSSES LEFT: ${Math.max(0,endlessBossTotal-endlessBossDefeated)}`:'ENEMIES REMAINING: '+rem;
+ const remEl=$('hudEnemies');
+ remEl.textContent=paradoxActive?'REALITY INTEGRITY: CRITICAL':eternal&&eternalFightActive?`BOSSES LEFT: ${Math.max(0,eternalBossTotal-eternalBossDefeated)}`:endless&&endlessChainActive?`BOSSES LEFT: ${Math.max(0,endlessBossTotal-endlessBossDefeated)}`:'ENEMIES REMAINING: '+rem;
  remEl.classList.toggle('low',rem<=3&&rem>0);
  $('spScore').textContent=score.toLocaleString();
  const cb=$('spCombo');cb.textContent='x'+combo.toFixed(1);cb.classList.toggle('hot',combo>=3);
@@ -2529,11 +2974,17 @@ function updateHUD(){
  else{uEl.classList.remove('ready');uEl.querySelector('.cd').textContent=enPct+'%'}
  // boss bar
  if(bossAlive&&bossRef){
-   $('bbFill').style.width=clamp(bossRef.hp/bossRef.maxHp*100,0,100)+'%';
-   $('bbPhase').textContent=endless&&endlessChainActive?`PHASE ${bossRef.phase} • BOSS ${Math.min(endlessBossTotal,endlessBossDefeated+1)}/${endlessBossTotal}`:'PHASE '+bossRef.phase;
-   const pips=[1,2,3].map(i=>`<span style="color:${i<=bossRef.phase?bossRef.color:'rgba(255,255,255,.2)'}">●</span>`).join(' ');
+   let hp=bossRef.hp,maxHp=bossRef.maxHp,label=bossRef.name||BOSSES[bossRef.bossKey]?.name||'BOSS',phaseText='PHASE '+bossRef.phase,pipCount=bossRef.bossKey==='paradox'?4:3,pipPhase=bossRef.phase;
+   if((endless&&endlessChainActive)||(eternal&&eternalFightActive)){
+     const alive=activeBossList();hp=alive.reduce((s,e)=>s+Math.max(0,e.hp),0);maxHp=eternal?(eternalCombinedMaxHp||alive.reduce((s,e)=>s+e.maxHp,0)):(endlessCombinedMaxHp||alive.reduce((s,e)=>s+e.maxHp,0));
+     const total=eternal?eternalBossTotal:endlessBossTotal,down=eternal?eternalBossDefeated:endlessBossDefeated;
+     label=eternal?`ETERNAL MUTATION ×${total}`:`THE CONVERGENCE ×${total}`;phaseText=`${down}/${total} DESTROYED`;pipCount=Math.min(5,total);pipPhase=Math.max(1,total-down);
+   }
+   $('bbName').textContent=label;$('bbFill').style.width=clamp(hp/maxHp*100,0,100)+'%';$('bbPhase').textContent=phaseText;
+   const col=bossRef.bossKey==='paradox'?'#c272ff':bossRef.color;
+   const pips=Array.from({length:pipCount},(_,i)=>`<span style="color:${i<pipPhase?col:'rgba(255,255,255,.2)'}">●</span>`).join(' ');
    if(pips!==lastBossPips){$('bbPips').innerHTML=pips;lastBossPips=pips}
-   $('bbPct').textContent=Math.ceil(clamp(bossRef.hp/bossRef.maxHp*100,0,100))+'%';
+   $('bbPct').textContent=Math.ceil(clamp(hp/maxHp*100,0,100))+'%';
  }
  // active effect chips
  let ps='';
@@ -2569,4 +3020,3 @@ requestAnimationFrame(loop);
 </script>
 </body>
 </html>
-    

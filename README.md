@@ -1,6 +1,6 @@
 # CHRONO//BREACH V2
 
-Single-file HTML/canvas game with an optional TypeScript/Express cloud API for anonymous pilot profiles, recoverable cloud saves, and global score and Titan Champion leaderboards.
+Single-file HTML/canvas game with an optional TypeScript/Express cloud API for anonymous pilot profiles, recoverable cloud saves, and global score, Titan Champion, and Paradox Conqueror leaderboards. The current game includes resumable Titan-build Endless Mode, five-boss Convergence encounters, the Paradox Sovereign, Eternal Breach progression, and New Game+.
 
 ## Local setup
 
@@ -16,7 +16,7 @@ The game remains fully playable from local storage when the API is unavailable. 
 
 1. Create a free Neon Postgres project and copy its pooled connection URL.
 2. Create a Render Blueprint from this repository; `render.yaml` configures the free API service under `server/`.
-3. Set `DATABASE_URL` to the Neon URL, choose a strong `ADMIN_PASSWORD`, and set `CORS_ORIGINS` to the final Vercel origin. Keep generated secrets stable or existing credentials will be invalidated.
+3. Set `DATABASE_URL` to the Neon URL, choose a strong `ADMIN_PASSWORD`, and set `CORS_ORIGINS` to the final Vercel origin plus the Render API origin, comma-separated and without trailing slashes (for example, `https://your-game.vercel.app,https://your-api.onrender.com`). Keep generated secrets stable or existing credentials will be invalidated.
 4. Deploy. Startup applies the SQL migrations in `server/drizzle/` before listening, and `/health` verifies database connectivity.
 
 ## Vercel
