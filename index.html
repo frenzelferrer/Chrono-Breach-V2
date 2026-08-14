@@ -682,7 +682,8 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     </div>
     <div class="lbTable" id="goLb" style="margin-top:16px"></div>
     <div class="btnRow">
-      <button class="btn" id="goRetry">↻ RETRY</button>
+      <button class="btn" id="goBossRetry" style="display:none">⚔ RETRY BOSS PHASE</button>
+      <button class="btn ghost" id="goRetry">↻ RESTART FROM PHASE 1</button>
       <button class="btn ghost" id="goMap">SECTOR MAP</button>
       <button class="btn ghost" id="goMenu">MAIN MENU</button>
     </div>
@@ -1499,9 +1500,9 @@ function onEscape(){
 function resumeGame(){setState('PLAYING');showScreen(null);tone(420,.06,'sine',.02,120)}
 $('pResume').onclick=resumeGame;
 $('pSettings').onclick=()=>{openSettings()};
-$('pRestart').onclick=()=>{audio();startRun(curMap,ngPlus?'ngplus':'normal')};
+$('pRestart').onclick=()=>{audio();restartFromPhaseOne()};
 $('pMenu').onclick=()=>{endRunToMenu()};
-function endRunToMenu(){running=false;setState('MENU');refreshTopbar();showScreen('menu')}
+function endRunToMenu(){running=false;clearBossCheckpoint();setState('MENU');refreshTopbar();showScreen('menu')}
 
 /* ---------------- effects helpers ---------------- */
 function spawnParticle(x,y,color='#56eaff',n=8,spd=160){
@@ -1535,7 +1536,32 @@ function resetEndlessDirector(){
  endlessCycle=0;endlessChainActive=false;endlessBossQueue=[];endlessBossTotal=0;endlessBossDefeated=0;endlessNextBossKey=null;endlessNextBossTimer=0;endlessResolutionStarted=false;
  paradoxActive=false;paradoxIntroT=0;paradoxIntroStage=0;endlessCombinedMaxHp=0;eternal=false;eternalLevel=0;eternalFightActive=false;eternalBossTotal=0;eternalBossDefeated=0;eternalCombinedMaxHp=0;
 }
+let bossCheckpoint=null;
+function clearBossCheckpoint(){bossCheckpoint=null}
+function captureBossCheckpoint(kind){
+ bossCheckpoint=JSON.parse(JSON.stringify({kind,player,run:{curMap,wave,score,kills,bossKills,combo,comboTimer,runTime,time,ngPlus,endless,endlessCycle,eternal,eternalLevel}}));
+}
+function restoreBossCheckpoint(){
+ const cp=bossCheckpoint;if(!cp?.player||!cp.run)return false;
+ const r=cp.run;Object.assign(player,basePlayer(),JSON.parse(JSON.stringify(cp.player)));
+ curMap=r.curMap;wave=r.wave;score=r.score;kills=r.kills;bossKills=r.bossKills;combo=r.combo;comboTimer=r.comboTimer;runTime=r.runTime;time=r.time;ngPlus=!!r.ngPlus;endless=!!r.endless;endlessCycle=r.endlessCycle||0;eternal=!!r.eternal;eternalLevel=r.eternalLevel||0;
+ bullets=[];enemyBullets=[];enemies=[];particles=[];rings=[];gems=[];texts=[];pickups=[];hazards=[];bossAlive=false;bossRef=null;bossIntroT=0;bossDeathT=0;slow=1;slowTimer=0;flash=0;screenShake=0;hudTimer=0;lastPowerStatus='';lastBossPips='';
+ endlessChainActive=false;endlessBossQueue=[];endlessBossTotal=0;endlessBossDefeated=0;endlessNextBossKey=null;endlessNextBossTimer=0;endlessResolutionStarted=false;endlessCombinedMaxHp=0;paradoxActive=false;paradoxIntroT=0;paradoxIntroStage=0;eternalFightActive=false;eternalBossTotal=0;eternalBossDefeated=0;eternalCombinedMaxHp=0;
+ player.x=W/2;player.y=H*.72;player.hp=player.maxHp;player.shieldPool=player.maxShield;player.chrono=player.chronoMax;player.dashing=0;player.parryWindow=0;player.inv=Math.max(player.inv,.9);player.dashCd=0;player.parryCd=0;
+ buildNebula(curMap);refreshAbilityLabels();running=true;showScreen(null);
+ if(cp.kind==='endless')startEndlessBossChain();
+ else if(cp.kind==='eternal')startEternalBossFight();
+ else if(cp.kind==='paradox')beginParadoxEmergence();
+ else startBossIntro();
+ return true;
+}
+function startFreshEndlessRun(){
+ clearBossCheckpoint();Object.assign(player,basePlayer());applyPerms();applyEquippedShards();refreshAbilityLabels();
+ score=0;kills=0;bossKills=0;runTime=0;time=0;combo=1;comboTimer=0;
+ return startEndlessContinuation(false);
+}
 function startRun(map,mode='normal'){
+ clearBossCheckpoint();
  curMap=map;endless=false;ngPlus=mode==='ngplus';resetEndlessDirector();
  bullets=[];enemyBullets=[];enemies=[];particles=[];rings=[];gems=[];texts=[];pickups=[];hazards=[];
  Object.assign(player,basePlayer());applyPerms();applyEquippedShards();refreshAbilityLabels();
@@ -1549,7 +1575,7 @@ function startRun(map,mode='normal'){
 function startEndlessContinuation(fromSavedBuild=false){
  // From the victory screen, continue the current Titan-winning build. From the main
  // menu, resume a saved build when available or create a fresh Titan Core run.
- const restored=fromSavedBuild&&restoreTitanClearBuild();
+ clearBossCheckpoint();const restored=fromSavedBuild&&restoreTitanClearBuild();
  if(fromSavedBuild&&!restored){
    Object.assign(player,basePlayer());applyPerms();applyEquippedShards();refreshAbilityLabels();
    score=0;kills=0;bossKills=0;runTime=0;time=0;combo=1;comboTimer=0;
@@ -1635,6 +1661,7 @@ function spawnEndlessBoss(key,idx,total){
  applyBossPowerScale(e,endlessCycle);pushEnemyEntity(e);ring(x,120,b.color,260,.75,5);return e;
 }
 function startEndlessBossChain(){
+ captureBossCheckpoint('endless');
  endlessCycle++;endlessChainActive=true;endlessBossDefeated=0;endlessResolutionStarted=false;
  endlessBossQueue=endlessBossRoster();endlessBossTotal=endlessBossQueue.length;endlessNextBossKey=null;endlessNextBossTimer=0;
  bossAlive=true;bossRef=null;enemyBullets=[];hazards=[];setState('BOSS_INTRO');bossIntroT=0;
@@ -1654,6 +1681,7 @@ function beginEndlessBossChainCombat(){
 }
 function finishEndlessBossChain(){
  if(endlessResolutionStarted)return;endlessResolutionStarted=true;
+ clearBossCheckpoint();
  endlessChainActive=false;bossAlive=false;bossRef=null;$('bossbar').style.display='none';enemyBullets=[];hazards=[];
  const bonus=Math.round(1000*endlessBossTotal*(1+endlessCycle*.28));meta.credits+=bonus;saveMeta();
  wave=1;waveTimer=0;spawnTimer=1.2;toSpawn=waveCount();spawnQueue=compForWave();
@@ -1692,6 +1720,7 @@ function updateEndlessBossDirector(){
 const PARADOX_CORE_COLORS=['#ff3df2','#38b6ff','#ffb03d','#a76cff','#ff2e4d'];
 function beginParadoxEmergence(){
  if(endlessResolutionStarted)return;endlessResolutionStarted=true;
+ captureBossCheckpoint('paradox');
  endlessChainActive=false;bossAlive=false;bossRef=null;enemyBullets=[];bullets=[];hazards=[];enemies=enemies.filter(e=>e.type!=='boss');
  paradoxActive=false;paradoxIntroT=0;paradoxIntroStage=0;running=true;
  setState('PARADOX_INTRO');$('bossbar').style.display='none';
@@ -1872,6 +1901,7 @@ function spawnEternalBoss(key,idx,total){
  applyEternalModifier(e,mod);pushEnemyEntity(e);return e;
 }
 function startEternalBossFight(){
+ captureBossCheckpoint('eternal');
  eternalFightActive=true;eternalBossDefeated=0;enemyBullets=[];hazards=[];bossAlive=true;
  eternalBossTotal=Math.min(5,1+Math.floor((eternalLevel-1)/3));
  const pool=[...ENDLESS_BOSS_ORDER].sort(()=>Math.random()-.5),chosen=pool.slice(0,eternalBossTotal);
@@ -1890,6 +1920,7 @@ function defeatEternalBoss(e){
 }
 function completeEternalLevel(){
  eternalFightActive=false;bossAlive=false;bossRef=null;enemyBullets=[];hazards=[];$('bossbar').style.display='none';
+ clearBossCheckpoint();
  meta.bestEternal=Math.max(meta.bestEternal||0,eternalLevel);meta.bestEternalScore=Math.max(meta.bestEternalScore||0,score);saveMeta();
  const bonus=1500+eternalLevel*500;meta.credits+=bonus;saveMeta();
  eternalLevel++;wave=1;waveTimer=0;spawnTimer=1.1;toSpawn=waveCount();spawnQueue=compForWave();
@@ -1901,6 +1932,7 @@ function completeEternalLevel(){
 
 /* ---------------- boss spawn / intro ---------------- */
 function startBossIntro(){
+ captureBossCheckpoint('campaign');
  setState('BOSS_INTRO');bossIntroT=0;
  const b=BOSSES[MAPS[curMap].boss];
  $('warnName').textContent=b.name;$('warnName').style.color=b.color;
@@ -2528,6 +2560,7 @@ function gameOver(){
  const mins=Math.floor(runTime/60),secs=Math.floor(runTime%60);
  $('finalMeta').innerHTML=`${eternal?`∞ ETERNAL BREACH <b>${eternalLevel}</b> · PARADOX CONQUEROR`:endless?`ENDLESS · Cycle <b>${Math.max(1,endlessCycle)}</b> · Convergence <b>${endlessBossDefeated}/${endlessBossTotal||2}</b>`:`${ngPlus?'◈ NEW GAME+ · ':''}${MAPS[curMap].name} · Wave <b>${wave}</b>`} · Level <b>${player.level}</b><br>Enemies defeated <b>${kills}</b> · Bosses <b>${bossKills}</b> · Survived <b>${mins}:${String(secs).padStart(2,'0')}</b><br>${eternal?`Highest Eternal: <b>${Math.max(meta.bestEternal||0,eternalLevel)}</b> · `:''}Best timeline: <b>${best.toLocaleString()}</b>`;
  $('goLb').innerHTML=boardHTML(5,'scores');
+ $('goBossRetry').style.display=bossCheckpoint?'inline-flex':'none';
  showScreen('gameover');tone(48,1,'sawtooth',.05,-20);
 }
 $('saveScore').onclick=()=>{
@@ -2536,8 +2569,10 @@ $('saveScore').onclick=()=>{
  $('nameEntry').style.display='none';$('goLb').innerHTML=boardHTML(5,'scores');refreshTopbar();
  tone(520,.15,'sine',.03,300);
 };
-$('goRetry').onclick=()=>{audio();startRun(curMap,ngPlus?'ngplus':'normal')};
-$('goMap').onclick=()=>{setState('MAP');renderSmap();showScreen('smap')};
+function restartFromPhaseOne(){if(endless&&meta.titanCore)startFreshEndlessRun();else startRun(curMap,ngPlus?'ngplus':'normal')}
+$('goBossRetry').onclick=()=>{audio();if(!restoreBossCheckpoint())$('goBossRetry').style.display='none'};
+$('goRetry').onclick=()=>{audio();restartFromPhaseOne()};
+$('goMap').onclick=()=>{clearBossCheckpoint();setState('MAP');renderSmap();showScreen('smap')};
 $('goMenu').onclick=()=>{endRunToMenu()};
 
 /* ---------------- sector progress UI ---------------- */
