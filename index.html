@@ -1337,11 +1337,11 @@ function refreshTopbar(){
  $('pilotTag').innerHTML=esc(pilotName())+(meta.paradoxCore?' <span class="paradoxBadge">◈ PARADOX CONQUEROR</span>':'')+(meta.titanCore?' <span class="titanBadge">🔥 TITAN CORE</span>':'')+((meta.bestEternal||0)>0?` <span class="paradoxBadge">∞ ETERNAL ${meta.bestEternal}</span>`:'');$('avInit').textContent=pilotName()[0];
  if($('btnNGPlus'))$('btnNGPlus').style.display=meta.ngPlusUnlocked?'inline-flex':'none';
  if($('btnEndless')){
-   const unlocked=!!meta.titanCore,ready=unlocked&&hasTitanClearBuild();
-   $('btnEndless').disabled=!ready;
-   $('btnEndless').classList.toggle('endlessReady',ready);
-   $('btnEndless').innerHTML=ready?'∞&nbsp; ENDLESS MODE':unlocked?'∞&nbsp; ENDLESS — SAVE A TITAN BUILD':'🔒&nbsp; ENDLESS MODE';
-   $('btnEndless').title=ready?'Resume your saved Chronos Titan-winning build in Endless Mode':unlocked?'Defeat Chronos Titan once in this build to save a resumable Endless loadout':'Defeat Chronos Titan to unlock Endless Mode';
+   const unlocked=!!meta.titanCore,saved=unlocked&&hasTitanClearBuild();
+   $('btnEndless').disabled=!unlocked;
+   $('btnEndless').classList.toggle('endlessReady',saved);
+   $('btnEndless').innerHTML=unlocked?'∞&nbsp; ENDLESS MODE':'🔒&nbsp; ENDLESS MODE';
+   $('btnEndless').title=saved?'Resume your saved Chronos Titan-winning build in Endless Mode':unlocked?'Start a fresh Endless run with your current permanent upgrades and loadout':'Defeat Chronos Titan to unlock Endless Mode';
  }
 }
 const FEATS=[
@@ -1483,7 +1483,7 @@ $('shopBack').onclick=()=>{setState('MENU');showScreen('menu')};
 $('btnSettings').onclick=()=>{audio();setState('MENU');openSettings()};
 $('gearBtn').onclick=()=>{audio();setState('MENU');openSettings()};
 $('btnHow').onclick=()=>{audio();setState('MENU');showScreen('howtoPanel')};
-$('btnEndless').onclick=()=>{audio();if(meta.titanCore&&hasTitanClearBuild())startEndlessContinuation(true)};
+$('btnEndless').onclick=()=>{audio();if(meta.titanCore)startEndlessContinuation(true)};
 $('btnNGPlus').onclick=()=>{audio();if(meta.ngPlusUnlocked)openLoadout(0,'menu','ngplus')};
 $('howBack').onclick=()=>{setState('MENU');showScreen('menu')};
 $('lbBack').onclick=closeLeaderboard;
@@ -1547,12 +1547,12 @@ function startRun(map,mode='normal'){
  tone(220,.3,'sawtooth',.03,300);
 }
 function startEndlessContinuation(fromSavedBuild=false){
- // IMPORTANT: Endless does not rebuild the pilot. It continues the Titan-winning build.
- // From the victory screen the current player is already that build; from the main menu
- // (or after a browser reload) we restore the saved Titan-clear snapshot.
- if(fromSavedBuild&&!restoreTitanClearBuild()){
-   showMsg('ENDLESS BUILD MISSING','DEFEAT CHRONOS TITAN AGAIN TO SAVE YOUR BUILD',2200);
-   tone(120,.18,'square',.025,-60);return false;
+ // From the victory screen, continue the current Titan-winning build. From the main
+ // menu, resume a saved build when available or create a fresh Titan Core run.
+ const restored=fromSavedBuild&&restoreTitanClearBuild();
+ if(fromSavedBuild&&!restored){
+   Object.assign(player,basePlayer());applyPerms();applyEquippedShards();refreshAbilityLabels();
+   score=0;kills=0;bossKills=0;runTime=0;time=0;combo=1;comboTimer=0;
  }
  endless=true;curMap=4;ngPlus=false;resetEndlessDirector();endless=true;
  bullets=[];enemyBullets=[];enemies=[];particles=[];rings=[];gems=[];texts=[];pickups=[];hazards=[];
@@ -1563,8 +1563,8 @@ function startEndlessContinuation(fromSavedBuild=false){
  buildNebula(4);refreshAbilityLabels();
  running=true;setState('PLAYING');showScreen(null);updateProgress();
  $('sectorName').textContent='∞ ENDLESS • CHRONOS RIFT • NEXT CHAIN: 2 BOSSES';
- showMsg('ENDLESS CONTINUATION','BUILD PRESERVED • FIRST BOSS CHAIN: 2',2200);
- titanWarn('ENDLESS PROTOCOL','YOUR TITAN-CLEAR BUILD CONTINUES',1800);haptic([40,30,70]);
+ showMsg(restored||!fromSavedBuild?'ENDLESS CONTINUATION':'ENDLESS BREACH',(restored||!fromSavedBuild?'BUILD PRESERVED':'FRESH TITAN-CORE RUN')+' • FIRST BOSS CHAIN: 2',2200);
+ titanWarn('ENDLESS PROTOCOL',restored||!fromSavedBuild?'YOUR TITAN-CLEAR BUILD CONTINUES':'FRESH BUILD INITIALIZED',1800);haptic([40,30,70]);
  tone(180,.35,'sawtooth',.035,360);
  return true;
 }
