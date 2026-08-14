@@ -196,6 +196,7 @@ button{font-family:inherit}
 .scorebig{font-size:clamp(40px,6vw,64px);font-weight:1000;color:var(--cy);text-shadow:0 0 24px rgba(87,233,255,.4)}
 .meta2{color:#9db1c7;line-height:1.8;font-size:13px;margin-top:6px}
 #newBest{display:none;color:var(--gd);font-weight:1000;letter-spacing:.2em;font-size:13px;margin-top:8px;text-shadow:0 0 14px var(--gd);animation:pulse 1s infinite}
+#autoLogged{display:none;color:var(--gn);font-weight:900;letter-spacing:.13em;font-size:10px;margin-top:8px}
 #nameEntry{display:none;gap:10px;justify-content:center;margin-top:18px}
 #pilotName{pointer-events:auto;background:#07101e;border:1px solid #28415d;border-radius:99px;padding:12px 20px;color:#fff;font-weight:800;letter-spacing:.14em;font-size:13px;outline:none;text-transform:uppercase;width:210px;text-align:center}
 #pilotName:focus{border-color:var(--cy);box-shadow:0 0 18px rgba(87,233,255,.25)}
@@ -675,10 +676,11 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     <div class="rwSub" style="color:#ff5b85">BREACH COLLAPSED</div>
     <div class="scorebig" id="finalScore">0</div>
     <div id="newBest">★ NEW HIGH SCORE ★</div>
+    <div id="autoLogged">✓ SCORE LOGGED AUTOMATICALLY</div>
     <div class="meta2" id="finalMeta"></div>
     <div id="nameEntry">
       <input id="pilotName" maxlength="12" placeholder="ENTER CALLSIGN" autocomplete="off">
-      <button class="btn" id="saveScore" style="padding:12px 20px">LOG SCORE</button>
+      <button class="btn" id="saveScore" style="padding:12px 20px">SAVE CALLSIGN</button>
     </div>
     <div class="lbTable" id="goLb" style="margin-top:16px"></div>
     <div class="btnRow">
@@ -988,7 +990,7 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const cloudSync=(()=>{
  const API=(window.CHRONO_API_URL||'').replace(/\/$/,'');
  const TK='chronoCloudTokenV2',PK='chronoCloudProfileV2',OK='chronoCloudOutboxV2',BK='chronoCloudBoardsV2';
- let token=localStorage.getItem(TK)||'',profile=jload(PK,null),outbox=jload(OK,[]),boards=jload(BK,{scores:[],titan:[],paradox:[]}),busy=false,status=API?(token?'OFFLINE':'LOCAL'):'NOT CONFIGURED',recovery='';
+ let token=localStorage.getItem(TK)||'',profile=jload(PK,null),outbox=jload(OK,[]),boards=jload(BK,{scores:[],titan:[],paradox:[]}),boardStates={scores:'idle',titan:'idle',paradox:'idle'},busy=false,status=API?(token?'OFFLINE':'LOCAL'):'NOT CONFIGURED',recovery='';
  const snapshot=()=>JSON.parse(JSON.stringify({meta,settings}));
  const persist=()=>jsave(OK,outbox);
  function emit(){renderPanel();refreshTopbar()}
@@ -1004,11 +1006,11 @@ const cloudSync=(()=>{
  function queueSave(){if(!token)return;outbox=outbox.filter(x=>x.type!=='save');outbox.push({type:'save',save:snapshot(),baseRevision:profile?.revision});persist();setTimeout(sync,250)}
  function queueRun(rec){if(!token)return;outbox.push({type:'run',run:{clientEventId:crypto.randomUUID(),score:Math.max(0,Math.round(rec.s||0)),sector:Math.max(1,Math.min(5,(rec.m||0)+1)),wave:Math.max(1,Math.round(rec.w||1)),mode:(rec.eternal||endless)?'endless':'standard',level:Math.max(1,Math.min(5,Math.round(rec.level||1))),kills:Math.max(0,Math.round(rec.kills||0)),bossKills:Math.max(0,Math.round(rec.bossKills||0)),clearTime:Math.max(0,+rec.clearTime||0),titan:!!rec.titanDefeated,paradox:!!rec.paradoxDefeated,eternalLevel:Math.max(0,Math.round(rec.eternalLevel||0)),save:snapshot(),baseRevision:profile?.revision}});persist();sync()}
  async function sync(){if(!token||busy||!API)return;busy=true;setStatus('SYNCING');try{while(outbox.length){const x=outbox[0],d=x.type==='run'?await api('/api/v1/runs',{method:'POST',body:JSON.stringify(x.run)}):await api('/api/v1/profile/save',{method:'PATCH',body:JSON.stringify({save:x.save,baseRevision:x.baseRevision})});outbox.shift();persist();accept(d.profile,true)}const d=await api('/api/v1/profile');accept(d.profile,true);setStatus('SYNCED')}catch(e){setStatus(e.status===401?'AUTH ERROR':'OFFLINE')}finally{busy=false;if(outbox.length&&navigator.onLine)setTimeout(sync,500)}}
- async function fetchBoard(mode){if(!API)return boards[mode]||[];try{const d=await api('/api/v1/leaderboard?limit=50&mode='+mode);boards[mode]=d.entries.map((r,i)=>({rid:'cloud-'+mode+'-'+i,pid:'cloud-'+r.displayName+'-'+r.discriminator,n:r.displayName+'#'+r.discriminator,s:r.score,w:r.wave,m:r.sector-1,d:Date.parse(r.achievedAt),level:r.level,kills:r.kills,bossKills:r.bossKills,clearTime:r.clearTime,titanDefeated:r.titan,titanCore:r.titan,paradoxDefeated:r.paradox,paradoxCore:r.paradox,eternal:!!r.eternalLevel,eternalLevel:r.eternalLevel||0}));jsave(BK,boards);return boards[mode]}catch(e){return boards[mode]||[]}}
+ async function fetchBoard(mode){if(!API)return boards[mode]||[];boardStates[mode]='loading';try{const d=await api('/api/v1/leaderboard?limit=50&mode='+mode,{cache:'no-store'});boards[mode]=d.entries.map((r,i)=>({rid:'cloud-'+mode+'-'+i,pid:'cloud-'+r.displayName+'-'+r.discriminator,n:r.displayName+'#'+r.discriminator,s:r.score,w:r.wave,m:r.sector-1,d:Date.parse(r.achievedAt),level:r.level,kills:r.kills,bossKills:r.bossKills,clearTime:r.clearTime,titanDefeated:r.titan,titanCore:r.titan,paradoxDefeated:r.paradox,paradoxCore:r.paradox,eternal:!!r.eternalLevel,eternalLevel:r.eternalLevel||0}));boardStates[mode]='ready';jsave(BK,boards);return boards[mode]}catch(e){boardStates[mode]='offline';return boards[mode]||[]}}
  function renderPanel(){if(!$('cloudStatus'))return;$('cloudStatus').textContent=status;$('cloudIdentity').textContent=profile?profile.displayName+'#'+profile.discriminator:'LOCAL PILOT';$('cloudCreateRow').style.display=token&&status!=='AUTH ERROR'?'none':'flex';$('cloudLinkedRow').style.display=token&&status!=='AUTH ERROR'?'flex':'none';$('cloudRecovery').textContent=recovery?'SAVE THIS NEW CODE: '+recovery:(token?'Recovery codes appear only when created or rotated.':'')}
  async function fetchAnnouncement(){if(!API)return;try{const d=await api('/api/v1/announcements'),a=d.announcements[0];if(!a)return;const bar=$('liveAnnouncement');bar.className='liveAnnouncement on '+a.severity;$('announcementTitle').textContent=a.title;$('announcementMessage').textContent=a.message;$('announcementClose').onclick=()=>bar.classList.remove('on')}catch(e){}}
  function init(){$('cloudCreate').onclick=create;$('cloudRecover').onclick=recover;$('cloudSync').onclick=sync;$('cloudRotate').onclick=rotate;window.addEventListener('online',sync);renderPanel();fetchAnnouncement();if(token)sync()}
- return{init,queueSave,queueRun,fetchBoard,getBoard:m=>boards[m]||[],identity:()=>profile?profile.displayName+'#'+profile.discriminator:null,status:()=>status};
+ return{init,queueSave,queueRun,fetchBoard,getBoard:m=>boards[m]||[],boardState:m=>boardStates[m]||'idle',configured:()=>!!API,identity:()=>profile?profile.displayName+'#'+profile.discriminator:null,status:()=>status};
 })();
 window.chronoCloud=cloudSync;cloudSync.init();
 
@@ -1357,20 +1359,25 @@ $('feats').innerHTML=FEATS.map(f=>`<div class="feat"><div class="fi"><svg viewBo
 /* ---------------- leaderboard ---------------- */
 let lbMode='scores',lbReturn='menu';
 function fmtRunTime(sec){sec=Math.max(0,Math.floor(+sec||0));return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0')}
-function bestPrestigeRecords(predicate){
- const rows=loadBoard().filter(predicate),bestByPilot=new Map();
+function bestPilotRecords(rows){
+ const bestByPilot=new Map();
  for(const r of rows){
    const key=r.pid||('name:'+String(r.n||'ANON').toUpperCase()),prev=bestByPilot.get(key);
    if(!prev||(r.s||0)>(prev.s||0)||((r.s||0)===(prev.s||0)&&(r.clearTime||1e9)<(prev.clearTime||1e9)))bestByPilot.set(key,r);
  }
  return [...bestByPilot.values()].sort((a,b)=>(b.s||0)-(a.s||0)||(+a.clearTime||1e9)-(+b.clearTime||1e9));
 }
+function bestPrestigeRecords(predicate){
+ return bestPilotRecords(loadBoard().filter(predicate));
+}
 function championRecords(){return bestPrestigeRecords(r=>r.titanDefeated===true||r.titanCore===true||r.paradoxDefeated===true||r.paradoxCore===true)}
 function paradoxRecords(){return bestPrestigeRecords(r=>r.paradoxDefeated===true||r.paradoxCore===true)}
 function boardHTML(limit=10,mode='scores'){
- const cloud=cloudSync.getBoard(mode);let b=cloud.length?cloud:(mode==='paradox'?paradoxRecords():mode==='titan'?championRecords():loadBoard().sort((x,y)=>(y.s||0)-(x.s||0)));
+ const cloud=cloudSync.getBoard(mode),usingCloud=cloudSync.configured();
+ let b=bestPilotRecords(usingCloud?cloud:(mode==='paradox'?paradoxRecords():mode==='titan'?championRecords():loadBoard()));
  if(!b.length){
-   const msg=mode==='paradox'?'NO PARADOX CONQUERORS YET — SURVIVE THE FIVE-BOSS CONVERGENCE AND DEFEAT THE SOVEREIGN':
+   const state=cloudSync.boardState(mode),msg=usingCloud&&state==='offline'?'GLOBAL LEADERBOARD OFFLINE — NO CACHED RECORDS':
+     usingCloud&&(state==='idle'||state==='loading')?'LOADING GLOBAL RECORDS…':mode==='paradox'?'NO PARADOX CONQUERORS YET — SURVIVE THE FIVE-BOSS CONVERGENCE AND DEFEAT THE SOVEREIGN':
      mode==='titan'?'NO TITAN CHAMPIONS YET — DEFEAT CHRONOS TITAN TO CLAIM THE FIRST CORE':'NO TIMELINES LOGGED — BE THE FIRST';
    return `<div class="lbEmpty">${msg}</div>`;
  }
@@ -1390,7 +1397,7 @@ function renderLeaderboard(mode=lbMode,skipFetch=false){
  $('lbTopTab').classList.toggle('active',mode==='scores');
  $('lbTitanTab').classList.toggle('active',mode==='titan');
  $('lbParadoxTab').classList.toggle('active',mode==='paradox');
- const champs=cloudSync.getBoard('titan').length?cloudSync.getBoard('titan'):championRecords(),paradox=cloudSync.getBoard('paradox').length?cloudSync.getBoard('paradox'):paradoxRecords();
+ const champs=bestPilotRecords(cloudSync.configured()?cloudSync.getBoard('titan'):championRecords()),paradox=bestPilotRecords(cloudSync.configured()?cloudSync.getBoard('paradox'):paradoxRecords());
  $('titanCount').textContent=champs.length?`(${champs.length})`:'';
  $('paradoxCount').textContent=paradox.length?`(${paradox.length})`:'';
  $('lbModeInfo').textContent=mode==='paradox'?'GLOBAL PILOTS WHO DEFEATED THE PARADOX SOVEREIGN':
@@ -2541,11 +2548,12 @@ $('aeMenu').onclick=()=>{endRunToMenu()};
 /* ---------------- game over ---------------- */
 let gameOverRecordId=null;
 function logScore(){
+ const reachedHighScore=score>0&&score>=best;
  best=Math.max(best,score);localStorage.setItem('chronoBest',best);
- const b=loadBoard().sort((x,y)=>(y.s||0)-(x.s||0)),qualifies=score>0&&(b.length<10||score>(b[9]?.s||0));
- $('nameEntry').style.display=qualifies?'flex':'none';
+ const needsCallsign=reachedHighScore&&!cloudSync.identity()&&pilotName()==='ANON';
+ $('nameEntry').style.display=needsCallsign?'flex':'none';
  $('pilotName').value=localStorage.getItem('chronoName')||'';
- return qualifies;
+ return reachedHighScore;
 }
 function gameOver(){
  running=false;
@@ -2556,7 +2564,7 @@ function gameOver(){
  if(eternal)$('nameEntry').style.display='none';
  setState('GAME_OVER');
  $('finalScore').textContent=score.toLocaleString();
- $('newBest').style.display=isBest&&score>=best?'block':'none';
+ $('newBest').style.display=isBest?'block':'none';$('autoLogged').style.display=isBest?'block':'none';
  const mins=Math.floor(runTime/60),secs=Math.floor(runTime%60);
  $('finalMeta').innerHTML=`${eternal?`∞ ETERNAL BREACH <b>${eternalLevel}</b> · PARADOX CONQUEROR`:endless?`ENDLESS · Cycle <b>${Math.max(1,endlessCycle)}</b> · Convergence <b>${endlessBossDefeated}/${endlessBossTotal||2}</b>`:`${ngPlus?'◈ NEW GAME+ · ':''}${MAPS[curMap].name} · Wave <b>${wave}</b>`} · Level <b>${player.level}</b><br>Enemies defeated <b>${kills}</b> · Bosses <b>${bossKills}</b> · Survived <b>${mins}:${String(secs).padStart(2,'0')}</b><br>${eternal?`Highest Eternal: <b>${Math.max(meta.bestEternal||0,eternalLevel)}</b> · `:''}Best timeline: <b>${best.toLocaleString()}</b>`;
  $('goLb').innerHTML=boardHTML(5,'scores');

@@ -124,6 +124,7 @@ export function createApp(db: Database, config: AppConfig) {
 
   app.get('/api/v1/leaderboard', async (request, response, next) => {
     try {
+      response.set('Cache-Control', 'no-store, no-cache, must-revalidate');
       const category = request.query.mode === 'paradox' ? 'paradox' : request.query.mode === 'titan' ? 'titan' : 'scores', rawLimit = Number(request.query.limit ?? 10), limit = Number.isInteger(rawLimit) ? Math.min(50, Math.max(1, rawLimit)) : 10;
       const rows = await db.select({ displayName: pilots.displayName, discriminator: pilots.discriminator, score: runs.score, sector: runs.sector, wave: runs.wave, mode: runs.mode, level: runs.level, kills: runs.kills, bossKills: runs.bossKills, clearTime: runs.clearTime, titan: runs.titan, paradox: runs.paradox, eternalLevel: runs.eternalLevel, achievedAt: leaderboardEntries.achievedAt })
         .from(leaderboardEntries).innerJoin(pilots, eq(leaderboardEntries.pilotId, pilots.id)).innerJoin(runs, eq(leaderboardEntries.runId, runs.id)).where(and(eq(leaderboardEntries.category, category), eq(pilots.leaderboardHidden, false), eq(pilots.suspended, false))).orderBy(desc(leaderboardEntries.score), asc(leaderboardEntries.achievedAt)).limit(limit);
