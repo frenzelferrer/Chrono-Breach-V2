@@ -104,6 +104,12 @@ button{font-family:inherit}
 .cur{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:#cfe6f5;background:rgba(10,20,38,.6);border:1px solid rgba(70,130,180,.3);border-radius:99px;padding:6px 14px}
 .gear{pointer-events:auto;cursor:pointer;background:rgba(10,20,38,.6);border:1px solid rgba(70,130,180,.3);border-radius:10px;padding:7px 10px;color:#cfe6f5;font-size:15px}
 .gear:hover{border-color:var(--cy)}
+.cloudBox{margin-top:18px;padding:14px;border:1px solid rgba(87,233,255,.28);border-radius:12px;background:rgba(5,15,28,.55)}
+.cloudHead{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:11px;font-weight:900;letter-spacing:.13em;color:var(--cy)}
+.cloudStatus{font-size:10px;color:#ffd85d}.cloudIdentity{font-size:13px;font-weight:900;margin:10px 0;color:#fff}
+.cloudActions{display:flex;gap:8px;flex-wrap:wrap}.cloudActions input{flex:1;min-width:145px;background:#071322;border:1px solid rgba(90,150,200,.45);border-radius:8px;color:#fff;padding:10px;font:700 12px inherit;text-transform:uppercase}
+.cloudActions .btn{padding:9px 12px;font-size:10px}.recoveryCode{margin-top:10px;font:800 12px monospace;color:#ffd85d;overflow-wrap:anywhere}
+.liveAnnouncement{position:fixed;z-index:30;top:12px;left:50%;transform:translateX(-50%);width:min(720px,92vw);display:none;align-items:center;gap:14px;padding:11px 14px;background:rgba(7,19,34,.96);border:1px solid var(--cy);border-radius:10px;box-shadow:0 10px 35px #0009;color:#dff8ff;font-size:12px}.liveAnnouncement.on{display:flex}.liveAnnouncement.warning{border-color:var(--gd)}.liveAnnouncement.critical{border-color:var(--rd)}.liveAnnouncement.success{border-color:var(--gn)}.liveAnnouncement b{white-space:nowrap;letter-spacing:.1em}.liveAnnouncement span{flex:1;color:#a9c5d6}.liveAnnouncement button{padding:3px 7px;background:none;color:#fff;box-shadow:none}
 .title{font-size:clamp(46px,8vw,110px);font-weight:1000;letter-spacing:.04em;line-height:.9;margin:0;text-shadow:0 0 40px rgba(70,225,255,.4)}
 .title em{font-style:normal;color:var(--cy)}
 .tagline{margin-top:14px;font-size:clamp(13px,1.6vw,18px);font-weight:900;letter-spacing:.34em;color:#9fd8ef}
@@ -425,6 +431,7 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 
 
 <!-- ==================== LANDING ==================== -->
+<div id="liveAnnouncement" class="liveAnnouncement"><b id="announcementTitle"></b><span id="announcementMessage"></span><button id="announcementClose">×</button></div>
 <div id="menu" class="screen on">
   <div class="hero">
     <div class="topbar">
@@ -548,6 +555,13 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     <div class="setRow"><span class="k">📳 SCREEN SHAKE</span><div class="tgl on" id="setShake"></div></div>
     <div class="setRow"><span class="k">✨ PARTICLE DENSITY</span><input type="range" id="setParticles" min="0" max="2" step="1" value="2"></div>
     <div class="setRow"><span class="k">🐢 REDUCED MOTION</span><div class="tgl" id="setMotion"></div></div>
+    <div class="cloudBox">
+      <div class="cloudHead"><span>CLOUD PILOT</span><span class="cloudStatus" id="cloudStatus">LOCAL</span></div>
+      <div class="cloudIdentity" id="cloudIdentity">LOCAL PILOT</div>
+      <div class="cloudActions" id="cloudCreateRow"><input id="cloudName" maxlength="12" placeholder="CALLSIGN"><button class="btn" id="cloudCreate">CREATE</button><button class="btn ghost" id="cloudRecover">RECOVER</button></div>
+      <div class="cloudActions" id="cloudLinkedRow" style="display:none"><button class="btn" id="cloudSync">SYNC NOW</button><button class="btn ghost" id="cloudRotate">NEW RECOVERY CODE</button></div>
+      <div class="recoveryCode" id="cloudRecovery"></div>
+    </div>
     <div class="btnRow"><button class="btn ghost" id="setBack">← BACK</button></div>
   </div>
 </div>
@@ -654,6 +668,7 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     </div>
   </div>
 </div>
+<script src="config.js"></script>
 <script>
 (()=>{
 'use strict';
@@ -821,14 +836,42 @@ meta.equippedShards=Array.isArray(meta.equippedShards)?meta.equippedShards.filte
 meta.skillOwned=Object.assign({parry:true,fracture:true},meta.skillOwned||{});meta.skillOwned.parry=true;meta.skillOwned.fracture=true;
 meta.equippedSkills=Object.assign({tactical:'parry',chrono:'fracture'},meta.equippedSkills||{});
 const settings=Object.assign({volume:1,shake:true,density:2,reducedMotion:false},jload('chronoSettings',{}));
-function saveMeta(){jsave('chronoMeta',meta);refreshTopbar()}
-function saveSettings(){jsave('chronoSettings',settings)}
+function saveMeta(){jsave('chronoMeta',meta);refreshTopbar();window.chronoCloud?.queueSave()}
+function saveSettings(){jsave('chronoSettings',settings);window.chronoCloud?.queueSave()}
 let best=+(localStorage.getItem('chronoBest')||0);
 function loadBoard(){let b=jload('chronoBoard',[]);return Array.isArray(b)?b:[]}
 function saveBoard(b){const sorted=[...b].sort((x,y)=>(y.s||0)-(x.s||0)),keep=sorted.slice(0,100),champ=sorted.filter(r=>r.titanDefeated===true||r.titanCore===true).slice(0,50),seen=new Set(keep.map(r=>r.rid||[r.n,r.s,r.d].join(':')));for(const r of champ){const k=r.rid||[r.n,r.s,r.d].join(':');if(!seen.has(k)){keep.push(r);seen.add(k)}}jsave('chronoBoard',keep.slice(0,150))}
 function getPilotId(){let id=localStorage.getItem('chronoPilotId');if(!id){id=(typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():'pilot-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9);localStorage.setItem('chronoPilotId',id)}return id}
 const LOCAL_PILOT_ID=getPilotId();
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ---------------- cloud profile / Render API ---------------- */
+const cloudSync=(()=>{
+ const API=(window.CHRONO_API_URL||'').replace(/\/$/,'');
+ const TK='chronoCloudTokenV2',PK='chronoCloudProfileV2',OK='chronoCloudOutboxV2',BK='chronoCloudBoardsV2';
+ let token=localStorage.getItem(TK)||'',profile=jload(PK,null),outbox=jload(OK,[]),boards=jload(BK,{scores:[],titan:[]}),busy=false,status=API?(token?'OFFLINE':'LOCAL'):'NOT CONFIGURED',recovery='';
+ const snapshot=()=>JSON.parse(JSON.stringify({meta,settings}));
+ const persist=()=>jsave(OK,outbox);
+ function emit(){renderPanel();refreshTopbar()}
+ function setStatus(s){status=s;emit()}
+ async function api(path,opt={}){
+  if(!API)throw Error('Cloud API is not configured');const c=new AbortController(),t=setTimeout(()=>c.abort(),75000);
+  try{const r=await fetch(API+path,{...opt,signal:c.signal,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{}),...(opt.headers||{})}}),b=await r.json();if(!r.ok||b.error){const e=Error(b.error?.message||'Cloud request failed');e.status=r.status;throw e}return b.data}finally{clearTimeout(t)}
+ }
+ function accept(p,force=false){profile=p;jsave(PK,p);if(force||!outbox.length){Object.assign(meta,p.save.meta);Object.assign(settings,p.save.settings);jsave('chronoMeta',meta);jsave('chronoSettings',settings)}emit()}
+ async function create(){const name=($('cloudName').value||pilotName()).trim().slice(0,12).toUpperCase();if(name.length<2)return alert('Callsign must be 2-12 letters, numbers, _ or -.');setStatus('SYNCING');try{const d=await api('/api/v1/pilots',{method:'POST',body:JSON.stringify({displayName:name,importedSave:snapshot()})});token=d.sessionToken;profile=d.profile;recovery=d.recoveryCode;localStorage.setItem(TK,token);localStorage.setItem('chronoName',name);outbox=[];persist();accept(profile,true);setStatus('SYNCED')}catch(e){setStatus('OFFLINE');alert(e.message)}}
+ async function recover(){const code=prompt('Enter your CHRONO//BREACH recovery code:');if(!code)return;setStatus('SYNCING');try{const d=await api('/api/v1/pilots/recover',{method:'POST',body:JSON.stringify({recoveryCode:code})});token=d.sessionToken;recovery=d.recoveryCode;localStorage.setItem(TK,token);outbox=[];persist();accept(d.profile,true);localStorage.setItem('chronoName',d.profile.displayName);setStatus('SYNCED')}catch(e){setStatus('AUTH ERROR');alert(e.message)}}
+ async function rotate(){if(!token)return;setStatus('SYNCING');try{const d=await api('/api/v1/profile/recovery-code',{method:'POST'});recovery=d.recoveryCode;setStatus('SYNCED')}catch(e){setStatus(e.status===401?'AUTH ERROR':'OFFLINE');alert(e.message)}}
+ function queueSave(){if(!token)return;outbox=outbox.filter(x=>x.type!=='save');outbox.push({type:'save',save:snapshot(),baseRevision:profile?.revision});persist();setTimeout(sync,250)}
+ function queueRun(rec){if(!token)return;outbox.push({type:'run',run:{clientEventId:crypto.randomUUID(),score:Math.max(0,Math.round(rec.s||0)),sector:Math.max(1,Math.min(5,(rec.m||0)+1)),wave:Math.max(1,Math.round(rec.w||1)),mode:endless?'endless':'standard',level:Math.max(1,Math.min(5,Math.round(rec.level||1))),kills:Math.max(0,Math.round(rec.kills||0)),bossKills:Math.max(0,Math.round(rec.bossKills||0)),clearTime:Math.max(0,+rec.clearTime||0),titan:!!rec.titanDefeated,save:snapshot(),baseRevision:profile?.revision}});persist();sync()}
+ async function sync(){if(!token||busy||!API)return;busy=true;setStatus('SYNCING');try{while(outbox.length){const x=outbox[0],d=x.type==='run'?await api('/api/v1/runs',{method:'POST',body:JSON.stringify(x.run)}):await api('/api/v1/profile/save',{method:'PATCH',body:JSON.stringify({save:x.save,baseRevision:x.baseRevision})});outbox.shift();persist();accept(d.profile,true)}const d=await api('/api/v1/profile');accept(d.profile,true);setStatus('SYNCED')}catch(e){setStatus(e.status===401?'AUTH ERROR':'OFFLINE')}finally{busy=false;if(outbox.length&&navigator.onLine)setTimeout(sync,500)}}
+ async function fetchBoard(mode){if(!API)return boards[mode]||[];try{const d=await api('/api/v1/leaderboard?limit=50&mode='+mode);boards[mode]=d.entries.map((r,i)=>({rid:'cloud-'+mode+'-'+i,pid:'cloud-'+r.displayName+'-'+r.discriminator,n:r.displayName+'#'+r.discriminator,s:r.score,w:r.wave,m:r.sector-1,d:Date.parse(r.achievedAt),level:r.level,kills:r.kills,bossKills:r.bossKills,clearTime:r.clearTime,titanDefeated:r.titan,titanCore:r.titan}));jsave(BK,boards);return boards[mode]}catch(e){return boards[mode]||[]}}
+ function renderPanel(){if(!$('cloudStatus'))return;$('cloudStatus').textContent=status;$('cloudIdentity').textContent=profile?profile.displayName+'#'+profile.discriminator:'LOCAL PILOT';$('cloudCreateRow').style.display=token&&status!=='AUTH ERROR'?'none':'flex';$('cloudLinkedRow').style.display=token&&status!=='AUTH ERROR'?'flex':'none';$('cloudRecovery').textContent=recovery?'SAVE THIS NEW CODE: '+recovery:(token?'Recovery codes appear only when created or rotated.':'')}
+ async function fetchAnnouncement(){if(!API)return;try{const d=await api('/api/v1/announcements'),a=d.announcements[0];if(!a)return;const bar=$('liveAnnouncement');bar.className='liveAnnouncement on '+a.severity;$('announcementTitle').textContent=a.title;$('announcementMessage').textContent=a.message;$('announcementClose').onclick=()=>bar.classList.remove('on')}catch(e){}}
+ function init(){$('cloudCreate').onclick=create;$('cloudRecover').onclick=recover;$('cloudSync').onclick=sync;$('cloudRotate').onclick=rotate;window.addEventListener('online',sync);renderPanel();fetchAnnouncement();if(token)sync()}
+ return{init,queueSave,queueRun,fetchBoard,getBoard:m=>boards[m]||[],identity:()=>profile?profile.displayName+'#'+profile.discriminator:null,status:()=>status};
+})();
+window.chronoCloud=cloudSync;cloudSync.init();
 
 /* ---------------- data: maps ---------------- */
 const MAPS=[
@@ -1143,7 +1186,7 @@ function showScreen(id){
 function setState(s){prevState=state;state=s;refreshMobileLayout()}
 
 /* ---------------- topbar / menu ---------------- */
-function pilotName(){return (localStorage.getItem('chronoName')||'ANON').toUpperCase()}
+function pilotName(){return (cloudSync.identity()||localStorage.getItem('chronoName')||'ANON').toUpperCase()}
 function refreshTopbar(){
  $('mCredits').textContent=meta.credits.toLocaleString();
  $('mShards').textContent=meta.shards.toLocaleString();
@@ -1172,8 +1215,8 @@ function championRecords(){
  }
  return [...bestByPilot.values()].sort((a,b)=>(b.s||0)-(a.s||0)||(+a.clearTime||1e9)-(+b.clearTime||1e9));
 }
-function boardHTML(limit=10,mode='scores'){
- let b=mode==='titan'?championRecords():loadBoard().sort((x,y)=>(y.s||0)-(x.s||0));
+ function boardHTML(limit=10,mode='scores'){
+  const cloud=cloudSync.getBoard(mode);let b=cloud.length?cloud:(mode==='titan'?championRecords():loadBoard().sort((x,y)=>(y.s||0)-(x.s||0)));
  if(!b.length)return `<div class="lbEmpty">${mode==='titan'?'NO TITAN CHAMPIONS YET — DEFEAT CHRONOS TITAN TO CLAIM THE FIRST CORE':'NO TIMELINES LOGGED — BE THE FIRST'}</div>`;
  return b.slice(0,limit).map((r,i)=>{
    const titan=r.titanDefeated===true||r.titanCore===true;
@@ -1185,13 +1228,14 @@ function boardHTML(limit=10,mode='scores'){
    return `<div class="lbRow${i===0?' first':''}${titan?' titanRow':''}"><span class="rk">${String(i+1).padStart(2,'0')}</span><span class="nm">${esc(currentName)}${badge}${metaLine}</span><span class="wv${titan?' titanStatus':''}">${status}</span><span class="sc">${(+r.s||0).toLocaleString()}</span></div>`;
  }).join('');
 }
-function renderLeaderboard(mode=lbMode){
+function renderLeaderboard(mode=lbMode,skipFetch=false){
  lbMode=mode;
  $('lbTopTab').classList.toggle('active',mode==='scores');
  $('lbTitanTab').classList.toggle('active',mode==='titan');
- const champs=championRecords();$('titanCount').textContent=champs.length?`(${champs.length})`:'';
- $('lbModeInfo').textContent=mode==='titan'?'PILOTS WHO DEFEATED CHRONOS TITAN — RANKED BY BEST SCORE':'HIGHEST SCORES ACROSS ALL LOCAL RUNS';
+ const champs=cloudSync.getBoard('titan').length?cloudSync.getBoard('titan'):championRecords();$('titanCount').textContent=champs.length?`(${champs.length})`:'';
+ $('lbModeInfo').textContent=mode==='titan'?'GLOBAL PILOTS WHO DEFEATED CHRONOS TITAN — RANKED BY BEST SCORE':'GLOBAL BEST PILOT SCORES // CACHED WHEN OFFLINE';
  $('lbRows').innerHTML=boardHTML(10,mode);
+ if(!skipFetch)cloudSync.fetchBoard(mode).then(()=>{if($('lbPanel').classList.contains('on')&&lbMode===mode)renderLeaderboard(mode,true)});
 }
 function openLb(mode='scores'){renderLeaderboard(mode);setState('MENU');showScreen('lbPanel')}
 $('lbTopTab').onclick=()=>{tone(420,.05,'sine',.015,80);renderLeaderboard('scores')};
@@ -2046,7 +2090,7 @@ function newRecordId(){return 'run-'+Date.now().toString(36)+'-'+Math.random().t
 function addLocalRunRecord({name,titan=false}={}){
  const n=(name||localStorage.getItem('chronoName')||'ANON').trim().slice(0,12).toUpperCase()||'ANON';
  const rec={rid:newRecordId(),pid:LOCAL_PILOT_ID,n,s:score,w:wave,m:curMap,d:Date.now(),completedAt:Date.now(),level:player.level,kills,bossKills,clearTime:runTime,titanDefeated:!!titan,titanCore:!!titan};
- const b=loadBoard();b.push(rec);saveBoard(b);best=Math.max(best,score);localStorage.setItem('chronoBest',best);return rec.rid;
+ const b=loadBoard();b.push(rec);saveBoard(b);best=Math.max(best,score);localStorage.setItem('chronoBest',best);cloudSync.queueRun(rec);return rec.rid;
 }
 function renameLocalPilotRecords(n){
  n=(n||'').trim().slice(0,12).toUpperCase()||'ANON';
@@ -2525,3 +2569,4 @@ requestAnimationFrame(loop);
 </script>
 </body>
 </html>
+    

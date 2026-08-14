@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CHRONO//BREACH ADMIN</title><link rel="stylesheet" href="/admin-assets/admin.css"></head>
+<body>
+  <div class="stars"></div>
+  <main>
+    <section id="login" class="login card">
+      <div class="eyebrow">SECURE OPERATIONS CONSOLE</div><h1>CHRONO<span>//</span>ADMIN</h1><p>Authenticate to manage pilots, economy, rankings, and live transmissions.</p>
+      <form id="loginForm"><label>ADMIN ID<input id="username" autocomplete="username" required></label><label>PASSWORD<input id="password" type="password" autocomplete="current-password" required></label><button>ESTABLISH LINK</button><div id="loginError" class="error"></div></form>
+    </section>
+    <section id="console" hidden>
+      <header><div><div class="eyebrow">TEMPORAL OPERATIONS</div><h1>CHRONO<span>//</span>ADMIN</h1></div><div class="headerRight"><span id="adminName"></span><button id="logout" class="secondary">LOG OUT</button></div></header>
+      <nav><button data-tab="pilots" class="active">PILOTS</button><button data-tab="announcements">CMS TRANSMISSIONS</button><button data-tab="audit">AUDIT LOG</button></nav>
+      <div id="notice"></div>
+      <section class="stats" id="stats"></section>
+      <section id="pilotsTab" class="tab active">
+        <div class="toolbar"><input id="pilotSearch" placeholder="Search callsign, tag, or ID"><button id="searchBtn">SEARCH</button><button id="refreshBtn" class="secondary">REFRESH</button></div>
+        <div class="grid"><div class="card tableWrap"><table><thead><tr><th>PILOT</th><th>CREDITS</th><th>SHARDS</th><th>BEST</th><th>STATE</th></tr></thead><tbody id="pilotRows"></tbody></table><div id="pilotEmpty" class="empty"></div></div>
+        <aside id="pilotEditor" class="card editor"><div class="empty">Select a pilot account.</div></aside></div>
+      </section>
+      <section id="announcementsTab" class="tab">
+        <div class="grid cmsGrid"><form id="announcementForm" class="card editor"><h2>NEW TRANSMISSION</h2><label>TITLE<input id="announcementTitle" maxlength="80" required></label><label>MESSAGE<textarea id="announcementMessage" maxlength="500" required></textarea></label><label>SEVERITY<select id="announcementSeverity"><option>info</option><option>success</option><option>warning</option><option>critical</option></select></label><div class="formRow"><label>STARTS<input id="announcementStarts" type="datetime-local"></label><label>ENDS<input id="announcementEnds" type="datetime-local"></label></div><label class="check"><input id="announcementActive" type="checkbox" checked> PUBLISH</label><button>CREATE TRANSMISSION</button></form><div id="announcementList" class="stack"></div></div>
+      </section>
+      <section id="auditTab" class="tab"><div class="card tableWrap"><table><thead><tr><th>TIME</th><th>ADMIN</th><th>ACTION</th><th>PILOT</th><th>DETAILS</th></tr></thead><tbody id="auditRows"></tbody></table></div></section>
+    </section>
+  </main>
+  <script src="/admin-assets/admin.js"></script>
+</body></html>
