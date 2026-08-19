@@ -212,6 +212,7 @@ button{font-family:inherit}
 .tgl.on::after{left:28px;background:var(--cy);box-shadow:0 0 10px var(--cy)}
 .howGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
 .shopGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.catalogHeader{grid-column:1/-1;display:flex;align-items:center;gap:12px;margin:18px 0 2px;color:var(--cy);font-size:11px;font-weight:1000;letter-spacing:.18em}.catalogHeader:first-child{margin-top:0}.catalogHeader::after{content:'';height:1px;flex:1;background:linear-gradient(90deg,currentColor,transparent);opacity:.35}.catalogHeader small{color:#7892a8;font-size:9px;letter-spacing:.1em}
 .shopItem{border:1px solid rgba(70,130,180,.3);border-radius:14px;padding:16px;background:rgba(8,16,30,.55)}
 .shopItem .siTop{display:flex;gap:12px;align-items:center}
 .shopItem .siIcon{width:38px;height:38px;flex:none;border-radius:10px;background:rgba(20,45,75,.6);border:1px solid rgba(255,216,93,.35);display:grid;place-items:center;color:#ffd85d}
@@ -559,7 +560,7 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 <div id="shopPanel" class="screen dim">
   <div class="panel glass" style="width:min(880px,94vw)">
     <h2 class="pTitle">HANGAR // PERMANENT UPGRADES</h2>
-    <div class="pSub">SPEND CREDITS — 16 PERMANENT MODULES. EVERY RUN STARTS STRONGER.</div>
+    <div class="pSub">SPEND CREDITS — 20 PERMANENT MODULES ORGANIZED BY SYSTEM. EVERY RUN STARTS STRONGER.</div>
     <div style="display:flex;justify-content:flex-end;margin-bottom:14px"><div class="cur">🪙 <span id="shopCredits">0</span></div></div>
     <div class="shopGrid" id="shopGrid"></div>
     <div class="btnRow"><button class="btn ghost" id="shopBack">← BACK</button></div>
@@ -949,7 +950,7 @@ function tone(freq=440,d=.05,type='sine',vol=.025,slide=0){
 /* ---------------- persistence ---------------- */
 function jload(k,def){try{let v=JSON.parse(localStorage.getItem(k));return v==null?def:v}catch(e){return def}}
 function jsave(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
-const PERM_DEFAULTS={hull:0,weapons:0,thrusters:0,dashmod:0,magnet:0,conduit:0,regen:0,aegis:0,precision:0,ballistics:0,salvage:0,learning:0,parrycap:0,reactive:0,scanner:0,reserve:0};
+const PERM_DEFAULTS={hull:0,weapons:0,thrusters:0,dashmod:0,magnet:0,conduit:0,regen:0,aegis:0,precision:0,ballistics:0,salvage:0,learning:0,parrycap:0,reactive:0,scanner:0,reserve:0,nanoforge:0,amplifier:0,siphon:0,harvester:0};
 const meta=Object.assign({credits:0,shards:0,cores:0,unlocked:0,best:[0,0,0,0,0],prog:[0,0,0,0,0],cleared:[false,false,false,false,false],titanCore:false,paradoxCore:false,paradoxDefeats:0,paradoxFragments:0,ngPlusUnlocked:false,bestEternal:0,bestEternalScore:0,perm:{},shardOwned:{},equippedShards:[],skillOwned:{},equippedSkills:{}},jload('chronoMeta',{}));
 meta.perm=Object.assign({},PERM_DEFAULTS,meta.perm||{});
 meta.shardOwned=Object.assign({},meta.shardOwned||{});
@@ -1013,7 +1014,7 @@ const cloudSync=(()=>{
   if(!API)throw Error('Cloud API is not configured');const c=new AbortController(),t=setTimeout(()=>c.abort(),75000);
   try{const r=await fetch(API+path,{...opt,signal:c.signal,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{}),...(opt.headers||{})}}),b=await r.json();if(!r.ok||b.error){const e=Error(b.error?.message||'Cloud request failed');e.status=r.status;throw e}return b.data}finally{clearTimeout(t)}
  }
- function accept(p,force=false){profile=p;jsave(PK,p);if(force||!outbox.length){Object.assign(meta,p.save.meta);Object.assign(settings,p.save.settings);jsave('chronoMeta',meta);jsave('chronoSettings',settings)}emit()}
+ function accept(p,force=false){profile=p;jsave(PK,p);if(force||!outbox.length){Object.assign(meta,p.save.meta);meta.perm=Object.assign({},PERM_DEFAULTS,meta.perm||{});meta.shardOwned=Object.assign({},meta.shardOwned||{});meta.skillOwned=Object.assign({parry:true,fracture:true},meta.skillOwned||{});Object.assign(settings,p.save.settings);jsave('chronoMeta',meta);jsave('chronoSettings',settings)}emit()}
  const validCloudName=name=>{name=String(name||'').trim().slice(0,12).toUpperCase();return /^[A-Z0-9_-]{2,12}$/.test(name)&&name!=='ANON'?name:''};
  async function link(name,interactive=false){
   if(linking)return linking;if(token&&status!=='AUTH ERROR')return await sync();if(status==='AUTH ERROR'){token='';localStorage.removeItem(TK)}name=validCloudName(name);if(!name){if(interactive)alert('Callsign must be 2-12 letters, numbers, _ or -.');return false}
@@ -1102,12 +1103,21 @@ const UPGRADES=[
  {id:'blackhole',cat:'SPECIAL',name:'BLACK HOLE',dots:[['SPECIAL',5]],desc:()=>'Every 15s spawn a gravity well that pulls enemies in.',apply:()=>player.blackhole=true},
  {id:'deathmark',cat:'SPECIAL',name:'DEATH MARK',dots:[['SPECIAL',4]],desc:()=>'A marked enemy takes +30% damage. Mark jumps on kill.',apply:()=>player.deathmark=true},
  {id:'chronoburst',cat:'SPECIAL',name:'CHRONO BURST',dots:[['SPECIAL',4]],desc:()=>'Every 20s release an energy explosion around you.',apply:()=>player.cburst=true},
+ {id:'glasscannon',cat:'OFFENSE',name:'GLASS CANNON',dots:[['OFFENSE',5],['RISK',4]],desc:m=>`+${Math.round(32*m)}% damage, but take ${Math.round(8*m)}% more damage.`,apply:m=>{player.damage*=1+.32*m;player.armor*=1+.08*m}},
+ {id:'critamp',cat:'OFFENSE',name:'CRITICAL AMPLIFIER',dots:[['OFFENSE',4],['CRIT DMG',5]],desc:m=>`Critical hits deal +${Math.round(30*m)}% bonus damage.`,apply:m=>player.critMult+=.3*m},
+ {id:'blooddrive',cat:'DEFENSE',name:'BLOOD DRIVE',dots:[['DEFENSE',3],['RECOVERY',4]],desc:m=>`Recover ${(1.25*m).toFixed(1)} HP per enemy destroyed.`,apply:m=>player.lifesteal+=1.25*m},
+ {id:'shieldweave',cat:'DEFENSE',name:'SHIELD WEAVE',dots:[['DEFENSE',4],['SHIELD',5]],desc:m=>`Shield regeneration +${(2*m).toFixed(1)} per second.`,apply:m=>player.shieldRegen+=2*m},
+ {id:'chronofeed',cat:'UTILITY',name:'CHRONO FEED',dots:[['UTILITY',4],['ENERGY',5]],desc:m=>`Gain +${(2.5*m).toFixed(1)} additional Energy per kill.`,apply:m=>player.energyOnKill+=2.5*m},
+ {id:'kinetics',cat:'MOBILITY',name:'KINETIC CYCLER',dots:[['MOBILITY',3],['BALLISTICS',4]],desc:m=>`Projectile speed +${Math.round(25*m)}% and fire rate +${Math.round(6*m)}%.`,apply:m=>{player.bulletSpeed*=1+.25*m;player.fireRate*=Math.pow(.94,m)}},
 ];
 const SYNERGIES=[
  {a:'rapidfire',b:'chain',name:'ARC STORM',apply:()=>{player.chain=Math.min(.95,player.chain+.25);player.fireRate*=.9}},
  {a:'pierce',b:'multishot',name:'PHASE BARRAGE',apply:()=>{player.pierce+=1;player.shots+=1}},
  {a:'booster',b:'phaseshift',name:'GHOST DASH',apply:()=>{player.dashMax*=.8;player.dashInv+=.1}},
  {a:'blackhole',b:'damage',name:'VOID COLLAPSE',apply:()=>{player.damage*=1.25}},
+ {a:'blooddrive',b:'armor',name:'CRIMSON AEGIS',apply:()=>{player.lifesteal+=1;player.maxHp+=20;player.hp+=20}},
+ {a:'kinetics',b:'multishot',name:'HYPERVELOCITY VOLLEY',apply:()=>{player.bulletSpeed*=1.2;player.fireRate*=.9}},
+ {a:'shieldweave',b:'shieldmatrix',name:'ETERNAL BARRIER',apply:()=>{player.maxShield+=25;player.shieldPool+=25;player.shieldRegen+=2}},
 ];
 const SHIP_NAMES=['SCOUT','HUNTER','VANGUARD','SENTINEL','APEX'];
 
@@ -1129,6 +1139,16 @@ const PERMS=[
  {id:'reactive',name:'REACTIVE ARMOR',max:5,base:700,icon:'<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-5"/>',next:l=>`3% less incoming damage per level`,eff:l=>l>0?`Active: ${Math.round((1-Math.pow(.97,l))*100)}% damage reduction`:''},
  {id:'scanner',name:'FORTUNE SCANNER',max:5,base:600,icon:'<circle cx="12" cy="12" r="8"/><path d="M12 7l1.4 2.8 3.1.5-2.2 2.2.5 3.1-2.8-1.4-2.8 1.4.5-3.1-2.2-2.2 3.1-.5z"/>',next:l=>`+2% powerup drop chance per level`,eff:l=>l>0?`Active: +${2*l}% drop chance`:''},
  {id:'reserve',name:'CHRONO RESERVE',max:5,base:500,icon:'<circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/><path d="M5 4l2 2M19 4l-2 2"/>',next:l=>`Start each run with +8 Energy per level`,eff:l=>l>0?`Active: starts at +${8*l} Energy`:''},
+ {id:'nanoforge',name:'NANOFORGE',max:5,base:650,icon:'<path d="M4 12h4l2-5 4 10 2-5h4"/><circle cx="12" cy="12" r="9"/>',next:l=>`+0.6 shield regeneration per second per level`,eff:l=>l>0?`Active: +${(.6*l).toFixed(1)} shield/s`:''},
+ {id:'amplifier',name:'CRITICAL AMPLIFIER',max:5,base:750,icon:'<circle cx="12" cy="12" r="8"/><path d="M12 4v4M12 16v4M4 12h4M16 12h4"/><circle cx="12" cy="12" r="2"/>',next:l=>`+10% critical-hit damage per level`,eff:l=>l>0?`Active: +${10*l}% critical damage`:''},
+ {id:'siphon',name:'CHRONO SIPHON',max:5,base:700,icon:'<path d="M12 2v7l4 3-4 3v7"/><path d="M5 6h5M14 18h5"/>',next:l=>`+0.6 Energy from every kill per level`,eff:l=>l>0?`Active: +${(.6*l).toFixed(1)} Energy/kill`:''},
+ {id:'harvester',name:'LIFE HARVESTER',max:5,base:850,icon:'<path d="M12 20s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z"/><path d="M8 12h8"/>',next:l=>`Recover 0.25 HP per enemy destroyed per level`,eff:l=>l>0?`Active: +${(.25*l).toFixed(2)} HP/kill`:''},
+];
+const PERM_GROUPS=[
+ {name:'OFFENSE SYSTEMS',note:'DAMAGE • CRITICALS • PROJECTILES',ids:['weapons','precision','ballistics','amplifier']},
+ {name:'DEFENSE SYSTEMS',note:'HULL • SHIELDS • RECOVERY',ids:['hull','regen','aegis','reactive','nanoforge','harvester']},
+ {name:'MOBILITY SYSTEMS',note:'MOVEMENT • DASH • TACTICAL',ids:['thrusters','dashmod','parrycap']},
+ {name:'UTILITY SYSTEMS',note:'ENERGY • ECONOMY • PROGRESSION',ids:['magnet','conduit','salvage','learning','scanner','reserve','siphon']},
 ];
 const permCost=(p,l)=>Math.round(p.base*Math.pow(1.7,l)/10)*10;
 function applyPerms(){
@@ -1149,11 +1169,17 @@ function applyPerms(){
  player.armor*=Math.pow(.97,p.reactive);
  player.luck+=.02*p.scanner;
  player.chrono=clamp(player.chrono+8*p.reserve,0,player.chronoMax);
+ player.shieldRegen+=.6*p.nanoforge;
+ player.critMult+=.1*p.amplifier;
+ player.energyOnKill+=.6*p.siphon;
+ player.lifesteal+=.25*p.harvester;
 }
 function renderShop(){
  $('shopCredits').textContent=meta.credits.toLocaleString();
  const g=$('shopGrid');g.innerHTML='';
- PERMS.forEach(p=>{
+ for(const group of PERM_GROUPS){
+  const heading=document.createElement('div');heading.className='catalogHeader';heading.innerHTML=`${group.name}<small>${group.note}</small>`;g.appendChild(heading);
+  for(const id of group.ids){const p=PERMS.find(item=>item.id===id);if(!p)continue;
    const l=meta.perm[p.id]||0,maxed=l>=p.max,cost=maxed?0:permCost(p,l),afford=meta.credits>=cost;
    const pips='●'.repeat(l)+'○'.repeat(p.max-l);
    const d=document.createElement('div');d.className='shopItem';
@@ -1162,11 +1188,12 @@ function renderShop(){
      <div class="siDesc">${p.next(l)}</div><div class="siEff">${p.eff(l)}</div>
      <button class="buyBtn${maxed?' maxed':''}" ${maxed||!afford?'disabled':''}>${maxed?'MAX LEVEL':afford?`BUY — 🪙 ${cost.toLocaleString()}`:`🪙 ${cost.toLocaleString()} — NOT ENOUGH`}</button>`;
    if(!maxed&&afford)d.querySelector('.buyBtn').onclick=()=>{
-     meta.credits-=cost;meta.perm[p.id]++;saveMeta();renderShop();
+     meta.credits-=cost;meta.perm[p.id]=(meta.perm[p.id]||0)+1;saveMeta();renderShop();
      tone(660,.15,'sine',.035,320);tone(880,.2,'sine',.025,220);
    };
    g.appendChild(d);
- });
+  }
+ }
 }
 
 
@@ -1180,7 +1207,18 @@ const AUGMENT_SHARDS=[
  {id:'hunter',name:'HUNTER SHARD',icon:'◎',color:'#fff08a',cost:1800,desc:'+8% critical chance and +10% projectile speed.',stat:'CRIT +8% • BULLET +10%',apply:()=>{player.crit=Math.min(.75,player.crit+.08);player.bulletSpeed*=1.10}},
  {id:'leech',name:'LEECH SHARD',icon:'♥',color:'#ff5b85',cost:2300,desc:'Recover 2 HP whenever an enemy is destroyed.',stat:'HEAL 2 HP / KILL',apply:()=>{player.lifesteal+=2}},
  {id:'fortune',name:'FORTUNE SHARD',icon:'✦',color:'#ffd85d',cost:1600,desc:'+20% Credits from kills and +5% powerup drop chance.',stat:'CREDITS +20% • LUCK +5%',apply:()=>{player.creditMult*=1.20;player.luck+=.05}},
+ {id:'prism',name:'PRISM SHARD',icon:'✧',color:'#ff75ef',cost:2800,desc:'Fire one extra projectile, but each projectile deals 10% less damage.',stat:'+1 SHOT • DAMAGE -10%',apply:()=>{player.shots+=1;player.damage*=.90}},
+ {id:'guardian',name:'GUARDIAN SHARD',icon:'⬢',color:'#72ffb0',cost:2500,desc:'Take 10% less damage and regenerate +0.8 HP per second.',stat:'DAMAGE TAKEN -10% • REGEN +0.8',apply:()=>{player.armor*=.90;player.regen+=.8}},
+ {id:'berserker',name:'BERSERKER SHARD',icon:'✕',color:'#ff435f',cost:2700,desc:'+22% damage and +12% fire rate, but lose 15% maximum HP.',stat:'DAMAGE +22% • FIRE +12% • HP -15%',apply:()=>{player.damage*=1.22;player.fireRate*=.88;player.maxHp*=.85;player.hp=Math.min(player.hp,player.maxHp)}},
+ {id:'singularity',name:'SINGULARITY SHARD',icon:'◉',color:'#8f72ff',cost:3200,desc:'Periodically create gravity wells and gain +5% powerup luck.',stat:'GRAVITY WELL • LUCK +5%',apply:()=>{player.blackhole=true;player.bhT=Math.min(player.bhT,7);player.luck+=.05}},
 ];
+const SHARD_GROUPS=[
+ {name:'OFFENSE EQUIPMENT',note:'WEAPON OUTPUT • FIRE RATE • CRITICALS',ids:['assault','rapid','hunter','prism','berserker']},
+ {name:'DEFENSE EQUIPMENT',note:'HULL • SHIELDS • SUSTAIN',ids:['bastion','leech','guardian']},
+ {name:'MOBILITY EQUIPMENT',note:'SPEED • DASH CONTROL',ids:['velocity']},
+ {name:'UTILITY & SPECIAL EQUIPMENT',note:'ENERGY • LOOT • GRAVITY',ids:['chrono','fortune','singularity']},
+];
+const shardRole=id=>SHARD_GROUPS.find(group=>group.ids.includes(id))?.name.replace(' EQUIPMENT','')||'AUGMENT';
 const TACTICAL_SKILLS={
  parry:{id:'parry',name:'ZERO PARRY',mobile:'PARRY',icon:'↶',color:'#fff27a',cost:0,cd:2.2,desc:'Reflect nearby enemy bullets as 3× damage shots. Perfect timing briefly slows time.',meta:'COOLDOWN 2.2s • REFLECT'},
  aegisPulse:{id:'aegisPulse',name:'AEGIS PULSE',mobile:'AEGIS',icon:'⬡',color:'#5ce8ff',cost:2000,cd:7.5,desc:'Become immune to damage for 2.2 seconds. Strong emergency defense with a longer cooldown.',meta:'COOLDOWN 7.5s • IMMUNITY'},
@@ -1268,9 +1306,12 @@ function renderSkillGroup(group,elId){
 function renderLoadout(){
  $('loadoutCredits').textContent=meta.credits.toLocaleString();$('shardEquipCount').textContent=`${meta.equippedShards.length}/3`;
  const slots=$('equippedShardSlots');slots.innerHTML='';
- for(let i=0;i<3;i++){const id=meta.equippedShards[i],s=id&&shardById(id),d=document.createElement('div');d.className='shardSlot'+(s?' filled':'');d.innerHTML=s?`<div class="shardOrb" style="color:${s.color}">${s.icon}</div><div><b>${s.name}</b><small>${s.stat}</small></div>`:`<div class="shardOrb">◇</div><div><b>EMPTY SHARD SLOT</b><small>EQUIP ANY OWNED SHARD</small></div>`;if(s)d.onclick=()=>toggleShard(s.id);slots.appendChild(d)}
+ for(let i=0;i<3;i++){const id=meta.equippedShards[i],s=id&&shardById(id),d=document.createElement('div');d.className='shardSlot'+(s?' filled':'');d.innerHTML=s?`<div class="shardOrb" style="color:${s.color}">${s.icon}</div><div><b>${s.name}</b><small>${shardRole(s.id)} • ${s.stat}</small></div>`:`<div class="shardOrb">◇</div><div><b>EMPTY SHARD SLOT</b><small>EQUIP ANY OWNED SHARD</small></div>`;if(s)d.onclick=()=>toggleShard(s.id);slots.appendChild(d)}
  const g=$('shardStoreGrid');g.innerHTML='';
- for(const s of AUGMENT_SHARDS){const owned=!!meta.shardOwned[s.id],equipped=meta.equippedShards.includes(s.id),afford=meta.credits>=s.cost,d=document.createElement('div');d.className='loadCard'+(equipped?' equipped':'')+(!owned?' locked':'');d.innerHTML=`<div class="lcTop" style="color:${s.color}"><div class="lcIcon">${s.icon}</div><div><div class="lcName">${s.name}</div><div class="lcType">AUGMENT SHARD</div></div></div><div class="lcDesc">${s.desc}</div><div class="lcStat">${s.stat}</div><button class="lcBtn ${!owned?'buy':equipped?'unequip':''}">${!owned?(afford?`BUY — 🪙 ${s.cost.toLocaleString()}`:`🪙 ${s.cost.toLocaleString()} — NOT ENOUGH`):equipped?'UNEQUIP':'EQUIP'}</button>`;d.querySelector('button').onclick=()=>owned?toggleShard(s.id):buyShard(s.id);g.appendChild(d)}
+ for(const group of SHARD_GROUPS){
+  const heading=document.createElement('div');heading.className='catalogHeader';heading.innerHTML=`${group.name}<small>${group.note}</small>`;g.appendChild(heading);
+  for(const id of group.ids){const s=shardById(id);if(!s)continue;const owned=!!meta.shardOwned[s.id],equipped=meta.equippedShards.includes(s.id),afford=meta.credits>=s.cost,d=document.createElement('div');d.className='loadCard'+(equipped?' equipped':'')+(!owned?' locked':'');d.innerHTML=`<div class="lcTop" style="color:${s.color}"><div class="lcIcon">${s.icon}</div><div><div class="lcName">${s.name}</div><div class="lcType">${shardRole(s.id)} // AUGMENT SHARD</div></div></div><div class="lcDesc">${s.desc}</div><div class="lcStat">${s.stat}</div><button class="lcBtn ${!owned?'buy':equipped?'unequip':''}">${!owned?(afford?`BUY — 🪙 ${s.cost.toLocaleString()}`:`🪙 ${s.cost.toLocaleString()} — NOT ENOUGH`):equipped?'UNEQUIP':'EQUIP'}</button>`;d.querySelector('button').onclick=()=>owned?toggleShard(s.id):buyShard(s.id);g.appendChild(d)}
+ }
  renderSkillGroup('tactical','tacticalSkillGrid');renderSkillGroup('chrono','chronoSkillGrid');refreshAbilityLabels();
  const t=tacticalSkill(),q=chronoSkill(),sh=meta.equippedShards.map(id=>shardById(id)?.name).filter(Boolean);
  $('loadoutSummary').innerHTML=`<b>${loadoutRunMode==='ngplus'?'◈ NEW GAME+ • ':''}SECTOR ${loadoutSector+1}: ${MAPS[loadoutSector].name}</b><br>E: ${t.name} • Q: ${q.name}<br>SHARDS: ${sh.length?sh.join(' / '):'NONE EQUIPPED'}`;
@@ -1294,7 +1335,18 @@ const POWERUPS={
  critsurge:{color:'#fff08a',name:'CRITICAL SURGE',weight:8},
  fortify:{color:'#9dff72',name:'FORTIFY',weight:8},
  bounty:{color:'#ffd85d',name:'SALVAGE CACHE',weight:8},
+ hypercharge:{color:'#ff6bd6',name:'HYPERCHARGE',weight:6},
+ nanocloud:{color:'#72ffb0',name:'NANO REPAIR CLOUD',weight:8},
+ phasecell:{color:'#a98cff',name:'PHASE CELL',weight:7},
+ arsenal:{color:'#ff8266',name:'ARSENAL CACHE',weight:4},
 };
+const POWERUP_GROUPS={
+ RECOVERY:['repair','energy','nanocloud'],
+ DEFENSE:['aegis','fortress','fortify','phasecell'],
+ OFFENSE:['overdrive','nova','critsurge','hypercharge','arsenal'],
+ UTILITY:['reset','vacuum','bounty'],
+};
+const powerupRole=id=>Object.keys(POWERUP_GROUPS).find(role=>POWERUP_GROUPS[role].includes(id))||'SPECIAL';
 function rollPowerup(){
  const entries=Object.entries(POWERUPS);let total=0;for(const [,p] of entries)total+=p.weight||1;
  let r=Math.random()*total;for(const [k,p] of entries){r-=p.weight||1;if(r<=0)return k}return 'repair';
@@ -1332,7 +1384,7 @@ function forNearby(grid,x,y,fn){
 for(let i=0;i<170;i++)stars.push({x:Math.random()*W,y:Math.random()*H,z:Math.random(),s:Math.random()*1.8+.2});
 
 const player={};
-function basePlayer(){return{x:W/2,y:H/2,r:13,speed:270,hp:100,maxHp:100,shieldPool:0,maxShield:0,fireRate:.13,shotTimer:0,bulletSpeed:650,damage:18,spread:0,shots:1,pierce:0,split:0,crit:.05,critMult:2,dashCd:0,dashMax:1.25,dashing:0,dashTime:.18,dashSpeed:920,dashInv:0,inv:0,dodge:0,parryCd:0,parryMax:2.2,parryWindow:0,parryWin:.25,chrono:0,chronoMax:100,aegis:0,overdrive:0,overclock:0,critSurge:0,fortify:0,level:1,xp:0,xpNeed:80,regen:0,magnet:120,lifesteal:0,armor:1,dodgeT:0,emergency:false,emCd:0,ripple:false,rippleT:6,blackhole:false,bhT:8,deathmark:false,cburst:false,cbT:10,chain:0,creditMult:1,xpMult:1,luck:0,energyOnKill:0,owned:[],syn:[],pslow:0,transform:0,tier:1,orbitalAngle:0}}
+function basePlayer(){return{x:W/2,y:H/2,r:13,speed:270,hp:100,maxHp:100,shieldPool:0,maxShield:0,shieldRegen:3,fireRate:.13,shotTimer:0,bulletSpeed:650,damage:18,spread:0,shots:1,pierce:0,split:0,crit:.05,critMult:2,dashCd:0,dashMax:1.25,dashing:0,dashTime:.18,dashSpeed:920,dashInv:0,inv:0,dodge:0,parryCd:0,parryMax:2.2,parryWindow:0,parryWin:.25,chrono:0,chronoMax:100,aegis:0,overdrive:0,overclock:0,critSurge:0,fortify:0,level:1,xp:0,xpNeed:80,regen:0,magnet:120,lifesteal:0,armor:1,dodgeT:0,emergency:false,emCd:0,ripple:false,rippleT:6,blackhole:false,bhT:8,deathmark:false,cburst:false,cbT:10,chain:0,creditMult:1,xpMult:1,luck:0,energyOnKill:0,owned:[],syn:[],pslow:0,transform:0,tier:1,orbitalAngle:0}}
 Object.assign(player,basePlayer());
 
 let curMap=0,wave=1,waveTimer=0,spawnTimer=0,toSpawn=0,score=0,kills=0,bossKills=0,combo=1,comboTimer=0,bossAlive=false,bossRef=null,bossIntroT=0,bossDeathT=0,endless=false,tipT=0,tipI=0;
@@ -1994,7 +2046,7 @@ function dropPickup(x,y,type){
 }
 function applyPower(type,x,y){
  const P=POWERUPS[type];
- floating(x,y-16,P.name,P.color,17);
+ floating(x,y-16,`${powerupRole(type)} // ${P.name}`,P.color,17);
  spawnParticle(x,y,P.color,22,240);ring(x,y,P.color,90,.4,3);
  if(type==='repair')player.hp=Math.min(player.maxHp,player.hp+35);
  if(type==='aegis')player.aegis=6;
@@ -2012,6 +2064,10 @@ function applyPower(type,x,y){
  if(type==='bounty'){
    const bonus=250+curMap*150;meta.credits+=bonus;saveMeta();floating(player.x,player.y-36,'+'+bonus+' CREDITS','#ffd85d',18);showMsg('SALVAGE CACHE','CREDITS SECURED',850);
  }
+ if(type==='hypercharge'){player.overdrive=Math.max(player.overdrive,7);player.critSurge=Math.max(player.critSurge,7);showMsg('HYPERCHARGE','FIRE RATE + CRITICAL SYSTEMS BOOSTED',900)}
+ if(type==='nanocloud'){player.hp=Math.min(player.maxHp,player.hp+25);player.maxShield+=10;player.shieldPool=Math.min(player.maxShield,player.shieldPool+30);showMsg('NANO CLOUD','HULL REPAIRED • SHIELD CAPACITY +10',900)}
+ if(type==='phasecell'){player.dashCd=0;player.parryCd=0;player.aegis=Math.max(player.aegis,3);showMsg('PHASE CELL','TACTICAL SYSTEMS READY • IMMUNE',900)}
+ if(type==='arsenal'){player.damage*=1.08;player.fireRate*=.94;showMsg('ARSENAL CACHE','RUN DAMAGE +8% • FIRE RATE +6%',900)}
  if(type==='nova'){
    for(let b of enemyBullets){b.dead=true;spawnParticle(b.x,b.y,'#ff5df2',3,120)}
    for(let e of enemies)if(!e.dead&&e.type!=='boss'){e.hp-=130;e.hit=1;if(e.hp<=0){if(e.type==='boss')beginBossDeath(e);else killEnemy(e)}}
@@ -2260,7 +2316,7 @@ function update(dt){
  comboTimer-=dt;if(comboTimer<=0)combo=Math.max(1,combo-dt*.8);
  player.shotTimer-=dt;player.dashCd-=dt;player.parryCd-=dt;player.inv-=dt;player.parryWindow-=dt;
  player.aegis=Math.max(0,player.aegis-dt);player.overdrive=Math.max(0,player.overdrive-dt);player.overclock=Math.max(0,player.overclock-dt);player.critSurge=Math.max(0,player.critSurge-dt);player.fortify=Math.max(0,player.fortify-dt);player.emCd=Math.max(0,player.emCd-dt);player.pslow=Math.max(0,player.pslow-dt);
- if(player.maxShield>0)player.shieldPool=Math.min(player.maxShield,player.shieldPool+3*dt);
+ if(player.maxShield>0)player.shieldPool=Math.min(player.maxShield,player.shieldPool+player.shieldRegen*dt);
  if(player.regen>0)player.hp=Math.min(player.maxHp,player.hp+player.regen*dt);
  syncMobileAim();
  if(mouse.down&&player.shotTimer<=0)shoot();
@@ -2643,6 +2699,10 @@ function drawIcon(type,x,y,s,color){
  else if(type==='critsurge'){ctx.beginPath();ctx.arc(0,0,s*.8,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.arc(0,0,s*.32,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.moveTo(-s,0);ctx.lineTo(s,0);ctx.moveTo(0,-s);ctx.lineTo(0,s);ctx.stroke()}
  else if(type==='fortify'){ctx.beginPath();ctx.moveTo(0,-s);ctx.lineTo(s*.8,-s*.45);ctx.lineTo(s*.62,s*.4);ctx.lineTo(0,s);ctx.lineTo(-s*.62,s*.4);ctx.lineTo(-s*.8,-s*.45);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.moveTo(-s*.35,0);ctx.lineTo(s*.35,0);ctx.stroke()}
  else if(type==='bounty'){ctx.beginPath();ctx.arc(0,0,s*.85,0,Math.PI*2);ctx.stroke();ctx.font=`900 ${Math.max(8,s*1.2)}px Segoe UI`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('$',0,0);ctx.textAlign='left';ctx.textBaseline='alphabetic'}
+ else if(type==='hypercharge'){ctx.beginPath();ctx.moveTo(-s,-s*.7);ctx.lineTo(-s*.15,0);ctx.lineTo(-s,s*.7);ctx.moveTo(0,-s);ctx.lineTo(s,0);ctx.lineTo(0,s);ctx.stroke()}
+ else if(type==='nanocloud'){ctx.beginPath();ctx.arc(0,0,s*.85,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.moveTo(-s*.45,0);ctx.lineTo(s*.45,0);ctx.moveTo(0,-s*.45);ctx.lineTo(0,s*.45);ctx.stroke()}
+ else if(type==='phasecell'){ctx.beginPath();ctx.moveTo(0,-s);ctx.lineTo(s*.85,0);ctx.lineTo(0,s);ctx.lineTo(-s*.85,0);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.arc(0,0,s*.25,0,Math.PI*2);ctx.fill()}
+ else if(type==='arsenal'){ctx.beginPath();ctx.moveTo(-s*.85,s*.7);ctx.lineTo(s*.85,-s*.7);ctx.moveTo(-s*.85,-s*.7);ctx.lineTo(s*.85,s*.7);ctx.stroke();ctx.beginPath();ctx.arc(0,0,s*.28,0,Math.PI*2);ctx.fill()}
  ctx.restore();
 }
 
