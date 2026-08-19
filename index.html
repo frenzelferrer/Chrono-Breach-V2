@@ -109,6 +109,7 @@ button{font-family:inherit}
 .cloudStatus{font-size:10px;color:#ffd85d}.cloudIdentity{font-size:13px;font-weight:900;margin:10px 0;color:#fff}
 .cloudActions{display:flex;gap:8px;flex-wrap:wrap}.cloudActions input{flex:1;min-width:145px;background:#071322;border:1px solid rgba(90,150,200,.45);border-radius:8px;color:#fff;padding:10px;font:700 12px inherit;text-transform:uppercase}
 .cloudActions .btn{padding:9px 12px;font-size:10px}.recoveryCode{margin-top:10px;font:800 12px monospace;color:#ffd85d;overflow-wrap:anywhere}
+.pilotSetup{width:min(520px,92vw);padding:42px;text-align:center}.pilotSetupMark{font-size:11px;font-weight:1000;letter-spacing:.25em;color:var(--cy);margin-bottom:12px}.pilotSetup h2{margin:0;font-size:clamp(30px,5vw,48px);letter-spacing:.08em}.pilotSetup p{color:#9db1c7;line-height:1.65;margin:14px auto 24px;max-width:410px}.pilotSetup input{width:min(330px,100%);background:#071322;border:1px solid rgba(87,233,255,.5);border-radius:10px;color:#fff;padding:14px 18px;font:900 15px inherit;letter-spacing:.13em;text-align:center;text-transform:uppercase;outline:none}.pilotSetup input:focus{border-color:var(--cy);box-shadow:0 0 22px rgba(87,233,255,.2)}.pilotSetup .btnRow{margin-top:18px}.pilotSetupNote{min-height:18px;margin-top:14px;color:#ffd85d;font-size:10px;font-weight:900;letter-spacing:.08em}
 .liveAnnouncement{position:fixed;z-index:30;top:12px;left:50%;transform:translateX(-50%);width:min(720px,92vw);display:none;align-items:center;gap:14px;padding:11px 14px;background:rgba(7,19,34,.96);border:1px solid var(--cy);border-radius:10px;box-shadow:0 10px 35px #0009;color:#dff8ff;font-size:12px}.liveAnnouncement.on{display:flex}.liveAnnouncement.warning{border-color:var(--gd)}.liveAnnouncement.critical{border-color:var(--rd)}.liveAnnouncement.success{border-color:var(--gn)}.liveAnnouncement b{white-space:nowrap;letter-spacing:.1em}.liveAnnouncement span{flex:1;color:#a9c5d6}.liveAnnouncement button{padding:3px 7px;background:none;color:#fff;box-shadow:none}
 .title{font-size:clamp(46px,8vw,110px);font-weight:1000;letter-spacing:.04em;line-height:.9;margin:0;text-shadow:0 0 40px rgba(70,225,255,.4)}
 .title em{font-style:normal;color:var(--cy)}
@@ -478,6 +479,19 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 
 <!-- ==================== LANDING ==================== -->
 <div id="liveAnnouncement" class="liveAnnouncement"><b id="announcementTitle"></b><span id="announcementMessage"></span><button id="announcementClose">×</button></div>
+<div id="onboarding" class="screen dim">
+  <div class="pilotSetup glass">
+    <div class="pilotSetupMark">PILOT REGISTRATION</div>
+    <h2>CHOOSE YOUR CALLSIGN</h2>
+    <p>This name identifies you across the Chrono Breach and automatically syncs every completed run to the global leaderboard.</p>
+    <input id="onboardName" maxlength="12" placeholder="PLAYER NAME" autocomplete="nickname" autofocus>
+    <div class="btnRow">
+      <button class="btn" id="onboardCreate">ENTER THE BREACH</button>
+      <button class="btn ghost" id="onboardRecover">RECOVER EXISTING PILOT</button>
+    </div>
+    <div class="pilotSetupNote" id="onboardStatus">2–12 LETTERS, NUMBERS, _ OR -</div>
+  </div>
+</div>
 <div id="menu" class="screen on">
   <div class="hero">
     <div class="topbar">
@@ -680,7 +694,7 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     <div class="meta2" id="finalMeta"></div>
     <div id="nameEntry">
       <input id="pilotName" maxlength="12" placeholder="ENTER CALLSIGN" autocomplete="off">
-      <button class="btn" id="saveScore" style="padding:12px 20px">SAVE CALLSIGN</button>
+      <button class="btn" id="saveScore" style="padding:12px 20px">SAVE TO LEADERBOARD</button>
     </div>
     <div class="lbTable" id="goLb" style="margin-top:16px"></div>
     <div class="btnRow">
@@ -990,7 +1004,7 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const cloudSync=(()=>{
  const API=(window.CHRONO_API_URL||'').replace(/\/$/,'');
  const TK='chronoCloudTokenV2',PK='chronoCloudProfileV2',OK='chronoCloudOutboxV2',BK='chronoCloudBoardsV2';
- let token=localStorage.getItem(TK)||'',profile=jload(PK,null),outbox=jload(OK,[]),boards=jload(BK,{scores:[],titan:[],paradox:[]}),boardStates={scores:'idle',titan:'idle',paradox:'idle'},busy=false,status=API?(token?'OFFLINE':'LOCAL'):'NOT CONFIGURED',recovery='';
+ let token=localStorage.getItem(TK)||'',profile=jload(PK,null),outbox=jload(OK,[]),boards=jload(BK,{scores:[],titan:[],paradox:[]}),boardStates={scores:'idle',titan:'idle',paradox:'idle'},busy=false,linking=null,status=API?(token?'OFFLINE':'LOCAL'):'NOT CONFIGURED',recovery='';
  const snapshot=()=>JSON.parse(JSON.stringify({meta,settings}));
  const persist=()=>jsave(OK,outbox);
  function emit(){renderPanel();refreshTopbar()}
@@ -1000,17 +1014,26 @@ const cloudSync=(()=>{
   try{const r=await fetch(API+path,{...opt,signal:c.signal,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{}),...(opt.headers||{})}}),b=await r.json();if(!r.ok||b.error){const e=Error(b.error?.message||'Cloud request failed');e.status=r.status;throw e}return b.data}finally{clearTimeout(t)}
  }
  function accept(p,force=false){profile=p;jsave(PK,p);if(force||!outbox.length){Object.assign(meta,p.save.meta);Object.assign(settings,p.save.settings);jsave('chronoMeta',meta);jsave('chronoSettings',settings)}emit()}
- async function create(){const name=($('cloudName').value||pilotName()).trim().slice(0,12).toUpperCase();if(name.length<2)return alert('Callsign must be 2-12 letters, numbers, _ or -.');setStatus('SYNCING');try{const d=await api('/api/v1/pilots',{method:'POST',body:JSON.stringify({displayName:name,importedSave:snapshot()})});token=d.sessionToken;profile=d.profile;recovery=d.recoveryCode;localStorage.setItem(TK,token);localStorage.setItem('chronoName',name);outbox=[];persist();accept(profile,true);setStatus('SYNCED')}catch(e){setStatus('OFFLINE');alert(e.message)}}
- async function recover(){const code=prompt('Enter your CHRONO//BREACH recovery code:');if(!code)return;setStatus('SYNCING');try{const d=await api('/api/v1/pilots/recover',{method:'POST',body:JSON.stringify({recoveryCode:code})});token=d.sessionToken;recovery=d.recoveryCode;localStorage.setItem(TK,token);outbox=[];persist();accept(d.profile,true);localStorage.setItem('chronoName',d.profile.displayName);setStatus('SYNCED')}catch(e){setStatus('AUTH ERROR');alert(e.message)}}
+ const validCloudName=name=>{name=String(name||'').trim().slice(0,12).toUpperCase();return /^[A-Z0-9_-]{2,12}$/.test(name)&&name!=='ANON'?name:''};
+ async function link(name,interactive=false){
+  if(linking)return linking;if(token&&status!=='AUTH ERROR')return await sync();if(status==='AUTH ERROR'){token='';localStorage.removeItem(TK)}name=validCloudName(name);if(!name){if(interactive)alert('Callsign must be 2-12 letters, numbers, _ or -.');return false}
+  setStatus('SYNCING');linking=(async()=>{try{const d=await api('/api/v1/pilots',{method:'POST',body:JSON.stringify({displayName:name,importedSave:snapshot()})});token=d.sessionToken;profile=d.profile;recovery=d.recoveryCode;localStorage.setItem(TK,token);localStorage.setItem('chronoName',name);accept(profile,true);setStatus('SYNCED');await sync();return status==='SYNCED'}catch(e){setStatus('OFFLINE');if(interactive)alert(e.message);return false}finally{linking=null}})();return linking;
+ }
+ async function create(){await link($('cloudName').value||pilotName(),true)}
+ async function recover(){const code=prompt('Enter your CHRONO//BREACH recovery code:');if(!code)return false;setStatus('SYNCING');try{const d=await api('/api/v1/pilots/recover',{method:'POST',body:JSON.stringify({recoveryCode:code})});token=d.sessionToken;recovery=d.recoveryCode;localStorage.setItem(TK,token);outbox=[];persist();accept(d.profile,true);localStorage.setItem('chronoName',d.profile.displayName);setStatus('SYNCED');return true}catch(e){setStatus('AUTH ERROR');alert(e.message);return false}}
  async function rotate(){if(!token)return;setStatus('SYNCING');try{const d=await api('/api/v1/profile/recovery-code',{method:'POST'});recovery=d.recoveryCode;setStatus('SYNCED')}catch(e){setStatus(e.status===401?'AUTH ERROR':'OFFLINE');alert(e.message)}}
  function queueSave(){if(!token)return;outbox=outbox.filter(x=>x.type!=='save');outbox.push({type:'save',save:snapshot(),baseRevision:profile?.revision});persist();setTimeout(sync,250)}
- function queueRun(rec){if(!token)return;outbox.push({type:'run',run:{clientEventId:crypto.randomUUID(),score:Math.max(0,Math.round(rec.s||0)),sector:Math.max(1,Math.min(5,(rec.m||0)+1)),wave:Math.max(1,Math.round(rec.w||1)),mode:(rec.eternal||endless)?'endless':'standard',level:Math.max(1,Math.min(5,Math.round(rec.level||1))),kills:Math.max(0,Math.round(rec.kills||0)),bossKills:Math.max(0,Math.round(rec.bossKills||0)),clearTime:Math.max(0,+rec.clearTime||0),titan:!!rec.titanDefeated,paradox:!!rec.paradoxDefeated,eternalLevel:Math.max(0,Math.round(rec.eternalLevel||0)),save:snapshot(),baseRevision:profile?.revision}});persist();sync()}
- async function sync(){if(!token||busy||!API)return;busy=true;setStatus('SYNCING');try{while(outbox.length){const x=outbox[0],d=x.type==='run'?await api('/api/v1/runs',{method:'POST',body:JSON.stringify(x.run)}):await api('/api/v1/profile/save',{method:'PATCH',body:JSON.stringify({save:x.save,baseRevision:x.baseRevision})});outbox.shift();persist();accept(d.profile,true)}const d=await api('/api/v1/profile');accept(d.profile,true);setStatus('SYNCED')}catch(e){setStatus(e.status===401?'AUTH ERROR':'OFFLINE')}finally{busy=false;if(outbox.length&&navigator.onLine)setTimeout(sync,500)}}
+ function queueRun(rec){outbox.push({type:'run',run:{clientEventId:crypto.randomUUID(),score:Math.max(0,Math.round(rec.s||0)),sector:Math.max(1,Math.min(5,(rec.m||0)+1)),wave:Math.max(1,Math.round(rec.w||1)),mode:(rec.eternal||endless)?'endless':'standard',level:Math.max(1,Math.min(5,Math.round(rec.level||1))),kills:Math.max(0,Math.round(rec.kills||0)),bossKills:Math.max(0,Math.round(rec.bossKills||0)),clearTime:Math.max(0,+rec.clearTime||0),titan:!!rec.titanDefeated,paradox:!!rec.paradoxDefeated,eternalLevel:Math.max(0,Math.round(rec.eternalLevel||0)),save:snapshot(),baseRevision:profile?.revision}});persist();if(token)sync();else link(rec.n)}
+ async function sync(){if(!token||busy||!API)return false;let synced=false;busy=true;setStatus('SYNCING');try{while(outbox.length){const x=outbox[0],d=x.type==='run'?await api('/api/v1/runs',{method:'POST',body:JSON.stringify(x.run)}):await api('/api/v1/profile/save',{method:'PATCH',body:JSON.stringify({save:x.save,baseRevision:x.baseRevision})});outbox.shift();persist();accept(d.profile,true)}const d=await api('/api/v1/profile');accept(d.profile,true);setStatus('SYNCED');synced=true}catch(e){setStatus(e.status===401?'AUTH ERROR':'OFFLINE')}finally{busy=false;if(outbox.length&&navigator.onLine)setTimeout(sync,500)}return synced}
  async function fetchBoard(mode){if(!API)return boards[mode]||[];boardStates[mode]='loading';try{const d=await api('/api/v1/leaderboard?limit=50&mode='+mode,{cache:'no-store'});boards[mode]=d.entries.map((r,i)=>({rid:'cloud-'+mode+'-'+i,pid:'cloud-'+r.displayName+'-'+r.discriminator,n:r.displayName+'#'+r.discriminator,s:r.score,w:r.wave,m:r.sector-1,d:Date.parse(r.achievedAt),level:r.level,kills:r.kills,bossKills:r.bossKills,clearTime:r.clearTime,titanDefeated:r.titan,titanCore:r.titan,paradoxDefeated:r.paradox,paradoxCore:r.paradox,eternal:!!r.eternalLevel,eternalLevel:r.eternalLevel||0}));boardStates[mode]='ready';jsave(BK,boards);return boards[mode]}catch(e){boardStates[mode]='offline';return boards[mode]||[]}}
  function renderPanel(){if(!$('cloudStatus'))return;$('cloudStatus').textContent=status;$('cloudIdentity').textContent=profile?profile.displayName+'#'+profile.discriminator:'LOCAL PILOT';$('cloudCreateRow').style.display=token&&status!=='AUTH ERROR'?'none':'flex';$('cloudLinkedRow').style.display=token&&status!=='AUTH ERROR'?'flex':'none';$('cloudRecovery').textContent=recovery?'SAVE THIS NEW CODE: '+recovery:(token?'Recovery codes appear only when created or rotated.':'')}
  async function fetchAnnouncement(){if(!API)return;try{const d=await api('/api/v1/announcements'),a=d.announcements[0];if(!a)return;const bar=$('liveAnnouncement');bar.className='liveAnnouncement on '+a.severity;$('announcementTitle').textContent=a.title;$('announcementMessage').textContent=a.message;$('announcementClose').onclick=()=>bar.classList.remove('on')}catch(e){}}
- function init(){$('cloudCreate').onclick=create;$('cloudRecover').onclick=recover;$('cloudSync').onclick=sync;$('cloudRotate').onclick=rotate;window.addEventListener('online',sync);renderPanel();fetchAnnouncement();if(token)sync()}
- return{init,queueSave,queueRun,fetchBoard,getBoard:m=>boards[m]||[],boardState:m=>boardStates[m]||'idle',configured:()=>!!API,identity:()=>profile?profile.displayName+'#'+profile.discriminator:null,status:()=>status};
+ function resume(){if(token)sync();else if(outbox.some(x=>x.type==='run'))link(localStorage.getItem('chronoName'))}
+ function finishOnboarding(){setState('MENU');showScreen('menu');refreshTopbar()}
+ async function onboard(){const name=$('onboardName').value.trim().slice(0,12).toUpperCase(),button=$('onboardCreate');if(!validCloudName(name)){alert('Callsign must be 2-12 letters, numbers, _ or -.');return}button.disabled=true;button.textContent='REGISTERING…';$('onboardStatus').textContent='CONNECTING TO GLOBAL LEADERBOARD…';const linked=await link(name,true);button.disabled=false;button.textContent='ENTER THE BREACH';$('onboardStatus').textContent=linked?'PILOT LINKED — SCORES WILL SYNC AUTOMATICALLY':'COULD NOT CONNECT — CHECK YOUR CONNECTION';if(linked)finishOnboarding()}
+ async function onboardRecover(){if(await recover())finishOnboarding()}
+ function init(){$('cloudCreate').onclick=create;$('cloudRecover').onclick=recover;$('cloudSync').onclick=sync;$('cloudRotate').onclick=rotate;$('onboardCreate').onclick=onboard;$('onboardRecover').onclick=onboardRecover;$('onboardName').addEventListener('keydown',e=>{if(e.key==='Enter')onboard()});window.addEventListener('online',resume);renderPanel();fetchAnnouncement();if(token)resume();else setTimeout(()=>{setState('ONBOARDING');showScreen('onboarding');$('onboardName').focus()},0)}
+ return{init,queueSave,queueRun,claim:name=>link(name),fetchBoard,getBoard:m=>boards[m]||[],boardState:m=>boardStates[m]||'idle',configured:()=>!!API,identity:()=>profile?profile.displayName+'#'+profile.discriminator:null,status:()=>status};
 })();
 window.chronoCloud=cloudSync;cloudSync.init();
 
@@ -1323,7 +1346,7 @@ let ngPlus=false,loadoutRunMode='normal';
 const TIPS=['Dash through bullets and use your equipped Tactical Skill to survive pressure.','Your shots can intercept enemy bullets — shoot them down.','Defeated bosses drop rare powerups — grab them fast.','A full ⚡ ENERGY bar lets you fracture time with Q.','Your loadout can be changed before every sector — experiment with skills and shards.','Your ship evolves every level — up to APEX at Level 5.','Elite Wardens shield themselves. Break the shield first.'];
 
 /* ---------------- screen manager ---------------- */
-const SCREENS=['menu','smap','lbPanel','shopPanel','loadoutPanel','settingsPanel','howtoPanel','pausePanel','upgrade','rewardPanel','gameover','victory','paradoxVictory','ascendEnding'];
+const SCREENS=['onboarding','menu','smap','lbPanel','shopPanel','loadoutPanel','settingsPanel','howtoPanel','pausePanel','upgrade','rewardPanel','gameover','victory','paradoxVictory','ascendEnding'];
 function showScreen(id){
  for(const s of SCREENS)$(s).classList.toggle('on',s===id);
  $('hud').classList.toggle('on',['PLAYING','LEVEL_UP','BOSS_INTRO','BOSS_DEFEATED','PAUSED'].includes(state));
@@ -2530,6 +2553,7 @@ function showVictory(r){
 }
 $('vClaim').onclick=()=>{
  const n=($('vPilotName').value||'').trim().slice(0,12).toUpperCase()||'ANON';renameLocalPilotRecords(n);
+ cloudSync.claim(n);
  $('vNameEntry').style.display='none';$('vClaimed').textContent=`${n} — TITAN CORE REGISTERED`;tone(720,.22,'sine',.035,360);haptic([35,25,70]);
 };
 $('vPilotName').addEventListener('keydown',e=>{if(e.key==='Enter')$('vClaim').click()});
@@ -2550,8 +2574,8 @@ let gameOverRecordId=null;
 function logScore(){
  const reachedHighScore=score>0&&score>=best;
  best=Math.max(best,score);localStorage.setItem('chronoBest',best);
- const needsCallsign=reachedHighScore&&!cloudSync.identity()&&pilotName()==='ANON';
- $('nameEntry').style.display=needsCallsign?'flex':'none';
+ const needsLeaderboardSave=score>0&&!cloudSync.identity();
+ $('nameEntry').style.display=needsLeaderboardSave?'flex':'none';
  $('pilotName').value=localStorage.getItem('chronoName')||'';
  return reachedHighScore;
 }
@@ -2564,18 +2588,24 @@ function gameOver(){
  if(eternal)$('nameEntry').style.display='none';
  setState('GAME_OVER');
  $('finalScore').textContent=score.toLocaleString();
- $('newBest').style.display=isBest?'block':'none';$('autoLogged').style.display=isBest?'block':'none';
+ $('newBest').style.display=isBest?'block':'none';$('autoLogged').textContent='✓ SCORE SUBMITTED AUTOMATICALLY';$('autoLogged').style.display=score>0&&cloudSync.identity()?'block':'none';
  const mins=Math.floor(runTime/60),secs=Math.floor(runTime%60);
  $('finalMeta').innerHTML=`${eternal?`∞ ETERNAL BREACH <b>${eternalLevel}</b> · PARADOX CONQUEROR`:endless?`ENDLESS · Cycle <b>${Math.max(1,endlessCycle)}</b> · Convergence <b>${endlessBossDefeated}/${endlessBossTotal||2}</b>`:`${ngPlus?'◈ NEW GAME+ · ':''}${MAPS[curMap].name} · Wave <b>${wave}</b>`} · Level <b>${player.level}</b><br>Enemies defeated <b>${kills}</b> · Bosses <b>${bossKills}</b> · Survived <b>${mins}:${String(secs).padStart(2,'0')}</b><br>${eternal?`Highest Eternal: <b>${Math.max(meta.bestEternal||0,eternalLevel)}</b> · `:''}Best timeline: <b>${best.toLocaleString()}</b>`;
  $('goLb').innerHTML=boardHTML(5,'scores');
  $('goBossRetry').style.display=bossCheckpoint?'inline-flex':'none';
  showScreen('gameover');tone(48,1,'sawtooth',.05,-20);
 }
-$('saveScore').onclick=()=>{
- const n=(($('pilotName').value||'').trim().slice(0,12)||'ANON').toUpperCase();
+$('saveScore').onclick=async()=>{
+ const n=($('pilotName').value||'').trim().slice(0,12).toUpperCase();
+ if(!/^[A-Z0-9_-]{2,12}$/.test(n)){alert('Callsign must be 2-12 letters, numbers, _ or -.');return}
+ const button=$('saveScore');button.disabled=true;button.textContent='SAVING…';
  renameLocalPilotRecords(n);
- $('nameEntry').style.display='none';$('goLb').innerHTML=boardHTML(5,'scores');refreshTopbar();
- tone(520,.15,'sine',.03,300);
+ const saved=await cloudSync.claim(n);
+ button.disabled=false;button.textContent=saved?'SAVED':'RETRY SAVE';
+ $('autoLogged').textContent=saved?'✓ SCORE SAVED TO GLOBAL LEADERBOARD':'SCORE QUEUED LOCALLY — RETRY WHEN ONLINE';$('autoLogged').style.display='block';
+ if(saved){$('nameEntry').style.display='none';await cloudSync.fetchBoard('scores')}
+ $('goLb').innerHTML=boardHTML(5,'scores');refreshTopbar();
+ if(saved)tone(520,.15,'sine',.03,300);
 };
 function restartFromPhaseOne(){if(endless&&meta.titanCore)startFreshEndlessRun();else startRun(curMap,ngPlus?'ngplus':'normal')}
 $('goBossRetry').onclick=()=>{audio();if(!restoreBossCheckpoint())$('goBossRetry').style.display='none'};
