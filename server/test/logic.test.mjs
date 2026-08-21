@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { shouldReplaceScore } from '../dist/logic.js';
+import { isCallsignAllowed } from '../dist/moderation.js';
 import { createAdminToken, hashSecret, newRecoveryCode, normalizeRecoveryCode, verifyAdminToken } from '../dist/security.js';
 import { isPlausibleRun, runSchema } from '../dist/validation.js';
 
@@ -14,3 +15,8 @@ describe('run validation',()=>{
 });
 describe('recovery secrets',()=>it('normalizes and hashes recovery codes',()=>{const code=newRecoveryCode();assert.match(code,/^CB-[A-F0-9]{6}(?:-[A-F0-9]{6}){3}$/);assert.equal(hashSecret(normalizeRecoveryCode(code.toLowerCase()),'a'.repeat(24)),hashSecret(code,'a'.repeat(24)))}));
 describe('admin sessions',()=>it('signs expiring admin tokens',()=>{const secret='s'.repeat(32),token=createAdminToken('admin',secret,1000);assert.equal(verifyAdminToken(token,secret,2000),'admin');assert.equal(verifyAdminToken(token,secret,1000+8*60*60*1000+1),null)}));
+describe('callsign moderation',()=>{
+  it('allows normal names and known false positives',()=>{for(const name of ['STARCADE','BAYANI','SUGBO','ASSASSIN','PASSION','PUTAHE','GRAPE','THERAPIST','BILATERAL'])assert.equal(isCallsignAllowed(name),true,name)});
+  it('blocks English profanity and separator/repeat evasions',()=>{for(const name of ['F_U_C_K','FUUUCK','SHIT','P0RNHUB'])assert.equal(isCallsignAllowed(name),false,name)});
+  it('blocks Filipino and Bisaya/Cebuano profanity with leetspeak',()=>{for(const name of ['P0TANG1NA','B0B0','Y4W4','K4Y4T4'])assert.equal(isCallsignAllowed(name),false,name)});
+});

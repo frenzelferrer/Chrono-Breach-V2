@@ -2,7 +2,9 @@ import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
 import request from 'supertest';
 import { createApp } from '../dist/app.js';
-import { createDatabase, runMigrations } from '../dist/db/index.js';
+import { createDatabase, refreshCallsignModeration, runMigrations } from '../dist/db/index.js';
+import { pilots } from '../dist/db/schema.js';
+import { eq } from 'drizzle-orm';
 
 const databaseUrl = process.env.TEST_DATABASE_URL;
 const suite = databaseUrl ? describe : describe.skip;
@@ -29,6 +31,7 @@ suite('API integration', () => {
   after(async () => { await pool?.end(); });
 
   it('creates, authenticates, recovers, deduplicates, and ranks a pilot', async () => {
+    await request(app).post('/api/v1/pilots').send({ displayName: 'F_U_C_K', importedSave: save }).expect(422);
     const created = await request(app).post('/api/v1/pilots').send({ displayName: 'TESTER', importedSave: save }).expect(201);
     const { sessionToken, recoveryCode } = created.body.data;
     await request(app).get('/api/v1/profile').set('Authorization', `Bearer ${sessionToken}`).expect(200);
@@ -50,11 +53,31 @@ suite('API integration', () => {
     const board = await request(app).get('/api/v1/leaderboard?limit=10').expect(200);
     assert.ok(board.body.data.entries.some(entry => entry.displayName === 'TESTER' && entry.score === 5000));
 
+    await db.update(pilots).set({ displayName: 'YAWA', nameModerationVersion: 0 }).where(eq(pilots.id, pilotId));
+    assert.equal(await refreshCallsignModeration(db), 1);
+    const hiddenBoard = await request(app).get('/api/v1/leaderboard?limit=10').expect(200);
+    assert.ok(!hiddenBoard.body.data.entries.some(entry => entry.discriminator === created.body.data.profile.discriminator));
+    const moderationQueue = await request(app).get('/api/v1/admin/pilots?moderation=flagged').set('Authorization', `Bearer ${adminToken}`).expect(200);
+    assert.ok(moderationQueue.body.data.pilots.some(pilot => pilot.id === pilotId && pilot.nameFlagged));
+
+    await request(app).post(`/api/v1/admin/pilots/${pilotId}/force-rename`).set('Authorization', `Bearer ${adminToken}`).send({ reason: 'Inappropriate callsign integration test' }).expect(200);
+    const renameRequired = await request(app).get('/api/v1/profile').set('Authorization', `Bearer ${sessionToken}`).expect(200);
+    assert.equal(renameRequired.body.data.profile.requiresRename, true);
+    assert.equal(renameRequired.body.data.profile.displayName, 'PILOT');
+    await request(app).patch('/api/v1/profile/save').set('Authorization', `Bearer ${sessionToken}`).send({ save }).expect(409);
+    await request(app).post('/api/v1/runs').set('Authorization', `Bearer ${sessionToken}`).send({ ...run, clientEventId: crypto.randomUUID() }).expect(409);
+    await request(app).patch('/api/v1/profile/callsign').set('Authorization', `Bearer ${sessionToken}`).send({ displayName: 'PUTANGINA' }).expect(422);
+    const renamed = await request(app).patch('/api/v1/profile/callsign').set('Authorization', `Bearer ${sessionToken}`).send({ displayName: 'STARCADE' }).expect(200);
+    assert.equal(renamed.body.data.profile.requiresRename, false);
+    assert.equal(renamed.body.data.profile.displayName, 'STARCADE');
+    const restoredBoard = await request(app).get('/api/v1/leaderboard?limit=10').expect(200);
+    assert.ok(restoredBoard.body.data.entries.some(entry => entry.displayName === 'STARCADE' && entry.score === 5000));
+
     const recovered = await request(app).post('/api/v1/pilots/recover').send({ recoveryCode }).expect(200);
     assert.notEqual(recovered.body.data.recoveryCode, recoveryCode);
     await request(app).post('/api/v1/pilots/recover').send({ recoveryCode }).expect(401);
 
-    const pilotTag = `${created.body.data.profile.displayName}#${created.body.data.profile.discriminator}`;
+    const pilotTag = `STARCADE#${created.body.data.profile.discriminator}`;
     await request(app).delete(`/api/v1/admin/pilots/${pilotId}`).set('Authorization', `Bearer ${adminToken}`).send({ confirmTag: 'WRONG#0000', reason: 'Integration deletion test' }).expect(400);
     const deletion = await request(app).delete(`/api/v1/admin/pilots/${pilotId}`).set('Authorization', `Bearer ${adminToken}`).send({ confirmTag: pilotTag, reason: 'Integration deletion test' }).expect(200);
     assert.equal(deletion.body.data.deleted, true);
@@ -63,8 +86,9 @@ suite('API integration', () => {
     await request(app).get('/api/v1/profile').set('Authorization', `Bearer ${sessionToken}`).expect(401);
     await request(app).get(`/api/v1/admin/pilots/${pilotId}`).set('Authorization', `Bearer ${adminToken}`).expect(404);
     const boardAfterDeletion = await request(app).get('/api/v1/leaderboard?limit=10').expect(200);
-    assert.ok(!boardAfterDeletion.body.data.entries.some(entry => entry.displayName === 'TESTER'));
+    assert.ok(!boardAfterDeletion.body.data.entries.some(entry => entry.displayName === 'STARCADE'));
     const audit = await request(app).get('/api/v1/admin/audit').set('Authorization', `Bearer ${adminToken}`).expect(200);
+    assert.ok(audit.body.data.audit.some(entry => entry.action === 'pilot.force_rename'));
     assert.ok(audit.body.data.audit.some(entry => entry.action === 'pilot.delete' && entry.details.deletedPilotId === pilotId));
   });
 });

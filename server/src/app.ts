@@ -11,13 +11,17 @@ import type { Database } from './db/index.js';
 import { announcements, leaderboardEntries, pilots, runs, sessions } from './db/schema.js';
 import { ApiError } from './errors.js';
 import { shouldReplaceScore } from './logic.js';
+import { isCallsignAllowed, NAME_MODERATION_VERSION } from './moderation.js';
 import { publicProfile } from './profile.js';
 import { hashSecret, newDiscriminator, newId, newRecoveryCode, newSessionToken, normalizeRecoveryCode } from './security.js';
 import type { AuthenticatedPilot, AuthenticatedRequest } from './types.js';
-import { createPilotSchema, isPlausibleRun, recoverPilotSchema, runSchema, updateSaveSchema } from './validation.js';
+import { callsignUpdateSchema, createPilotSchema, isPlausibleRun, recoverPilotSchema, runSchema, updateSaveSchema } from './validation.js';
 
 const asPilot = (row: typeof pilots.$inferSelect): AuthenticatedPilot => row;
 const allowedOrigin = (origin: string, configured: string[]) => configured.some(item => item.endsWith('*') ? origin.startsWith(item.slice(0, -1)) : origin === item);
+const requireRenameComplete = (request: AuthenticatedRequest) => {
+  if (request.pilot!.requiresRename) throw new ApiError(409, 'CALLSIGN_RENAME_REQUIRED', 'Choose a new callsign before continuing');
+};
 
 export function createApp(db: Database, config: AppConfig) {
   const app = express();
@@ -53,11 +57,12 @@ export function createApp(db: Database, config: AppConfig) {
 
   app.post('/api/v1/pilots', async (request, response, next) => {
     try {
-      const body = createPilotSchema.parse(request.body), recoveryCode = newRecoveryCode(), sessionToken = newSessionToken(), now = new Date();
+      const body = createPilotSchema.parse(request.body), displayName = body.displayName.toUpperCase(), recoveryCode = newRecoveryCode(), sessionToken = newSessionToken(), now = new Date();
+      if (!isCallsignAllowed(displayName)) throw new ApiError(422, 'CALLSIGN_NOT_ALLOWED', 'Choose a different callsign');
       const pilot = await db.transaction(async tx => {
         const inserted = await tx.insert(pilots).values({
-          id: newId(), displayName: body.displayName.toUpperCase(), discriminator: newDiscriminator(), recoveryHash: hashSecret(normalizeRecoveryCode(recoveryCode), config.RECOVERY_PEPPER),
-          saveData: body.importedSave, bestScore: Math.max(0, ...body.importedSave.meta.best), revision: 1, createdAt: now, updatedAt: now,
+          id: newId(), displayName, discriminator: newDiscriminator(), recoveryHash: hashSecret(normalizeRecoveryCode(recoveryCode), config.RECOVERY_PEPPER),
+          saveData: body.importedSave, bestScore: Math.max(0, ...body.importedSave.meta.best), revision: 1, nameModerationVersion: NAME_MODERATION_VERSION, createdAt: now, updatedAt: now,
         }).returning();
         await tx.insert(sessions).values({ id: newId(), pilotId: inserted[0]!.id, tokenHash: hashSecret(sessionToken, config.SESSION_PEPPER) }); return inserted[0]!;
       });
@@ -80,8 +85,21 @@ export function createApp(db: Database, config: AppConfig) {
 
   app.get('/api/v1/profile', authenticate, (request: AuthenticatedRequest, response) => response.json({ data: { profile: publicProfile(request.pilot!) } }));
 
+  app.patch('/api/v1/profile/callsign', rateLimit({ windowMs: 60 * 60_000, limit: 20, standardHeaders: 'draft-8', legacyHeaders: false }), authenticate, async (request: AuthenticatedRequest, response, next) => {
+    try {
+      const body = callsignUpdateSchema.parse(request.body), displayName = body.displayName.toUpperCase();
+      if (!request.pilot!.requiresRename) throw new ApiError(409, 'CALLSIGN_RENAME_NOT_REQUIRED', 'This account does not require a callsign change');
+      if (displayName === request.pilot!.displayName.toUpperCase()) throw new ApiError(400, 'CALLSIGN_UNCHANGED', 'Choose a new callsign');
+      if (!isCallsignAllowed(displayName)) throw new ApiError(422, 'CALLSIGN_NOT_ALLOWED', 'Choose a different callsign');
+      const updated = await db.update(pilots).set({ displayName, nameFlagged: false, requiresRename: false, nameModerationVersion: NAME_MODERATION_VERSION, revision: sql`${pilots.revision} + 1`, updatedAt: new Date() }).where(eq(pilots.id, request.pilot!.id)).returning();
+      if (!updated[0]) throw new ApiError(404, 'PILOT_NOT_FOUND', 'Pilot not found');
+      response.json({ data: { profile: publicProfile(asPilot(updated[0])) } });
+    } catch (error) { next(error); }
+  });
+
   app.patch('/api/v1/profile/save', authenticate, async (request: AuthenticatedRequest, response, next) => {
     try {
+      requireRenameComplete(request);
       const body = updateSaveSchema.parse(request.body);
       const where = body.baseRevision ? and(eq(pilots.id, request.pilot!.id), eq(pilots.revision, body.baseRevision)) : eq(pilots.id, request.pilot!.id);
       const updated = await db.update(pilots).set({ saveData: body.save, bestScore: Math.max(request.pilot!.bestScore, ...body.save.meta.best), revision: sql`${pilots.revision} + 1`, updatedAt: new Date() }).where(where).returning();
@@ -103,6 +121,7 @@ export function createApp(db: Database, config: AppConfig) {
 
   app.post('/api/v1/runs', rateLimit({ windowMs: 60_000, limit: 20, standardHeaders: 'draft-8', legacyHeaders: false }), authenticate, async (request: AuthenticatedRequest, response, next) => {
     try {
+      requireRenameComplete(request);
       const run = runSchema.parse(request.body); if (!isPlausibleRun(run)) throw new ApiError(422, 'IMPLAUSIBLE_RUN', 'Run values exceed accepted game limits');
       const result = await db.transaction(async tx => {
         const inserted = await tx.insert(runs).values({ id: randomUUID(), pilotId: request.pilot!.id, clientEventId: run.clientEventId, score: run.score, sector: run.sector, wave: run.wave, mode: run.mode, level: run.level, kills: run.kills, bossKills: run.bossKills, clearTime: run.clearTime, titan: run.titan, paradox: run.paradox, eternalLevel: run.eternalLevel }).onConflictDoNothing().returning();
@@ -127,7 +146,7 @@ export function createApp(db: Database, config: AppConfig) {
       response.set('Cache-Control', 'no-store, no-cache, must-revalidate');
       const category = request.query.mode === 'paradox' ? 'paradox' : request.query.mode === 'titan' ? 'titan' : 'scores', rawLimit = Number(request.query.limit ?? 10), limit = Number.isInteger(rawLimit) ? Math.min(50, Math.max(1, rawLimit)) : 10;
       const rows = await db.select({ displayName: pilots.displayName, discriminator: pilots.discriminator, score: runs.score, sector: runs.sector, wave: runs.wave, mode: runs.mode, level: runs.level, kills: runs.kills, bossKills: runs.bossKills, clearTime: runs.clearTime, titan: runs.titan, paradox: runs.paradox, eternalLevel: runs.eternalLevel, achievedAt: leaderboardEntries.achievedAt })
-        .from(leaderboardEntries).innerJoin(pilots, eq(leaderboardEntries.pilotId, pilots.id)).innerJoin(runs, eq(leaderboardEntries.runId, runs.id)).where(and(eq(leaderboardEntries.category, category), eq(pilots.leaderboardHidden, false), eq(pilots.suspended, false))).orderBy(desc(leaderboardEntries.score), asc(leaderboardEntries.achievedAt)).limit(limit);
+        .from(leaderboardEntries).innerJoin(pilots, eq(leaderboardEntries.pilotId, pilots.id)).innerJoin(runs, eq(leaderboardEntries.runId, runs.id)).where(and(eq(leaderboardEntries.category, category), eq(pilots.leaderboardHidden, false), eq(pilots.suspended, false), eq(pilots.nameFlagged, false), eq(pilots.requiresRename, false))).orderBy(desc(leaderboardEntries.score), asc(leaderboardEntries.achievedAt)).limit(limit);
       response.json({ data: { entries: rows.map((row, index) => ({ ...row, rank: index + 1, achievedAt: row.achievedAt.toISOString() })) } });
     } catch (error) { next(error); }
   });

@@ -6,9 +6,10 @@ import type { AppConfig } from './config.js';
 import type { Database } from './db/index.js';
 import { adminAuditLogs, announcements, leaderboardEntries, pilots, runs, sessions } from './db/schema.js';
 import { ApiError } from './errors.js';
+import { isCallsignAllowed, NAME_MODERATION_VERSION } from './moderation.js';
 import { createAdminToken, newId, safeEqual, verifyAdminToken } from './security.js';
 import type { AdminRequest } from './types.js';
-import { adminGrantSchema, adminLoginSchema, adminPilotDeleteSchema, adminPilotUpdateSchema, announcementSchema, announcementUpdateSchema } from './validation.js';
+import { adminForceRenameSchema, adminGrantSchema, adminLoginSchema, adminPilotDeleteSchema, adminPilotUpdateSchema, announcementSchema, announcementUpdateSchema } from './validation.js';
 
 export function registerAdminRoutes(app: Express, db: Database, config: AppConfig): void {
   const publicDir = path.resolve(process.cwd(), 'public');
@@ -36,20 +37,23 @@ export function registerAdminRoutes(app: Express, db: Database, config: AppConfi
 
   app.get('/api/v1/admin/overview', authenticateAdmin, async (_request, response, next) => {
     try {
-      const [pilotTotal, runTotal, sessionTotal, suspendedTotal, activeAnnouncements] = await Promise.all([
+      const [pilotTotal, runTotal, sessionTotal, suspendedTotal, moderationTotal, activeAnnouncements] = await Promise.all([
         db.select({ value: count() }).from(pilots), db.select({ value: count() }).from(runs), db.select({ value: count() }).from(sessions),
-        db.select({ value: count() }).from(pilots).where(eq(pilots.suspended, true)), db.select({ value: count() }).from(announcements).where(eq(announcements.active, true)),
+        db.select({ value: count() }).from(pilots).where(eq(pilots.suspended, true)), db.select({ value: count() }).from(pilots).where(or(eq(pilots.nameFlagged, true), eq(pilots.requiresRename, true))),
+        db.select({ value: count() }).from(announcements).where(eq(announcements.active, true)),
       ]);
-      response.json({ data: { pilots: pilotTotal[0]!.value, runs: runTotal[0]!.value, sessions: sessionTotal[0]!.value, suspended: suspendedTotal[0]!.value, activeAnnouncements: activeAnnouncements[0]!.value } });
+      response.json({ data: { pilots: pilotTotal[0]!.value, runs: runTotal[0]!.value, sessions: sessionTotal[0]!.value, suspended: suspendedTotal[0]!.value, moderationPending: moderationTotal[0]!.value, activeAnnouncements: activeAnnouncements[0]!.value } });
     } catch (error) { next(error); }
   });
 
   app.get('/api/v1/admin/pilots', authenticateAdmin, async (request, response, next) => {
     try {
       const q = String(request.query.q ?? '').trim(), page = Math.max(1, Number(request.query.page) || 1), limit = Math.min(100, Math.max(1, Number(request.query.limit) || 25));
-      const filter = q ? or(ilike(pilots.displayName, `%${q}%`), ilike(pilots.discriminator, `%${q}%`), sql`${pilots.id}::text ILIKE ${`%${q}%`}`) : undefined;
+      const searchFilter = q ? or(ilike(pilots.displayName, `%${q}%`), ilike(pilots.discriminator, `%${q}%`), sql`${pilots.id}::text ILIKE ${`%${q}%`}`) : undefined;
+      const moderationFilter = request.query.moderation === 'flagged' ? or(eq(pilots.nameFlagged, true), eq(pilots.requiresRename, true)) : undefined;
+      const filter = searchFilter && moderationFilter ? and(searchFilter, moderationFilter) : searchFilter ?? moderationFilter;
       const [rows, totals] = await Promise.all([
-        db.select({ id: pilots.id, displayName: pilots.displayName, discriminator: pilots.discriminator, save: pilots.saveData, bestScore: pilots.bestScore, revision: pilots.revision, suspended: pilots.suspended, leaderboardHidden: pilots.leaderboardHidden, createdAt: pilots.createdAt, updatedAt: pilots.updatedAt }).from(pilots).where(filter).orderBy(desc(pilots.updatedAt)).limit(limit).offset((page - 1) * limit),
+        db.select({ id: pilots.id, displayName: pilots.displayName, discriminator: pilots.discriminator, save: pilots.saveData, bestScore: pilots.bestScore, revision: pilots.revision, suspended: pilots.suspended, leaderboardHidden: pilots.leaderboardHidden, nameFlagged: pilots.nameFlagged, requiresRename: pilots.requiresRename, createdAt: pilots.createdAt, updatedAt: pilots.updatedAt }).from(pilots).where(filter).orderBy(desc(pilots.updatedAt)).limit(limit).offset((page - 1) * limit),
         db.select({ value: count() }).from(pilots).where(filter),
       ]);
       response.json({ data: { pilots: rows, page, limit, total: totals[0]!.value } });
@@ -87,7 +91,9 @@ export function registerAdminRoutes(app: Express, db: Database, config: AppConfi
       const save = structuredClone(found[0].saveData);
       if (body.unlocked !== undefined) save.meta.unlocked = body.unlocked;
       if (body.titanCore !== undefined) save.meta.titanCore = body.titanCore;
-      const updated = await db.update(pilots).set({ saveData: save, displayName: body.displayName?.toUpperCase() ?? found[0].displayName, suspended: body.suspended ?? found[0].suspended, leaderboardHidden: body.leaderboardHidden ?? found[0].leaderboardHidden, revision: sql`${pilots.revision} + 1`, updatedAt: new Date() }).where(eq(pilots.id, found[0].id)).returning();
+      const displayName = body.displayName?.toUpperCase() ?? found[0].displayName, nameChanged = displayName !== found[0].displayName;
+      if (nameChanged && !isCallsignAllowed(displayName)) throw new ApiError(422, 'CALLSIGN_NOT_ALLOWED', 'Choose a different callsign');
+      const updated = await db.update(pilots).set({ saveData: save, displayName, ...(nameChanged ? { nameFlagged: false, requiresRename: false, nameModerationVersion: NAME_MODERATION_VERSION } : {}), suspended: body.suspended ?? found[0].suspended, leaderboardHidden: body.leaderboardHidden ?? found[0].leaderboardHidden, revision: sql`${pilots.revision} + 1`, updatedAt: new Date() }).where(eq(pilots.id, found[0].id)).returning();
       await audit(request.adminName!, 'pilot.update', found[0].id, { changes: body, before: { displayName: found[0].displayName, unlocked: found[0].saveData.meta.unlocked, titanCore: found[0].saveData.meta.titanCore, suspended: found[0].suspended, leaderboardHidden: found[0].leaderboardHidden } });
       response.json({ data: { pilot: updated[0] } });
     } catch (error) { next(error); }
@@ -101,6 +107,19 @@ export function registerAdminRoutes(app: Express, db: Database, config: AppConfi
       const deleted = await db.delete(sessions).where(eq(sessions.pilotId, pilotId)).returning({ id: sessions.id });
       await audit(request.adminName!, 'pilot.sessions_revoked', pilotId, { sessionsRevoked: deleted.length });
       response.json({ data: { sessionsRevoked: deleted.length } });
+    } catch (error) { next(error); }
+  });
+
+  app.post('/api/v1/admin/pilots/:id/force-rename', authenticateAdmin, async (request: AdminRequest, response, next) => {
+    try {
+      const pilotId = String(request.params.id), body = adminForceRenameSchema.parse(request.body);
+      const found = await db.select().from(pilots).where(eq(pilots.id, pilotId)).limit(1);
+      if (!found[0]) throw new ApiError(404, 'PILOT_NOT_FOUND', 'Pilot not found');
+      if (found[0].requiresRename) throw new ApiError(409, 'CALLSIGN_RENAME_ALREADY_REQUIRED', 'This pilot already has a pending callsign change');
+      const previousTag = `${found[0].displayName}#${found[0].discriminator}`;
+      const updated = await db.update(pilots).set({ displayName: 'PILOT', nameFlagged: false, requiresRename: true, nameModerationVersion: NAME_MODERATION_VERSION, revision: sql`${pilots.revision} + 1`, updatedAt: new Date() }).where(eq(pilots.id, pilotId)).returning();
+      await audit(request.adminName!, 'pilot.force_rename', pilotId, { previousTag, temporaryTag: `PILOT#${found[0].discriminator}`, reason: body.reason });
+      response.json({ data: { pilot: updated[0] } });
     } catch (error) { next(error); }
   });
 

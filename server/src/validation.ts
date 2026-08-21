@@ -8,9 +8,11 @@ export const metaSchema = z.object({
   skillOwned: z.record(z.string(), z.boolean()), equippedSkills: z.record(z.string(), z.string().max(40)),
 }).passthrough();
 export const saveSchema = z.object({ meta: metaSchema, settings: settingsSchema });
-export const createPilotSchema = z.object({ displayName: z.string().trim().min(2).max(12).regex(/^[A-Za-z0-9_-]+$/), importedSave: saveSchema });
+export const callsignSchema = z.string().trim().min(2).max(12).regex(/^[A-Za-z0-9_-]+$/);
+export const createPilotSchema = z.object({ displayName: callsignSchema, importedSave: saveSchema });
 export const recoverPilotSchema = z.object({ recoveryCode: z.string().trim().min(20).max(40) });
 export const updateSaveSchema = z.object({ save: saveSchema, baseRevision: z.number().int().positive().optional() });
+export const callsignUpdateSchema = z.object({ displayName: callsignSchema });
 export const runSchema = z.object({
   clientEventId: z.string().uuid(), score: z.number().int().min(0).max(100_000_000), sector: z.number().int().min(1).max(5), wave: z.number().int().min(1).max(1000),
   mode: z.enum(['standard', 'endless']), level: z.number().int().min(1).max(5), kills: z.number().int().min(0).max(100_000), bossKills: z.number().int().min(0).max(1000),
@@ -26,7 +28,8 @@ export function isPlausibleRun(run: RunInput): boolean {
 
 export const adminLoginSchema = z.object({ username: z.string().min(2).max(40), password: z.string().min(1).max(200) });
 export const adminGrantSchema = z.object({ credits: z.number().int().min(-2_000_000_000).max(2_000_000_000).default(0), shards: z.number().int().min(-2_000_000_000).max(2_000_000_000).default(0), cores: z.number().int().min(-1_000_000).max(1_000_000).default(0), reason: z.string().trim().min(3).max(200) }).refine(value => value.credits !== 0 || value.shards !== 0 || value.cores !== 0, 'At least one grant amount is required');
-export const adminPilotUpdateSchema = z.object({ displayName: z.string().trim().min(2).max(12).regex(/^[A-Za-z0-9_-]+$/).optional(), unlocked: z.number().int().min(0).max(4).optional(), titanCore: z.boolean().optional(), suspended: z.boolean().optional(), leaderboardHidden: z.boolean().optional(), reason: z.string().trim().min(3).max(200) });
+export const adminPilotUpdateSchema = z.object({ displayName: callsignSchema.optional(), unlocked: z.number().int().min(0).max(4).optional(), titanCore: z.boolean().optional(), suspended: z.boolean().optional(), leaderboardHidden: z.boolean().optional(), reason: z.string().trim().min(3).max(200) });
+export const adminForceRenameSchema = z.object({ reason: z.string().trim().min(3).max(200) });
 export const adminPilotDeleteSchema = z.object({ confirmTag: z.string().trim().min(3).max(17), reason: z.string().trim().min(3).max(200) });
 export const announcementSchema = z.object({ title: z.string().trim().min(2).max(80), message: z.string().trim().min(2).max(500), severity: z.enum(['info', 'success', 'warning', 'critical']).default('info'), active: z.boolean().default(true), startsAt: z.string().datetime().nullable().optional(), endsAt: z.string().datetime().nullable().optional() });
 export const announcementUpdateSchema = announcementSchema.partial().refine(value => Object.keys(value).length > 0, 'No announcement fields supplied');
