@@ -4,11 +4,11 @@ import type { Express, NextFunction, Response } from 'express';
 import rateLimit from 'express-rate-limit';
 import type { AppConfig } from './config.js';
 import type { Database } from './db/index.js';
-import { adminAuditLogs, announcements, pilots, runs, sessions } from './db/schema.js';
+import { adminAuditLogs, announcements, leaderboardEntries, pilots, runs, sessions } from './db/schema.js';
 import { ApiError } from './errors.js';
 import { createAdminToken, newId, safeEqual, verifyAdminToken } from './security.js';
 import type { AdminRequest } from './types.js';
-import { adminGrantSchema, adminLoginSchema, adminPilotUpdateSchema, announcementSchema, announcementUpdateSchema } from './validation.js';
+import { adminGrantSchema, adminLoginSchema, adminPilotDeleteSchema, adminPilotUpdateSchema, announcementSchema, announcementUpdateSchema } from './validation.js';
 
 export function registerAdminRoutes(app: Express, db: Database, config: AppConfig): void {
   const publicDir = path.resolve(process.cwd(), 'public');
@@ -101,6 +101,32 @@ export function registerAdminRoutes(app: Express, db: Database, config: AppConfi
       const deleted = await db.delete(sessions).where(eq(sessions.pilotId, pilotId)).returning({ id: sessions.id });
       await audit(request.adminName!, 'pilot.sessions_revoked', pilotId, { sessionsRevoked: deleted.length });
       response.json({ data: { sessionsRevoked: deleted.length } });
+    } catch (error) { next(error); }
+  });
+
+  app.delete('/api/v1/admin/pilots/:id', authenticateAdmin, async (request: AdminRequest, response, next) => {
+    try {
+      const pilotId = String(request.params.id), body = adminPilotDeleteSchema.parse(request.body);
+      const deletedAccount = await db.transaction(async tx => {
+        const found = await tx.select().from(pilots).where(eq(pilots.id, pilotId)).limit(1);
+        if (!found[0]) throw new ApiError(404, 'PILOT_NOT_FOUND', 'Pilot not found');
+        const pilot = found[0], expectedTag = `${pilot.displayName}#${pilot.discriminator}`;
+        if (body.confirmTag.toUpperCase() !== expectedTag.toUpperCase()) throw new ApiError(400, 'PILOT_DELETE_CONFIRMATION_MISMATCH', `Type ${expectedTag} to confirm deletion`);
+        const [runTotal, sessionTotal, leaderboardTotal] = await Promise.all([
+          tx.select({ value: count() }).from(runs).where(eq(runs.pilotId, pilotId)),
+          tx.select({ value: count() }).from(sessions).where(eq(sessions.pilotId, pilotId)),
+          tx.select({ value: count() }).from(leaderboardEntries).where(eq(leaderboardEntries.pilotId, pilotId)),
+        ]);
+        const cascade = { runs: runTotal[0]!.value, sessions: sessionTotal[0]!.value, leaderboardEntries: leaderboardTotal[0]!.value };
+        await tx.insert(adminAuditLogs).values({
+          id: newId(), adminName: request.adminName!, action: 'pilot.delete', pilotId: null,
+          details: { deletedPilotId: pilot.id, displayName: pilot.displayName, discriminator: pilot.discriminator, bestScore: pilot.bestScore, createdAt: pilot.createdAt.toISOString(), cascade, reason: body.reason },
+        });
+        const deleted = await tx.delete(pilots).where(eq(pilots.id, pilotId)).returning({ id: pilots.id });
+        if (!deleted[0]) throw new ApiError(409, 'PILOT_DELETE_CONFLICT', 'Pilot account changed before it could be deleted');
+        return { id: pilot.id, displayName: pilot.displayName, discriminator: pilot.discriminator, cascade };
+      });
+      response.json({ data: { deleted: true, pilot: deletedAccount } });
     } catch (error) { next(error); }
   });
 

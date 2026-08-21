@@ -53,5 +53,18 @@ suite('API integration', () => {
     const recovered = await request(app).post('/api/v1/pilots/recover').send({ recoveryCode }).expect(200);
     assert.notEqual(recovered.body.data.recoveryCode, recoveryCode);
     await request(app).post('/api/v1/pilots/recover').send({ recoveryCode }).expect(401);
+
+    const pilotTag = `${created.body.data.profile.displayName}#${created.body.data.profile.discriminator}`;
+    await request(app).delete(`/api/v1/admin/pilots/${pilotId}`).set('Authorization', `Bearer ${adminToken}`).send({ confirmTag: 'WRONG#0000', reason: 'Integration deletion test' }).expect(400);
+    const deletion = await request(app).delete(`/api/v1/admin/pilots/${pilotId}`).set('Authorization', `Bearer ${adminToken}`).send({ confirmTag: pilotTag, reason: 'Integration deletion test' }).expect(200);
+    assert.equal(deletion.body.data.deleted, true);
+    assert.equal(deletion.body.data.pilot.cascade.runs, 1);
+    assert.ok(deletion.body.data.pilot.cascade.sessions >= 2);
+    await request(app).get('/api/v1/profile').set('Authorization', `Bearer ${sessionToken}`).expect(401);
+    await request(app).get(`/api/v1/admin/pilots/${pilotId}`).set('Authorization', `Bearer ${adminToken}`).expect(404);
+    const boardAfterDeletion = await request(app).get('/api/v1/leaderboard?limit=10').expect(200);
+    assert.ok(!boardAfterDeletion.body.data.entries.some(entry => entry.displayName === 'TESTER'));
+    const audit = await request(app).get('/api/v1/admin/audit').set('Authorization', `Bearer ${adminToken}`).expect(200);
+    assert.ok(audit.body.data.audit.some(entry => entry.action === 'pilot.delete' && entry.details.deletedPilotId === pilotId));
   });
 });
