@@ -1,0 +1,23 @@
+{
+  "name": "CHRONO//BREACH",
+  "short_name": "CHRONO//BREACH",
+  "description": "A fast-paced temporal sci-fi action roguelite.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#02040a",
+  "theme_color": "#050814",
+  "icons": [
+    {
+      "src": "/assets/branding/chrono-breach-icon-192-v1.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/branding/chrono-breach-icon-512-v1.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
