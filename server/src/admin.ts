@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { and, count, desc, eq, ilike, or, sql } from 'drizzle-orm';
+import { and, count, desc, eq, ilike, isNotNull, or, sql } from 'drizzle-orm';
 import type { Express, NextFunction, Response } from 'express';
 import rateLimit from 'express-rate-limit';
 import type { AppConfig } from './config.js';
@@ -7,9 +7,9 @@ import type { Database } from './db/index.js';
 import { adminAuditLogs, announcements, leaderboardEntries, pilots, runs, sessions } from './db/schema.js';
 import { ApiError } from './errors.js';
 import { isCallsignAllowed, NAME_MODERATION_VERSION } from './moderation.js';
-import { createAdminToken, newId, safeEqual, verifyAdminToken } from './security.js';
+import { createAdminToken, hashSecret, newId, newRecoveryCode, normalizeRecoveryCode, safeEqual, verifyAdminToken } from './security.js';
 import type { AdminRequest } from './types.js';
-import { adminForceRenameSchema, adminGrantSchema, adminLoginSchema, adminPilotDeleteSchema, adminPilotUpdateSchema, announcementSchema, announcementUpdateSchema } from './validation.js';
+import { adminForceRenameSchema, adminGrantSchema, adminLoginSchema, adminPilotDeleteSchema, adminPilotUpdateSchema, adminRecoveryReissueSchema, announcementSchema, announcementUpdateSchema } from './validation.js';
 
 export function registerAdminRoutes(app: Express, db: Database, config: AppConfig): void {
   const publicDir = path.resolve(process.cwd(), 'public');
@@ -37,12 +37,13 @@ export function registerAdminRoutes(app: Express, db: Database, config: AppConfi
 
   app.get('/api/v1/admin/overview', authenticateAdmin, async (_request, response, next) => {
     try {
-      const [pilotTotal, runTotal, sessionTotal, suspendedTotal, moderationTotal, activeAnnouncements] = await Promise.all([
+      const [pilotTotal, runTotal, sessionTotal, suspendedTotal, moderationTotal, recoveryTotal, activeAnnouncements] = await Promise.all([
         db.select({ value: count() }).from(pilots), db.select({ value: count() }).from(runs), db.select({ value: count() }).from(sessions),
         db.select({ value: count() }).from(pilots).where(eq(pilots.suspended, true)), db.select({ value: count() }).from(pilots).where(or(eq(pilots.nameFlagged, true), eq(pilots.requiresRename, true))),
+        db.select({ value: count() }).from(pilots).where(isNotNull(pilots.recoveryRequestedAt)),
         db.select({ value: count() }).from(announcements).where(eq(announcements.active, true)),
       ]);
-      response.json({ data: { pilots: pilotTotal[0]!.value, runs: runTotal[0]!.value, sessions: sessionTotal[0]!.value, suspended: suspendedTotal[0]!.value, moderationPending: moderationTotal[0]!.value, activeAnnouncements: activeAnnouncements[0]!.value } });
+      response.json({ data: { pilots: pilotTotal[0]!.value, runs: runTotal[0]!.value, sessions: sessionTotal[0]!.value, suspended: suspendedTotal[0]!.value, moderationPending: moderationTotal[0]!.value, recoveryPending: recoveryTotal[0]!.value, activeAnnouncements: activeAnnouncements[0]!.value } });
     } catch (error) { next(error); }
   });
 
@@ -50,10 +51,10 @@ export function registerAdminRoutes(app: Express, db: Database, config: AppConfi
     try {
       const q = String(request.query.q ?? '').trim(), page = Math.max(1, Number(request.query.page) || 1), limit = Math.min(100, Math.max(1, Number(request.query.limit) || 25));
       const searchFilter = q ? or(ilike(pilots.displayName, `%${q}%`), ilike(pilots.discriminator, `%${q}%`), sql`${pilots.id}::text ILIKE ${`%${q}%`}`) : undefined;
-      const moderationFilter = request.query.moderation === 'flagged' ? or(eq(pilots.nameFlagged, true), eq(pilots.requiresRename, true)) : undefined;
-      const filter = searchFilter && moderationFilter ? and(searchFilter, moderationFilter) : searchFilter ?? moderationFilter;
+      const statusFilter = request.query.moderation === 'flagged' ? or(eq(pilots.nameFlagged, true), eq(pilots.requiresRename, true)) : request.query.recovery === 'requested' ? isNotNull(pilots.recoveryRequestedAt) : undefined;
+      const filter = searchFilter && statusFilter ? and(searchFilter, statusFilter) : searchFilter ?? statusFilter;
       const [rows, totals] = await Promise.all([
-        db.select({ id: pilots.id, displayName: pilots.displayName, discriminator: pilots.discriminator, save: pilots.saveData, bestScore: pilots.bestScore, revision: pilots.revision, suspended: pilots.suspended, leaderboardHidden: pilots.leaderboardHidden, nameFlagged: pilots.nameFlagged, requiresRename: pilots.requiresRename, createdAt: pilots.createdAt, updatedAt: pilots.updatedAt }).from(pilots).where(filter).orderBy(desc(pilots.updatedAt)).limit(limit).offset((page - 1) * limit),
+        db.select({ id: pilots.id, displayName: pilots.displayName, discriminator: pilots.discriminator, save: pilots.saveData, bestScore: pilots.bestScore, revision: pilots.revision, suspended: pilots.suspended, leaderboardHidden: pilots.leaderboardHidden, nameFlagged: pilots.nameFlagged, requiresRename: pilots.requiresRename, recoveryRequestedAt: pilots.recoveryRequestedAt, createdAt: pilots.createdAt, updatedAt: pilots.updatedAt }).from(pilots).where(filter).orderBy(desc(pilots.updatedAt)).limit(limit).offset((page - 1) * limit),
         db.select({ value: count() }).from(pilots).where(filter),
       ]);
       response.json({ data: { pilots: rows, page, limit, total: totals[0]!.value } });
@@ -68,7 +69,7 @@ export function registerAdminRoutes(app: Express, db: Database, config: AppConfi
         db.select().from(adminAuditLogs).where(eq(adminAuditLogs.pilotId, String(request.params.id))).orderBy(desc(adminAuditLogs.createdAt)).limit(20),
       ]);
       if (!pilot[0]) throw new ApiError(404, 'PILOT_NOT_FOUND', 'Pilot not found');
-      response.json({ data: { pilot: pilot[0], runs: recentRuns, audit: auditRows } });
+      response.json({ data: { pilot: { ...pilot[0], recoveryHash: undefined }, runs: recentRuns, audit: auditRows } });
     } catch (error) { next(error); }
   });
 
@@ -107,6 +108,21 @@ export function registerAdminRoutes(app: Express, db: Database, config: AppConfi
       const deleted = await db.delete(sessions).where(eq(sessions.pilotId, pilotId)).returning({ id: sessions.id });
       await audit(request.adminName!, 'pilot.sessions_revoked', pilotId, { sessionsRevoked: deleted.length });
       response.json({ data: { sessionsRevoked: deleted.length } });
+    } catch (error) { next(error); }
+  });
+
+  app.post('/api/v1/admin/pilots/:id/reissue-recovery-code', authenticateAdmin, async (request: AdminRequest, response, next) => {
+    try {
+      const pilotId = String(request.params.id), body = adminRecoveryReissueSchema.parse(request.body), recoveryCode = newRecoveryCode();
+      const updated = await db.transaction(async tx => {
+        const found = await tx.select({ id: pilots.id, displayName: pilots.displayName, discriminator: pilots.discriminator, requestedAt: pilots.recoveryRequestedAt }).from(pilots).where(eq(pilots.id, pilotId)).limit(1);
+        if (!found[0]) throw new ApiError(404, 'PILOT_NOT_FOUND', 'Pilot not found');
+        const rows = await tx.update(pilots).set({ recoveryHash: hashSecret(normalizeRecoveryCode(recoveryCode), config.RECOVERY_PEPPER), recoveryRequestedAt: null, revision: sql`${pilots.revision} + 1`, updatedAt: new Date() }).where(eq(pilots.id, pilotId)).returning({ id: pilots.id });
+        await tx.insert(adminAuditLogs).values({ id: newId(), adminName: request.adminName!, action: 'pilot.recovery_code_reissued', pilotId, details: { pilotTag: `${found[0].displayName}#${found[0].discriminator}`, playerRequested: Boolean(found[0].requestedAt), reason: body.reason } });
+        return rows[0];
+      });
+      if (!updated) throw new ApiError(409, 'RECOVERY_REISSUE_CONFLICT', 'Recovery code could not be reissued');
+      response.json({ data: { recoveryCode } });
     } catch (error) { next(error); }
   });
 

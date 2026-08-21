@@ -33,12 +33,24 @@ suite('API integration', () => {
   it('creates, authenticates, recovers, deduplicates, and ranks a pilot', async () => {
     await request(app).post('/api/v1/pilots').send({ displayName: 'F_U_C_K', importedSave: save }).expect(422);
     const created = await request(app).post('/api/v1/pilots').send({ displayName: 'TESTER', importedSave: save }).expect(201);
-    const { sessionToken, recoveryCode } = created.body.data;
+    const { sessionToken } = created.body.data;
+    let { recoveryCode } = created.body.data;
+    const pilotId = created.body.data.profile.id;
     await request(app).get('/api/v1/profile').set('Authorization', `Bearer ${sessionToken}`).expect(200);
 
     const adminLogin = await request(app).post('/api/v1/admin/login').send({ username: 'admin', password: 'integration-admin-password' }).expect(200);
     const adminToken = adminLogin.body.data.token;
-    const pilotId = created.body.data.profile.id;
+    await request(app).post('/api/v1/profile/recovery-assistance').set('Authorization', `Bearer ${sessionToken}`).expect(200);
+    const requestedProfile = await request(app).get('/api/v1/profile').set('Authorization', `Bearer ${sessionToken}`).expect(200);
+    assert.equal(requestedProfile.body.data.profile.recoveryAssistanceRequested, true);
+    const recoveryQueue = await request(app).get('/api/v1/admin/pilots?recovery=requested').set('Authorization', `Bearer ${adminToken}`).expect(200);
+    assert.ok(recoveryQueue.body.data.pilots.some(entry => entry.id === pilotId));
+    const adminDetail = await request(app).get(`/api/v1/admin/pilots/${pilotId}`).set('Authorization', `Bearer ${adminToken}`).expect(200);
+    assert.equal(adminDetail.body.data.pilot.recoveryHash, undefined);
+    const reissued = await request(app).post(`/api/v1/admin/pilots/${pilotId}/reissue-recovery-code`).set('Authorization', `Bearer ${adminToken}`).send({ reason: 'Player verified through support' }).expect(200);
+    assert.match(reissued.body.data.recoveryCode, /^CB-[A-F0-9]{6}(?:-[A-F0-9]{6}){3}$/);
+    await request(app).post('/api/v1/pilots/recover').send({ recoveryCode }).expect(401);
+    recoveryCode = reissued.body.data.recoveryCode;
     await request(app).post(`/api/v1/admin/pilots/${pilotId}/grant`).set('Authorization', `Bearer ${adminToken}`).send({ credits: 500, shards: 2, cores: 0, reason: 'Integration test grant' }).expect(200);
     const granted = await request(app).get('/api/v1/profile').set('Authorization', `Bearer ${sessionToken}`).expect(200);
     assert.equal(granted.body.data.profile.save.meta.credits, 500);
@@ -89,6 +101,7 @@ suite('API integration', () => {
     assert.ok(!boardAfterDeletion.body.data.entries.some(entry => entry.displayName === 'STARCADE'));
     const audit = await request(app).get('/api/v1/admin/audit').set('Authorization', `Bearer ${adminToken}`).expect(200);
     assert.ok(audit.body.data.audit.some(entry => entry.action === 'pilot.force_rename'));
+    assert.ok(audit.body.data.audit.some(entry => entry.action === 'pilot.recovery_code_reissued'));
     assert.ok(audit.body.data.audit.some(entry => entry.action === 'pilot.delete' && entry.details.deletedPilotId === pilotId));
   });
 });

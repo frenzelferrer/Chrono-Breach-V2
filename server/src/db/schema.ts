@@ -16,8 +16,9 @@ export const pilots = pgTable('pilots', {
   saveData: jsonb('save_data').$type<StoredSave>().notNull(), bestScore: integer('best_score').notNull().default(0), revision: integer('revision').notNull().default(1),
   suspended: boolean('suspended').notNull().default(false), leaderboardHidden: boolean('leaderboard_hidden').notNull().default(false),
   nameFlagged: boolean('name_flagged').notNull().default(false), requiresRename: boolean('requires_rename').notNull().default(false), nameModerationVersion: integer('name_moderation_version').notNull().default(0),
+  recoveryRequestedAt: timestamp('recovery_requested_at', { withTimezone: true }),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(), updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
-}, table => [index('pilots_name_moderation_idx').on(table.nameFlagged, table.requiresRename)]);
+}, table => [index('pilots_name_moderation_idx').on(table.nameFlagged, table.requiresRename), index('pilots_recovery_request_idx').on(table.recoveryRequestedAt)]);
 
 export const sessions = pgTable('sessions', {
   id: uuid('id').primaryKey(), pilotId: uuid('pilot_id').notNull().references(() => pilots.id, { onDelete: 'cascade' }), tokenHash: varchar('token_hash', { length: 64 }).notNull(),

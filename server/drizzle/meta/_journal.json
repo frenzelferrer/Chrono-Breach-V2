@@ -29,6 +29,13 @@
       "when": 1787280000000,
       "tag": "0003_callsign_moderation",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1787286000000,
+      "tag": "0004_recovery_assistance",
+      "breakpoints": true
     }
   ]
 }

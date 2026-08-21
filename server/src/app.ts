@@ -76,7 +76,7 @@ export function createApp(db: Database, config: AppConfig) {
       const pilot = await db.transaction(async tx => {
         const found = await tx.select().from(pilots).where(eq(pilots.recoveryHash, recoveryHash)).limit(1);
         if (!found[0]) throw new ApiError(401, 'INVALID_RECOVERY_CODE', 'Recovery code is invalid or already rotated');
-        const updated = await tx.update(pilots).set({ recoveryHash: hashSecret(normalizeRecoveryCode(recoveryCode), config.RECOVERY_PEPPER), revision: sql`${pilots.revision} + 1`, updatedAt: new Date() }).where(eq(pilots.id, found[0].id)).returning();
+        const updated = await tx.update(pilots).set({ recoveryHash: hashSecret(normalizeRecoveryCode(recoveryCode), config.RECOVERY_PEPPER), recoveryRequestedAt: null, revision: sql`${pilots.revision} + 1`, updatedAt: new Date() }).where(eq(pilots.id, found[0].id)).returning();
         await tx.insert(sessions).values({ id: newId(), pilotId: found[0].id, tokenHash: hashSecret(sessionToken, config.SESSION_PEPPER) }); return updated[0]!;
       });
       response.json({ data: { profile: publicProfile(asPilot(pilot)), sessionToken, recoveryCode } });
@@ -113,9 +113,17 @@ export function createApp(db: Database, config: AppConfig) {
       const recoveryCode = newRecoveryCode();
       await db.transaction(async tx => {
         await tx.delete(sessions).where(and(eq(sessions.pilotId, request.pilot!.id), sql`${sessions.id} <> ${request.sessionId!}`));
-        await tx.update(pilots).set({ recoveryHash: hashSecret(normalizeRecoveryCode(recoveryCode), config.RECOVERY_PEPPER), revision: sql`${pilots.revision} + 1`, updatedAt: new Date() }).where(eq(pilots.id, request.pilot!.id));
+        await tx.update(pilots).set({ recoveryHash: hashSecret(normalizeRecoveryCode(recoveryCode), config.RECOVERY_PEPPER), recoveryRequestedAt: null, revision: sql`${pilots.revision} + 1`, updatedAt: new Date() }).where(eq(pilots.id, request.pilot!.id));
       });
       response.json({ data: { recoveryCode } });
+    } catch (error) { next(error); }
+  });
+
+  app.post('/api/v1/profile/recovery-assistance', rateLimit({ windowMs: 60 * 60_000, limit: 5, standardHeaders: 'draft-8', legacyHeaders: false }), authenticate, async (request: AuthenticatedRequest, response, next) => {
+    try {
+      const requestedAt = request.pilot!.recoveryRequestedAt ?? new Date();
+      if (!request.pilot!.recoveryRequestedAt) await db.update(pilots).set({ recoveryRequestedAt: requestedAt, updatedAt: new Date() }).where(eq(pilots.id, request.pilot!.id));
+      response.json({ data: { requested: true, requestedAt: requestedAt.toISOString() } });
     } catch (error) { next(error); }
   });
 
