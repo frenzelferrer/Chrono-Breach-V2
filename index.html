@@ -451,6 +451,24 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 @media(max-width:560px){.launchHeader{gap:10px}.launchLogo span:last-child{display:none}.launchLogoMark{width:38px;height:38px}#menu .pilot{border:0;padding:0}#menu .pilot b{max-width:150px}.resourceStrip{display:none}.launchMain{padding:30px 0 22px;gap:34px}.heroEyebrow{font-size:7px}#menu .title{font-size:clamp(52px,18vw,76px)}#menu .tagline{letter-spacing:.22em;line-height:1.5}#menu .tag{font-size:11px}.heroActions{display:grid;grid-template-columns:1fr}.heroActions .playPrimary,.heroActions #btnEndless{width:100%;min-width:0}.secondaryNav{gap:14px}.commandDeck{padding:16px}.operationVisual{margin-inline:-16px}.deckActions{grid-template-columns:1fr}.deckActions button{text-align:left;padding:10px 14px}.deckActions span,.deckActions b,.deckActions small{display:inline;margin:0 7px 0 0}.combatTip{grid-template-columns:1fr}.landingStats small{letter-spacing:.06em}.landingStats b{font-size:9px}}
 @media(max-height:720px) and (min-width:821px){.launchShell{padding-top:14px}.launchHeader{min-height:52px;padding-bottom:10px}.launchMain{padding:25px 2vw 20px}.operationVisual{height:86px}.operationRing{width:60px;height:60px}.operationScan{width:120px;height:120px}#menu .title{font-size:clamp(58px,7vw,92px);margin-top:14px}#menu .tagline{margin-top:18px}#menu .tag{margin-top:12px}.heroActions{margin-top:20px}.featureRail{padding-top:10px}}
 
+/* ==================== FOUNDRY + LOADOUT COMMAND UI ==================== */
+#shopPanel,#loadoutPanel{background:radial-gradient(circle at 82% 12%,rgba(88,58,190,.13),transparent 32%),linear-gradient(130deg,rgba(2,6,14,.92),rgba(3,9,19,.84));padding:20px}
+.foundryPanel,.loadoutPanel{width:min(1380px,calc(100vw - 40px));height:min(920px,95vh);max-height:95vh;padding:0;border-radius:9px;overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(155deg,rgba(8,19,35,.96),rgba(3,9,19,.94));box-shadow:0 35px 100px rgba(0,0,0,.52)}
+.armoryHeader{flex:none;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px 26px;border-bottom:1px solid rgba(87,233,255,.13);background:linear-gradient(90deg,rgba(87,233,255,.035),transparent 55%)}.screenEyebrow{margin-bottom:7px;color:var(--cy);font-size:8px;font-weight:1000;letter-spacing:.24em}.armoryHeader .pTitle{margin:0;font-size:clamp(23px,2.5vw,34px);letter-spacing:.1em}.armoryHeader .pSub{margin:6px 0 0;color:#607d92;font-size:8px;letter-spacing:.14em}
+.armoryMetrics{display:flex;gap:8px}.armoryMetrics>div{min-width:145px;padding:10px 13px;border:1px solid rgba(81,132,169,.22);border-radius:7px;background:rgba(5,14,27,.72)}.armoryMetrics small,.armoryMetrics b{display:block}.armoryMetrics small{font-size:6px;color:#59768a;font-weight:1000;letter-spacing:.16em}.armoryMetrics b{margin-top:5px;color:#dff7ff;font-size:13px}.armoryMetrics .creditValue{color:var(--gd)}
+.foundryBody{min-height:0;flex:1;display:grid;grid-template-columns:205px minmax(0,1fr)}.systemFilters{padding:18px 14px;border-right:1px solid rgba(87,233,255,.1);background:rgba(3,10,20,.48)}.systemFilters button{width:100%;display:flex;align-items:center;gap:10px;padding:12px 10px;border:0;border-left:2px solid transparent;background:none;color:#69859a;font:900 9px inherit;letter-spacing:.11em;text-align:left;cursor:pointer;transition:.15s}.systemFilters button span{color:#36566e;font-size:7px}.systemFilters button:hover{color:#dff9ff;background:rgba(87,233,255,.04)}.systemFilters button.active{border-color:var(--cy);color:#e9fbff;background:linear-gradient(90deg,rgba(87,233,255,.11),transparent)}.systemFilters button.active span{color:var(--cy)}.filterIntel{margin:22px 9px 0;padding-top:16px;border-top:1px solid rgba(87,233,255,.1)}.filterIntel b,.filterIntel span{display:block}.filterIntel b{color:var(--gd);font-size:7px;letter-spacing:.15em}.filterIntel span{margin-top:7px;color:#526c80;font-size:8px;line-height:1.55}
+.foundryCatalog{min-width:0;overflow:auto;padding:18px 22px 28px;scrollbar-width:thin}.foundryCatalog::-webkit-scrollbar,.skillBay::-webkit-scrollbar,.buildRail::-webkit-scrollbar,.shardArmory::-webkit-scrollbar{width:7px}.foundryCatalog::-webkit-scrollbar-track,.skillBay::-webkit-scrollbar-track,.buildRail::-webkit-scrollbar-track,.shardArmory::-webkit-scrollbar-track{background:#050c17}.foundryCatalog::-webkit-scrollbar-thumb,.skillBay::-webkit-scrollbar-thumb,.buildRail::-webkit-scrollbar-thumb,.shardArmory::-webkit-scrollbar-thumb{background:#21445c;border-radius:99px}.catalogTop{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:14px;color:#9ab5c7;font-size:9px;font-weight:1000;letter-spacing:.17em}.catalogTop small{color:#4e687b;font-size:7px}.foundryPanel .shopGrid{grid-template-columns:repeat(3,minmax(210px,1fr));gap:9px}.foundryPanel .catalogHeader{margin:16px 0 3px;font-size:9px}.foundryPanel .shopItem{position:relative;display:flex;flex-direction:column;min-height:210px;padding:14px;border-radius:8px;background:linear-gradient(155deg,rgba(9,21,38,.9),rgba(5,12,24,.82));transition:.16s}.foundryPanel .shopItem:hover{transform:translateY(-2px);border-color:rgba(87,233,255,.52);box-shadow:0 14px 32px rgba(0,0,0,.2)}.foundryPanel .shopItem .siIcon{width:34px;height:34px;border-radius:7px}.foundryPanel .shopItem .siName{font-size:11px}.foundryPanel .shopItem .siPips{font-size:8px}.foundryPanel .shopItem .siDesc{min-height:0;flex:1;font-size:9px}.foundryPanel .shopItem .siEff{font-size:8px}.foundryPanel .buyBtn{margin-top:10px;border-radius:6px;padding:9px;font-size:8px}.siLevel{position:absolute;right:12px;top:12px;color:#617d90;font-size:6px;font-weight:1000;letter-spacing:.12em}
+.screenFooter{flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 22px;border-top:1px solid rgba(87,233,255,.12);background:rgba(3,9,18,.96)}.screenFooter>span,.loadoutFooter>span{color:#506b7e;font-size:7px;font-weight:1000;letter-spacing:.14em}.screenFooter .btn{padding:9px 15px;font-size:8px;border-radius:6px}
+.loadoutPanel{overflow:hidden}.loadoutPanel .loadoutTop{margin:0}.missionStrip{flex:none;display:grid;grid-template-columns:1.4fr .7fr .7fr;gap:1px;background:rgba(87,233,255,.11);border-bottom:1px solid rgba(87,233,255,.09)}.missionStrip>div{padding:10px 26px;background:rgba(4,12,24,.92)}.missionStrip small,.missionStrip b{display:block}.missionStrip small{font-size:6px;color:#506e83;font-weight:1000;letter-spacing:.16em}.missionStrip b{margin-top:4px;font-size:9px;letter-spacing:.11em}.missionStrip .readyText{color:var(--gn)}
+.loadoutWorkbench{min-height:0;flex:1;display:grid;grid-template-columns:minmax(0,1fr) 350px;border-bottom:1px solid rgba(87,233,255,.1)}.skillBay{min-width:0;overflow:auto;padding:18px 20px}.buildRail{overflow:auto;padding:18px;border-left:1px solid rgba(87,233,255,.1);background:rgba(3,10,20,.46)}.sectionCommand{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:11px}.sectionCommand>div{display:flex;align-items:center;gap:9px}.sectionCommand>div span{color:#35566f;font-size:8px}.sectionCommand b{font-size:9px;letter-spacing:.15em}.sectionCommand small{color:#536f83;font-size:7px;letter-spacing:.1em;text-align:right}
+.skillBay .skillSlotGrid{display:grid;grid-template-columns:1fr;gap:12px}.skillBay .skillSlot{padding:12px;border-radius:8px;background:rgba(5,14,27,.55)}.skillBay .skillSlotHead{margin-bottom:10px}.skillBay .skillSlotHead>div small,.skillBay .skillSlotHead>div b{display:block}.skillBay .skillSlotHead>div small{color:#58758a;font-size:6px;letter-spacing:.14em}.skillBay .skillSlotHead>div b{margin-top:3px;font-size:9px}.skillBay .skillGrid{grid-template-columns:repeat(4,minmax(135px,1fr));gap:7px}.skillBay .skillCard{min-height:176px;padding:10px;border-radius:7px}.skillBay .skillName{font-size:9px}.skillBay .skillCost{font-size:7px}.skillBay .skillDesc{font-size:8px}.skillBay .skillMeta{font-size:7px}.skillBay .lcBtn{padding:7px;font-size:7px;border-radius:5px}
+.buildRail .equippedShardSlots{grid-template-columns:1fr;gap:7px;margin:0}.buildRail .shardSlot{min-height:60px;border-radius:7px;cursor:pointer}.buildRail .shardSlot:hover{border-color:var(--cy)}.buildRail .shardOrb{width:32px;height:32px}.buildSummary{margin-top:14px;padding:13px;border:1px solid rgba(87,233,255,.16);border-radius:7px;background:rgba(7,17,31,.72)}.buildSummary>small{display:block;margin-bottom:8px;color:var(--cy);font-size:6px;font-weight:1000;letter-spacing:.16em}.buildSummary #loadoutSummary{font-size:8px;color:#718da0;line-height:1.65}.buildSummary #loadoutSummary b{color:#e6f8ff;font-size:9px}#loadoutNotice{margin-top:9px;text-align:center}
+.shardArmory{flex:none;max-height:34%;overflow:auto;padding:16px 20px 22px;scrollbar-width:thin}.shardArmory .loadoutGrid{grid-template-columns:repeat(4,minmax(210px,1fr));gap:8px}.shardArmory .catalogHeader{margin:14px 0 2px;font-size:8px}.shardArmory .loadCard{min-height:145px;padding:11px;border-radius:7px}.shardArmory .lcIcon{width:31px;height:31px;border-radius:7px}.shardArmory .lcName{font-size:9px}.shardArmory .lcType{font-size:6px}.shardArmory .lcDesc{font-size:8px;margin:8px 0}.shardArmory .lcStat{font-size:7px}.shardArmory .lcBtn{padding:7px;font-size:7px;border-radius:5px}.lcState{margin-left:auto;align-self:flex-start;padding:3px 5px;border:1px solid rgba(89,255,156,.3);border-radius:99px;color:var(--gn);font-size:6px;font-weight:1000;letter-spacing:.1em}
+.loadoutPanel .loadoutFooter{position:static;flex:none;margin:0;padding:12px 20px;display:flex;flex-direction:row;align-items:center;justify-content:space-between;background:rgba(3,9,18,.97)}.loadoutPanel .loadoutActions .btn{padding:10px 17px;border-radius:6px;font-size:8px}.loadoutPanel .loadoutActions #loadoutStart{min-width:210px}
+@media(max-width:1100px){.foundryPanel .shopGrid{grid-template-columns:repeat(2,minmax(210px,1fr))}.loadoutWorkbench{grid-template-columns:1fr}.buildRail{border-left:0;border-top:1px solid rgba(87,233,255,.1)}.buildRail .equippedShardSlots{grid-template-columns:repeat(3,1fr)}.shardArmory{max-height:none}.shardArmory .loadoutGrid{grid-template-columns:repeat(3,minmax(200px,1fr))}.loadoutPanel{overflow:auto}.loadoutWorkbench{flex:none}.skillBay,.buildRail{overflow:visible}}
+@media(max-width:760px){#shopPanel,#loadoutPanel{padding:0}.foundryPanel,.loadoutPanel{width:100vw;height:100vh;max-height:100vh;border-radius:0}.armoryHeader{align-items:flex-start;padding:16px;flex-direction:column}.armoryMetrics{width:100%}.armoryMetrics>div{flex:1;min-width:0}.foundryBody{display:block;overflow:auto}.systemFilters{position:sticky;top:0;z-index:2;display:flex;overflow:auto;padding:8px;border-right:0;border-bottom:1px solid rgba(87,233,255,.1);background:#050d19}.systemFilters button{width:auto;min-width:max-content;border-left:0;border-bottom:2px solid transparent}.filterIntel{display:none}.foundryCatalog{overflow:visible;padding:14px}.foundryPanel .shopGrid{grid-template-columns:1fr 1fr}.screenFooter>span{display:none}.missionStrip{grid-template-columns:1fr 1fr}.missionStrip>div{padding:9px 16px}.missionStrip>div:last-child{display:none}.skillBay,.buildRail,.shardArmory{padding:14px}.skillBay .skillGrid{grid-template-columns:1fr 1fr}.buildRail .equippedShardSlots{grid-template-columns:1fr}.shardArmory .loadoutGrid{grid-template-columns:1fr 1fr}.sectionCommand{align-items:flex-start}.sectionCommand>small{display:none}.loadoutPanel .loadoutFooter>span{display:none}.loadoutPanel .loadoutActions{width:100%}.loadoutPanel .loadoutActions .btn{flex:1}.loadoutPanel .loadoutActions #loadoutStart{min-width:0}}
+@media(max-width:480px){.foundryPanel .shopGrid,.skillBay .skillGrid,.shardArmory .loadoutGrid{grid-template-columns:1fr}.catalogTop small{display:none}.foundryPanel .shopItem{min-height:185px}.armoryMetrics>div{padding:9px}.screenFooter{justify-content:stretch}.screenFooter .btn{width:100%}.loadoutPanel .loadoutFooter{padding:10px}.loadoutPanel .loadoutActions{display:grid;grid-template-columns:.7fr 1.3fr}}
+
 </style>
 </head>
 <body>
@@ -651,12 +669,26 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 
 <!-- ==================== HANGAR / PERMANENT UPGRADES SHOP ==================== -->
 <div id="shopPanel" class="screen dim">
-  <div class="panel glass" style="width:min(880px,94vw)">
-    <h2 class="pTitle">HANGAR // PERMANENT UPGRADES</h2>
-    <div class="pSub">SPEND CREDITS — 20 PERMANENT MODULES ORGANIZED BY SYSTEM. EVERY RUN STARTS STRONGER.</div>
-    <div style="display:flex;justify-content:flex-end;margin-bottom:14px"><div class="cur">🪙 <span id="shopCredits">0</span></div></div>
-    <div class="shopGrid" id="shopGrid"></div>
-    <div class="btnRow"><button class="btn ghost" id="shopBack">← BACK</button></div>
+  <div class="panel glass foundryPanel">
+    <header class="armoryHeader">
+      <div><div class="screenEyebrow">HANGAR / PERMANENT SYSTEMS</div><h2 class="pTitle">SYSTEMS FOUNDRY</h2><div class="pSub">INSTALL PERMANENT HARDWARE THAT SURVIVES EVERY TIMELINE COLLAPSE.</div></div>
+      <div class="armoryMetrics">
+        <div><small>AVAILABLE CREDITS</small><b class="creditValue">◉ <span id="shopCredits">0</span></b></div>
+        <div><small>INSTALLED LEVELS</small><b><span id="shopInstalled">0</span> / <span id="shopCapacity">100</span></b></div>
+      </div>
+    </header>
+    <div class="foundryBody">
+      <nav class="systemFilters" aria-label="Upgrade system filters">
+        <button class="shopFilter active" data-group="ALL"><span>00</span> ALL SYSTEMS</button>
+        <button class="shopFilter" data-group="OFFENSE SYSTEMS"><span>01</span> OFFENSE</button>
+        <button class="shopFilter" data-group="DEFENSE SYSTEMS"><span>02</span> DEFENSE</button>
+        <button class="shopFilter" data-group="MOBILITY SYSTEMS"><span>03</span> MOBILITY</button>
+        <button class="shopFilter" data-group="UTILITY SYSTEMS"><span>04</span> UTILITY</button>
+        <div class="filterIntel"><b>FOUNDRY INTEL</b><span>Each module has five levels. Later installations cost more but compound with your loadout.</span></div>
+      </nav>
+      <section class="foundryCatalog"><div class="catalogTop"><span>MODULE CATALOG</span><small>SELECT A SYSTEM TO INSTALL OR IMPROVE</small></div><div class="shopGrid" id="shopGrid"></div></section>
+    </div>
+    <footer class="screenFooter"><span>PERMANENT UPGRADES APPLY AT THE START OF EVERY RUN</span><button class="btn ghost" id="shopBack">← RETURN TO COMMAND</button></footer>
   </div>
 </div>
 
@@ -664,40 +696,34 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 <!-- ==================== BREACH LOADOUT ==================== -->
 <div id="loadoutPanel" class="screen dim">
   <div class="panel glass loadoutPanel">
-    <div class="loadoutTop">
-      <div>
-        <h2 class="pTitle">BREACH // LOADOUT</h2>
-        <div class="pSub" style="margin-bottom:0">BUY WITH CREDITS • EQUIP UP TO 3 AUGMENT SHARDS • CHOOSE YOUR E + Q SKILLS</div>
-      </div>
-      <div class="loadoutWallet">🪙 <span id="loadoutCredits">0</span> CREDITS</div>
-    </div>
+    <header class="armoryHeader loadoutTop">
+      <div><div class="screenEyebrow">PRE-MISSION / CONFIGURATION</div><h2 class="pTitle">BREACH LOADOUT</h2><div class="pSub">CONFIGURE ACTIVE ABILITIES AND AUGMENT HARDWARE BEFORE DEPLOYMENT.</div></div>
+      <div class="armoryMetrics"><div><small>AVAILABLE CREDITS</small><b class="creditValue">◉ <span id="loadoutCredits">0</span></b></div><div><small>OWNED SHARDS</small><b id="loadoutOwned">0 / 12</b></div></div>
+    </header>
+    <div class="missionStrip"><div><small>DEPLOYMENT TARGET</small><b id="loadoutMission">SECTOR 01 / OUTER RIM</b></div><div><small>THREAT LEVEL</small><b id="loadoutThreat">EASY</b></div><div><small>CONFIGURATION</small><b class="readyText">COMBAT READY</b></div></div>
 
-    <div class="loadoutSection">
-      <div class="loadoutSectionTitle"><h3>ACTIVE SKILLS</h3><span>DEFAULT PARRY + TIME FRACTURE ARE FREE. PURCHASE ALTERNATIVES ONCE, THEN SWAP ANY TIME.</span></div>
-      <div class="skillSlotGrid">
-        <div class="skillSlot">
-          <div class="skillSlotHead"><b>TACTICAL SLOT</b><span class="skillKey">E</span></div>
-          <div class="skillGrid" id="tacticalSkillGrid"></div>
+    <div class="loadoutWorkbench">
+      <section class="skillBay">
+        <div class="sectionCommand"><div><span>01</span><b>ACTIVE ABILITY MATRIX</b></div><small>SELECT ONE TACTICAL AND ONE CHRONO SYSTEM</small></div>
+        <div class="skillSlotGrid">
+          <div class="skillSlot"><div class="skillSlotHead"><div><small>TACTICAL CONTROL</small><b>E-SLOT ABILITY</b></div><span class="skillKey">E</span></div><div class="skillGrid" id="tacticalSkillGrid"></div></div>
+          <div class="skillSlot"><div class="skillSlotHead"><div><small>CHRONO CONTROL</small><b>Q-SLOT ABILITY</b></div><span class="skillKey">Q</span></div><div class="skillGrid" id="chronoSkillGrid"></div></div>
         </div>
-        <div class="skillSlot">
-          <div class="skillSlotHead"><b>CHRONO SLOT</b><span class="skillKey">Q</span></div>
-          <div class="skillGrid" id="chronoSkillGrid"></div>
-        </div>
-      </div>
+      </section>
+      <aside class="buildRail">
+        <div class="sectionCommand"><div><span>02</span><b>EQUIPPED SHARDS</b></div><small><span id="shardEquipCount">0/3</span> SLOTS ACTIVE</small></div>
+        <div class="equippedShardSlots" id="equippedShardSlots"></div>
+        <div class="buildSummary"><small>DEPLOYMENT SUMMARY</small><div id="loadoutSummary"></div></div>
+        <div id="loadoutNotice"></div>
+      </aside>
     </div>
 
-    <div class="loadoutSection">
-      <div class="loadoutSectionTitle"><h3>EQUIPPED AUGMENT SHARDS <span id="shardEquipCount" style="color:#57e9ff"></span></h3><span>PASSIVE BONUSES APPLY FOR THE ENTIRE RUN. MAXIMUM 3 EQUIPPED.</span></div>
-      <div class="equippedShardSlots" id="equippedShardSlots"></div>
-      <div class="loadoutGrid" id="shardStoreGrid"></div>
-      <div id="loadoutNotice"></div>
-    </div>
-
+    <section class="shardArmory"><div class="sectionCommand"><div><span>03</span><b>AUGMENT ARMORY</b></div><small>PURCHASE ONCE, THEN EQUIP FOR ANY FUTURE OPERATION</small></div><div class="loadoutGrid" id="shardStoreGrid"></div></section>
     <div class="loadoutFooter">
-      <div class="loadoutSummary" id="loadoutSummary"></div>
+      <span>CHANGES ARE SAVED AUTOMATICALLY</span>
       <div class="loadoutActions">
-        <button class="btn ghost" id="loadoutBack">← BACK</button>
-        <button class="btn" id="loadoutStart">▶ START SECTOR</button>
+        <button class="btn ghost" id="loadoutBack">← CANCEL</button>
+        <button class="btn" id="loadoutStart">▶ DEPLOY</button>
       </div>
     </div>
   </div>
@@ -1264,6 +1290,7 @@ const PERM_GROUPS=[
  {name:'UTILITY SYSTEMS',note:'ENERGY • ECONOMY • PROGRESSION',ids:['magnet','conduit','salvage','learning','scanner','reserve','siphon']},
 ];
 const permCost=(p,l)=>Math.round(p.base*Math.pow(1.7,l)/10)*10;
+let shopActiveGroup='ALL';
 function applyPerms(){
  const p=meta.perm;
  player.maxHp+=10*p.hull;player.hp=player.maxHp;
@@ -1289,14 +1316,17 @@ function applyPerms(){
 }
 function renderShop(){
  $('shopCredits').textContent=meta.credits.toLocaleString();
+ $('shopInstalled').textContent=Object.values(meta.perm).reduce((total,level)=>total+(+level||0),0);$('shopCapacity').textContent=PERMS.length*5;
+ document.querySelectorAll('.shopFilter').forEach(button=>{button.classList.toggle('active',button.dataset.group===shopActiveGroup);button.onclick=()=>{shopActiveGroup=button.dataset.group;renderShop()}});
  const g=$('shopGrid');g.innerHTML='';
  for(const group of PERM_GROUPS){
+  if(shopActiveGroup!=='ALL'&&shopActiveGroup!==group.name)continue;
   const heading=document.createElement('div');heading.className='catalogHeader';heading.innerHTML=`${group.name}<small>${group.note}</small>`;g.appendChild(heading);
   for(const id of group.ids){const p=PERMS.find(item=>item.id===id);if(!p)continue;
    const l=meta.perm[p.id]||0,maxed=l>=p.max,cost=maxed?0:permCost(p,l),afford=meta.credits>=cost;
    const pips='●'.repeat(l)+'○'.repeat(p.max-l);
    const d=document.createElement('div');d.className='shopItem';
-   d.innerHTML=`<div class="siTop"><div class="siIcon">${svgw(p.icon)}</div>
+   d.innerHTML=`<div class="siLevel">LEVEL ${l} / ${p.max}</div><div class="siTop"><div class="siIcon">${svgw(p.icon)}</div>
      <div><div class="siName">${p.name}</div><div class="siPips" style="color:${maxed?'#59ff9c':'#ffd85d'}">${pips}</div></div></div>
      <div class="siDesc">${p.next(l)}</div><div class="siEff">${p.eff(l)}</div>
      <button class="buyBtn${maxed?' maxed':''}" ${maxed||!afford?'disabled':''}>${maxed?'MAX LEVEL':afford?`BUY — 🪙 ${cost.toLocaleString()}`:`🪙 ${cost.toLocaleString()} — NOT ENOUGH`}</button>`;
@@ -1412,18 +1442,18 @@ function renderSkillGroup(group,elId){
  for(const s of Object.values(dict)){
    const owned=!!meta.skillOwned[s.id],equipped=meta.equippedSkills[group]===s.id,afford=meta.credits>=s.cost;
    const d=document.createElement('div');d.className='skillCard'+(equipped?' equipped':'')+(!owned?' locked':'');
-   d.innerHTML=`<div style="display:flex;align-items:center;gap:8px;color:${s.color}"><span style="font-size:19px">${s.icon}</span><div><div class="skillName">${s.name}</div><div class="skillCost">${owned?(equipped?'EQUIPPED':'OWNED'):(`🪙 ${s.cost.toLocaleString()}`)}</div></div></div><div class="skillDesc">${s.desc}</div><div class="skillMeta">${s.meta}</div><button class="lcBtn ${!owned?'buy':equipped?'unequip':''}" ${equipped?'disabled':''}>${equipped?'EQUIPPED':owned?'EQUIP':afford?'BUY & EQUIP':'NOT ENOUGH CREDITS'}</button>`;
+   d.innerHTML=`<div style="display:flex;align-items:center;gap:8px;color:${s.color}"><span style="font-size:19px">${s.icon}</span><div><div class="skillName">${s.name}</div><div class="skillCost">${owned?(equipped?'EQUIPPED':'OWNED'):(`◉ ${s.cost.toLocaleString()}`)}</div></div>${equipped?'<span class="lcState">ACTIVE</span>':''}</div><div class="skillDesc">${s.desc}</div><div class="skillMeta">${s.meta}</div><button class="lcBtn ${!owned?'buy':equipped?'unequip':''}" ${equipped?'disabled':''}>${equipped?'EQUIPPED':owned?'EQUIP':afford?'BUY & EQUIP':'NOT ENOUGH CREDITS'}</button>`;
    const b=d.querySelector('button');if(!equipped)b.onclick=()=>buyOrEquipSkill(group,s.id);g.appendChild(d);
  }
 }
 function renderLoadout(){
- $('loadoutCredits').textContent=meta.credits.toLocaleString();$('shardEquipCount').textContent=`${meta.equippedShards.length}/3`;
+ $('loadoutCredits').textContent=meta.credits.toLocaleString();$('loadoutOwned').textContent=`${Object.values(meta.shardOwned).filter(Boolean).length} / ${AUGMENT_SHARDS.length}`;$('shardEquipCount').textContent=`${meta.equippedShards.length}/3`;$('loadoutMission').textContent=`SECTOR ${String(loadoutSector+1).padStart(2,'0')} / ${MAPS[loadoutSector].name}`;$('loadoutThreat').textContent=MAPS[loadoutSector].diff;
  const slots=$('equippedShardSlots');slots.innerHTML='';
  for(let i=0;i<3;i++){const id=meta.equippedShards[i],s=id&&shardById(id),d=document.createElement('div');d.className='shardSlot'+(s?' filled':'');d.innerHTML=s?`<div class="shardOrb" style="color:${s.color}">${s.icon}</div><div><b>${s.name}</b><small>${shardRole(s.id)} • ${s.stat}</small></div>`:`<div class="shardOrb">◇</div><div><b>EMPTY SHARD SLOT</b><small>EQUIP ANY OWNED SHARD</small></div>`;if(s)d.onclick=()=>toggleShard(s.id);slots.appendChild(d)}
  const g=$('shardStoreGrid');g.innerHTML='';
  for(const group of SHARD_GROUPS){
   const heading=document.createElement('div');heading.className='catalogHeader';heading.innerHTML=`${group.name}<small>${group.note}</small>`;g.appendChild(heading);
-  for(const id of group.ids){const s=shardById(id);if(!s)continue;const owned=!!meta.shardOwned[s.id],equipped=meta.equippedShards.includes(s.id),afford=meta.credits>=s.cost,d=document.createElement('div');d.className='loadCard'+(equipped?' equipped':'')+(!owned?' locked':'');d.innerHTML=`<div class="lcTop" style="color:${s.color}"><div class="lcIcon">${s.icon}</div><div><div class="lcName">${s.name}</div><div class="lcType">${shardRole(s.id)} // AUGMENT SHARD</div></div></div><div class="lcDesc">${s.desc}</div><div class="lcStat">${s.stat}</div><button class="lcBtn ${!owned?'buy':equipped?'unequip':''}">${!owned?(afford?`BUY — 🪙 ${s.cost.toLocaleString()}`:`🪙 ${s.cost.toLocaleString()} — NOT ENOUGH`):equipped?'UNEQUIP':'EQUIP'}</button>`;d.querySelector('button').onclick=()=>owned?toggleShard(s.id):buyShard(s.id);g.appendChild(d)}
+  for(const id of group.ids){const s=shardById(id);if(!s)continue;const owned=!!meta.shardOwned[s.id],equipped=meta.equippedShards.includes(s.id),afford=meta.credits>=s.cost,d=document.createElement('div');d.className='loadCard'+(equipped?' equipped':'')+(!owned?' locked':'');d.innerHTML=`<div class="lcTop" style="color:${s.color}"><div class="lcIcon">${s.icon}</div><div><div class="lcName">${s.name}</div><div class="lcType">${shardRole(s.id)} // AUGMENT SHARD</div></div>${equipped?'<span class="lcState">ACTIVE</span>':owned?'<span class="lcState">OWNED</span>':''}</div><div class="lcDesc">${s.desc}</div><div class="lcStat">${s.stat}</div><button class="lcBtn ${!owned?'buy':equipped?'unequip':''}">${!owned?(afford?`BUY — ◉ ${s.cost.toLocaleString()}`:`◉ ${s.cost.toLocaleString()} — NOT ENOUGH`):equipped?'UNEQUIP':'EQUIP'}</button>`;d.querySelector('button').onclick=()=>owned?toggleShard(s.id):buyShard(s.id);g.appendChild(d)}
  }
  renderSkillGroup('tactical','tacticalSkillGrid');renderSkillGroup('chrono','chronoSkillGrid');refreshAbilityLabels();
  const t=tacticalSkill(),q=chronoSkill(),sh=meta.equippedShards.map(id=>shardById(id)?.name).filter(Boolean);
