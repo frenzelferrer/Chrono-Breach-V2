@@ -229,6 +229,32 @@ button{font-family:inherit}
 .howGrid .control b{display:block;color:#fff;font-size:13px;margin-bottom:3px}
 h2.pTitle{margin:0 0 4px;font-size:clamp(20px,2.6vw,30px);font-weight:1000;letter-spacing:.2em}
 .pSub{font-size:11px;color:#8aa5bd;letter-spacing:.16em;margin-bottom:18px}
+/* first-run pilot training */
+.tutorialPanel{width:min(720px,94vw);padding:30px 34px;text-align:center;max-height:94vh;overflow:auto}
+.tutorialEyebrow{font-size:10px;font-weight:1000;letter-spacing:.28em;color:var(--cy);margin-bottom:8px}
+.tutorialProgress{display:flex;justify-content:center;gap:8px;margin:18px 0 22px}
+.tutorialPip{width:46px;height:4px;border-radius:99px;background:#183049;transition:.2s}
+.tutorialPip.done{background:#2d7895}.tutorialPip.active{background:var(--cy);box-shadow:0 0 12px rgba(87,233,255,.6)}
+.tutorialStage{min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.tutorialStep{font-size:10px;font-weight:1000;letter-spacing:.2em;color:#7896ac}
+.tutorialTitle{font-size:clamp(25px,4vw,38px);font-weight:1000;letter-spacing:.09em;margin:6px 0 10px}
+.tutorialCopy{max-width:560px;color:#acc2d2;font-size:14px;line-height:1.65;margin:0 auto}
+.tutorialCopy strong{color:#fff}
+.tutorialKeys{display:flex;align-items:center;justify-content:center;gap:22px;margin:28px 0 12px}
+.wasd{display:grid;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(2,42px);gap:6px}
+.tKey{display:grid;place-items:center;border:1px solid rgba(87,233,255,.45);border-radius:8px;background:linear-gradient(180deg,#11243b,#07111f);font-weight:1000;box-shadow:0 3px 0 #183b55;color:#e8fbff}.tKey.w{grid-column:2}.tKey.a{grid-column:1}.tKey.s{grid-column:2}.tKey.d{grid-column:3}
+.tutorialMouse{width:72px;height:104px;border:2px solid rgba(87,233,255,.55);border-radius:38px;background:linear-gradient(180deg,rgba(16,38,62,.9),rgba(5,12,23,.95));position:relative;box-shadow:0 0 24px rgba(87,233,255,.12)}
+.tutorialMouse::before{content:'';position:absolute;left:50%;top:17px;width:4px;height:18px;transform:translateX(-50%);border-radius:3px;background:var(--cy);box-shadow:0 0 10px var(--cy)}
+.tutorialMouse::after{content:'AIM';position:absolute;left:50%;bottom:-27px;transform:translateX(-50%);font-size:9px;font-weight:1000;letter-spacing:.15em;color:#7fa0b7}
+.holdTrainer{margin:24px 0 12px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.holdTarget{--hold-progress:0deg;width:132px;height:132px;border:0;border-radius:50%;padding:8px;cursor:crosshair;color:#fff;background:conic-gradient(var(--cy) var(--hold-progress),rgba(37,66,89,.65) 0);box-shadow:0 0 28px rgba(87,233,255,.15);touch-action:none;transition:transform .12s}
+.holdTargetInner{width:100%;height:100%;border-radius:50%;display:grid;place-items:center;align-content:center;background:radial-gradient(circle at 50% 35%,#163450,#07111f 70%);border:1px solid rgba(87,233,255,.36);font-weight:1000;font-size:13px;letter-spacing:.12em;line-height:1.25}
+.holdTargetInner small{display:block;color:#8fb1c8;font-size:9px;letter-spacing:.13em;margin-top:6px}.holdTarget.holding{transform:scale(.96);box-shadow:0 0 38px rgba(87,233,255,.35)}.holdTarget.complete{background:#59ff9c;box-shadow:0 0 34px rgba(89,255,156,.32)}
+.holdStatus{min-height:18px;color:#ffd85d;font-size:11px;font-weight:1000;letter-spacing:.12em}.holdStatus.ok{color:#59ff9c}
+.abilityStrip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin:25px 0 12px}
+.tutorialAbility{border:1px solid #1d3851;border-radius:12px;padding:14px 10px;background:#07111f}.tutorialAbility b{display:inline-grid;place-items:center;min-width:42px;height:32px;padding:0 8px;border:1px solid rgba(87,233,255,.5);border-radius:7px;color:var(--cy);font-size:13px}.tutorialAbility span{display:block;margin-top:9px;font-size:10px;font-weight:900;letter-spacing:.12em;color:#fff}.tutorialAbility small{display:block;color:#7896ac;font-size:9px;line-height:1.4;margin-top:4px}
+.tutorialMobileGlyph{display:none;font-size:64px;margin:22px 0 8px;filter:drop-shadow(0 0 16px rgba(87,233,255,.35))}
+@media(max-width:600px){.tutorialPanel{padding:22px 16px}.tutorialStage{min-height:260px}.tutorialCopy{font-size:13px}.abilityStrip{grid-template-columns:1fr}.tutorialAbility{padding:10px}.howGrid{grid-template-columns:1fr}.tutorialKeys{transform:scale(.88);margin:18px 0}.touchDevice .tutorialKeys{display:none}.touchDevice .tutorialMobileGlyph{display:block}.holdTarget{width:116px;height:116px}}
 @media(max-width:860px){.smapWrap{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.feats{display:none}.bc{display:none}.br{right:10px;bottom:10px}.tl{width:44vw}.hero{padding:0 6vw}}
 
 /* ==================== MOBILE TOUCH CONTROLS ==================== */
@@ -630,6 +656,20 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   </div>
 </div>
 
+<!-- ==================== FIRST-RUN PILOT TRAINING ==================== -->
+<div id="tutorialPanel" class="screen dim" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
+  <div class="panel glass tutorialPanel">
+    <div class="tutorialEyebrow">PILOT TRAINING // REQUIRED BRIEFING</div>
+    <h2 class="pTitle" id="tutorialTitle">HOW TO SURVIVE THE BREACH</h2>
+    <div class="tutorialProgress" id="tutorialProgress" aria-label="Tutorial progress"></div>
+    <div class="tutorialStage" id="tutorialStage"></div>
+    <div class="btnRow">
+      <button class="btn ghost" id="tutorialSkip" type="button">BACK TO MENU</button>
+      <button class="btn" id="tutorialNext" type="button">NEXT ›</button>
+    </div>
+  </div>
+</div>
+
 <!-- ==================== HOW TO PLAY ==================== -->
 <div id="howtoPanel" class="screen dim">
   <div class="panel glass" style="width:min(620px,94vw)">
@@ -646,7 +686,7 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
       <div class="control"><b>◇ LOADOUT</b>Buy active skills and Augment Shards with Credits before entering a sector</div>
       <div class="control"><b>☠ BOSSES</b>Each sector ends with a boss. Defeat it to unlock the next sector</div>
     </div>
-    <div class="btnRow"><button class="btn ghost" id="howBack">← BACK</button></div>
+    <div class="btnRow"><button class="btn" id="howTutorial">▶ PLAY PILOT TRAINING</button><button class="btn ghost" id="howBack">← BACK</button></div>
   </div>
 </div>
 
@@ -1398,13 +1438,64 @@ let ngPlus=false,loadoutRunMode='normal';
 const TIPS=['Dash through bullets and use your equipped Tactical Skill to survive pressure.','Your shots can intercept enemy bullets — shoot them down.','Defeated bosses drop rare powerups — grab them fast.','A full ⚡ ENERGY bar lets you fracture time with Q.','Your loadout can be changed before every sector — experiment with skills and shards.','Your ship evolves every level — up to APEX at Level 5.','Elite Wardens shield themselves. Break the shield first.'];
 
 /* ---------------- screen manager ---------------- */
-const SCREENS=['onboarding','menu','smap','lbPanel','shopPanel','loadoutPanel','settingsPanel','howtoPanel','pausePanel','upgrade','rewardPanel','gameover','victory','paradoxVictory','ascendEnding'];
+const SCREENS=['onboarding','menu','smap','lbPanel','shopPanel','loadoutPanel','settingsPanel','tutorialPanel','howtoPanel','pausePanel','upgrade','rewardPanel','gameover','victory','paradoxVictory','ascendEnding'];
 function showScreen(id){
  for(const s of SCREENS)$(s).classList.toggle('on',s===id);
  $('hud').classList.toggle('on',['PLAYING','LEVEL_UP','BOSS_INTRO','BOSS_DEFEATED','PAUSED'].includes(state));
  refreshMobileLayout();
 }
 function setState(s){prevState=state;state=s;refreshMobileLayout()}
+
+/* ---------------- first-run pilot training ---------------- */
+const TUTORIAL_KEY='chronoTutorialV2',TUTORIAL_HOLD_MS=1200;
+let tutorialStep=0,tutorialHoldStart=0,tutorialHoldFrame=0,tutorialHoldDone=false,tutorialOrigin='play',tutorialMap=0,tutorialLaunchNudge=false;
+function tutorialIsTouch(){return mobile.active}
+function tutorialStages(){return [
+  {
+    title:tutorialIsTouch()?'MOVE WITH YOUR LEFT THUMB':'MOVE. AIM. KEEP MOVING.',
+    copy:tutorialIsTouch()?'<strong>Hold and drag the left stick</strong> to move. Use the right side to aim. Staying still makes you an easy target.':'Use <strong>W A S D</strong> to move your ship while the <strong>mouse cursor aims</strong>. You can move and shoot at the same time.',
+    visual:`<div class="tutorialKeys" aria-hidden="true"><div class="wasd"><div class="tKey w">W</div><div class="tKey a">A</div><div class="tKey s">S</div><div class="tKey d">D</div></div><div class="tutorialMouse"></div></div><div class="tutorialMobileGlyph" aria-hidden="true">◉ ⇄ ✥</div>`
+  },
+  {
+    title:tutorialIsTouch()?'HOLD THE AIM PAD TO FIRE':'DO NOT SPAM CLICK',
+    copy:tutorialIsTouch()?'<strong>Press, hold, and drag</strong> on the right aim pad. Your weapons fire continuously for as long as you keep holding. Try it below.':'Point at a target, then <strong>press and HOLD the left mouse button</strong>. Your weapons fire continuously—rapid clicking only interrupts your shots. Prove the link below.',
+    visual:`<div class="holdTrainer"><button class="holdTarget" id="tutorialHoldTarget" type="button" aria-label="Press and hold to complete firing training"><span class="holdTargetInner">PRESS + HOLD<small>${tutorialIsTouch()?'KEEP YOUR THUMB DOWN':'LEFT MOUSE BUTTON'}</small></span></button><div class="holdStatus" id="tutorialHoldStatus">HOLD UNTIL THE RING IS FULL</div></div>`,
+    requiresHold:true
+  },
+  {
+    title:'YOUR SURVIVAL SYSTEMS',
+    copy:tutorialIsTouch()?'Use the three action buttons when combat gets dangerous. Collect cyan XP shards, choose upgrades, and defeat the sector boss.':'These keys save runs. Collect cyan XP shards, choose upgrades when you level up, and defeat the boss at the end of each sector.',
+    visual:`<div class="abilityStrip"><div class="tutorialAbility"><b>${tutorialIsTouch()?'DASH':'SPACE'}</b><span>PHASE DASH</span><small>Escape danger with brief invulnerability</small></div><div class="tutorialAbility"><b>${tutorialIsTouch()?'TACTICAL':'E'}</b><span>TACTICAL SKILL</span><small>Parry or use your equipped defense</small></div><div class="tutorialAbility"><b>${tutorialIsTouch()?'FRACTURE':'Q'}</b><span>CHRONO SKILL</span><small>Unleash it when Energy is full</small></div></div>`
+  }
+]}
+function renderTutorial(){
+ const stages=tutorialStages(),stage=stages[tutorialStep],progress=$('tutorialProgress');
+ progress.innerHTML=stages.map((_,i)=>`<span class="tutorialPip ${i<tutorialStep?'done':i===tutorialStep?'active':''}"></span>`).join('');
+ $('tutorialStage').innerHTML=`<div class="tutorialStep">STEP ${tutorialStep+1} OF ${stages.length}</div><div class="tutorialTitle">${stage.title}</div><div class="tutorialCopy">${stage.copy}</div>${stage.visual}`;
+ $('tutorialSkip').textContent=tutorialOrigin==='play'?'BACK TO MENU':'EXIT TRAINING';
+ const next=$('tutorialNext');next.textContent=tutorialStep===stages.length-1?(tutorialOrigin==='play'?'OPEN LOADOUT ›':'FINISH TRAINING'):'NEXT ›';next.disabled=!!stage.requiresHold&&!tutorialHoldDone;
+ if(stage.requiresHold)bindTutorialHold();
+}
+function bindTutorialHold(){
+ const target=$('tutorialHoldTarget'),status=$('tutorialHoldStatus');if(!target)return;
+ const reset=(failed=false)=>{cancelAnimationFrame(tutorialHoldFrame);tutorialHoldStart=0;target.classList.remove('holding');if(!tutorialHoldDone){target.style.setProperty('--hold-progress','0deg');if(failed){status.textContent='RELEASED TOO SOON — KEEP HOLDING';setTimeout(()=>{if(!tutorialHoldDone&&$('tutorialHoldStatus'))$('tutorialHoldStatus').textContent='HOLD UNTIL THE RING IS FULL'},850)}}};
+ const tick=now=>{if(!tutorialHoldStart||tutorialHoldDone)return;const p=clamp((now-tutorialHoldStart)/TUTORIAL_HOLD_MS,0,1);target.style.setProperty('--hold-progress',(p*360)+'deg');if(p>=1){tutorialHoldDone=true;tutorialHoldStart=0;target.classList.remove('holding');target.classList.add('complete');target.querySelector('.holdTargetInner').innerHTML=`FIRE LINK STABLE<small>CONTINUOUS FIRE CONFIRMED</small>`;status.textContent='TRAINING COMPLETE — HOLD TO FIRE IN COMBAT';status.classList.add('ok');$('tutorialNext').disabled=false;tone(620,.14,'sine',.025,260);return}tutorialHoldFrame=requestAnimationFrame(tick)};
+ target.addEventListener('pointerdown',e=>{e.preventDefault();audio();try{target.setPointerCapture(e.pointerId)}catch(_){};if(tutorialHoldDone)return;tutorialHoldStart=performance.now();target.classList.add('holding');status.textContent='KEEP HOLDING…';tutorialHoldFrame=requestAnimationFrame(tick)});
+ target.addEventListener('pointerup',()=>reset(true));target.addEventListener('pointercancel',()=>reset(true));
+}
+function openTutorial(origin='play',map=Math.min(meta.unlocked,4)){
+ tutorialOrigin=origin;tutorialMap=map;tutorialStep=0;tutorialHoldDone=false;setState('TUTORIAL');showScreen('tutorialPanel');renderTutorial();
+}
+function closeTutorial(markSeen=true){
+ cancelAnimationFrame(tutorialHoldFrame);tutorialHoldStart=0;if(markSeen)try{localStorage.setItem(TUTORIAL_KEY,'1')}catch(e){}
+ if(tutorialOrigin==='play'){tutorialLaunchNudge=true;openLoadout(tutorialMap,'menu')}
+ else{setState('MENU');showScreen('howtoPanel')}
+}
+function exitTutorial(){
+ cancelAnimationFrame(tutorialHoldFrame);tutorialHoldStart=0;setState('MENU');showScreen(tutorialOrigin==='play'?'menu':'howtoPanel');
+}
+$('tutorialNext').onclick=()=>{audio();const stages=tutorialStages();if(stages[tutorialStep].requiresHold&&!tutorialHoldDone)return;if(tutorialStep<stages.length-1){tutorialStep++;tutorialHoldDone=false;renderTutorial();tone(480,.06,'sine',.018,100)}else closeTutorial(true)};
+$('tutorialSkip').onclick=()=>{audio();exitTutorial()};
 
 /* ---------------- topbar / menu ---------------- */
 function pilotName(){return (cloudSync.identity()||localStorage.getItem('chronoName')||'ANON').toUpperCase()}
@@ -1557,7 +1648,7 @@ $('setBack').onclick=()=>{if(prevState==='PAUSED'){setState('PAUSED');showScreen
 function openSettings(){bindSettings();showScreen('settingsPanel')}
 
 /* ---------------- menu wiring ---------------- */
-$('btnPlay').onclick=()=>{audio();openLoadout(Math.min(meta.unlocked,4),'menu')};
+$('btnPlay').onclick=()=>{audio();const map=Math.min(meta.unlocked,4);if(!localStorage.getItem(TUTORIAL_KEY))openTutorial('play',map);else openLoadout(map,'menu')};
 $('btnMap').onclick=()=>{audio();setState('MAP');renderSmap();showScreen('smap');tone(400,.06,'sine',.02,100)};
 $('btnLb').onclick=()=>{audio();openLb();tone(400,.06,'sine',.02,100)};
 $('btnShop').onclick=()=>{audio();setState('MENU');renderShop();showScreen('shopPanel');tone(400,.06,'sine',.02,100)};
@@ -1569,6 +1660,7 @@ $('btnHow').onclick=()=>{audio();setState('MENU');showScreen('howtoPanel')};
 $('btnEndless').onclick=()=>{audio();if(meta.titanCore)startEndlessContinuation(true)};
 $('btnNGPlus').onclick=()=>{audio();if(meta.ngPlusUnlocked)openLoadout(0,'menu','ngplus')};
 $('howBack').onclick=()=>{setState('MENU');showScreen('menu')};
+$('howTutorial').onclick=()=>{audio();openTutorial('howto')};
 $('lbBack').onclick=closeLeaderboard;
 $('mapBack').onclick=()=>{setState('MENU');showScreen('menu')};
 
@@ -1652,6 +1744,7 @@ function startRun(map,mode='normal'){
  running=true;setState('PLAYING');showScreen(null);
  updateProgress();$('sectorName').textContent=`SECTOR ${map+1} • ${MAPS[map].name}`;
  showMsg(ngPlus?'NEW GAME+':'BREACH OPEN',(ngPlus?'EMPOWERED TIMELINE • ':'')+MAPS[map].name+' — SECTOR '+(map+1));
+ if(tutorialLaunchNudge){tutorialLaunchNudge=false;setTimeout(()=>{if(state==='PLAYING')showMsg(mobile.active?'HOLD + DRAG TO FIRE':'HOLD LEFT MOUSE TO FIRE',mobile.active?'RIGHT AIM PAD • KEEP YOUR THUMB DOWN':'WASD TO MOVE • CURSOR TO AIM',2600)},1700)}
  tone(220,.3,'sawtooth',.03,300);
 }
 function startEndlessContinuation(fromSavedBuild=false){
