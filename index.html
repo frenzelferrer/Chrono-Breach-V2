@@ -469,6 +469,16 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 @media(max-width:760px){#shopPanel,#loadoutPanel{padding:0}.foundryPanel,.loadoutPanel{width:100vw;height:100vh;max-height:100vh;border-radius:0}.armoryHeader{align-items:flex-start;padding:16px;flex-direction:column}.armoryMetrics{width:100%}.armoryMetrics>div{flex:1;min-width:0}.foundryBody{display:block;overflow:auto}.systemFilters{position:sticky;top:0;z-index:2;display:flex;overflow:auto;padding:8px;border-right:0;border-bottom:1px solid rgba(87,233,255,.1);background:#050d19}.systemFilters button{width:auto;min-width:max-content;border-left:0;border-bottom:2px solid transparent}.filterIntel{display:none}.foundryCatalog{overflow:visible;padding:14px}.foundryPanel .shopGrid{grid-template-columns:1fr 1fr}.screenFooter>span{display:none}.missionStrip{grid-template-columns:1fr 1fr}.missionStrip>div{padding:9px 16px}.missionStrip>div:last-child{display:none}.skillBay,.buildRail,.shardArmory{padding:14px}.skillBay .skillGrid{grid-template-columns:1fr 1fr}.buildRail .equippedShardSlots{grid-template-columns:1fr}.shardArmory .loadoutGrid{grid-template-columns:1fr 1fr}.sectionCommand{align-items:flex-start}.sectionCommand>small{display:none}.loadoutPanel .loadoutFooter>span{display:none}.loadoutPanel .loadoutActions{width:100%}.loadoutPanel .loadoutActions .btn{flex:1}.loadoutPanel .loadoutActions #loadoutStart{min-width:0}}
 @media(max-width:480px){.foundryPanel .shopGrid,.skillBay .skillGrid,.shardArmory .loadoutGrid{grid-template-columns:1fr}.catalogTop small{display:none}.foundryPanel .shopItem{min-height:185px}.armoryMetrics>div{padding:9px}.screenFooter{justify-content:stretch}.screenFooter .btn{width:100%}.loadoutPanel .loadoutFooter{padding:10px}.loadoutPanel .loadoutActions{display:grid;grid-template-columns:.7fr 1.3fr}}
 
+/* Simplified first-time-friendly loadout flow */
+.loadoutPanel{overflow:auto;scrollbar-width:thin}.loadoutPanel::-webkit-scrollbar{width:8px}.loadoutPanel::-webkit-scrollbar-track{background:#050c17}.loadoutPanel::-webkit-scrollbar-thumb{background:#21445c;border-radius:99px}
+.loadoutGuide{flex:none;display:flex;align-items:center;justify-content:space-between;gap:22px;padding:12px 26px;border-bottom:1px solid rgba(255,216,93,.15);background:linear-gradient(90deg,rgba(255,216,93,.07),rgba(87,233,255,.025))}.guideIntro{display:flex;align-items:center;gap:10px;max-width:520px}.guideIntro b{flex:none;padding:4px 7px;border-radius:4px;background:var(--gd);color:#1b1300;font-size:7px;letter-spacing:.12em}.guideIntro span{color:#9cb0bf;font-size:8px;line-height:1.45}.guideSteps{display:flex;align-items:center;gap:13px;color:#7590a3;font-size:7px;font-weight:1000;letter-spacing:.1em}.guideSteps span{display:flex;align-items:center;gap:6px;white-space:nowrap}.guideSteps i{display:grid;place-items:center;width:19px;height:19px;border:1px solid rgba(87,233,255,.32);border-radius:50%;color:var(--cy);font-style:normal}.guideSteps small{padding:2px 4px;border:1px solid rgba(255,216,93,.24);border-radius:99px;color:var(--gd);font-size:5px}
+.simpleLoadoutWorkspace{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0;align-items:start}.loadoutConfigurator{min-width:0;padding:20px 22px 34px;border-right:1px solid rgba(87,233,255,.1)}.setupStep{padding:17px;border:1px solid rgba(75,124,160,.22);border-radius:9px;background:linear-gradient(150deg,rgba(8,19,35,.78),rgba(4,11,22,.66));margin-bottom:14px}.stepHeader{display:grid;grid-template-columns:32px 1fr auto;align-items:start;gap:12px;margin-bottom:14px}.stepNumber{display:grid;place-items:center;width:30px;height:30px;border:1px solid rgba(87,233,255,.34);border-radius:7px;color:var(--cy);font-size:8px;font-weight:1000}.stepLabel{color:var(--cy);font-size:6px;font-weight:1000;letter-spacing:.16em}.stepHeader h3{margin:4px 0 5px;font-size:13px;letter-spacing:.11em}.stepHeader p{margin:0;color:#728a9c;font-size:8px;line-height:1.5}.stepHeader p b{display:inline-grid;place-items:center;min-width:19px;height:18px;padding:0 5px;border:1px solid rgba(255,255,255,.2);border-radius:4px;background:#091523;color:#fff}.stepHeader p strong{color:#b8cbd7;font-weight:800}.stepHeader .skillKey{margin-top:0}.slotCounter{padding:5px 8px;border:1px solid rgba(87,233,255,.34);border-radius:99px;color:var(--cy);font-size:8px;font-weight:1000}
+.beginnerSkillGrid{grid-template-columns:repeat(4,minmax(135px,1fr));gap:8px}.beginnerSkillGrid .skillCard{min-height:184px;padding:11px;border-radius:7px}.beginnerSkillGrid .skillCard.equipped{border-width:2px;background:linear-gradient(155deg,rgba(89,255,156,.09),rgba(7,16,30,.78));box-shadow:0 0 24px rgba(89,255,156,.06)}.beginnerSkillGrid .skillName{font-size:9px}.beginnerSkillGrid .skillCost{font-size:7px}.beginnerSkillGrid .skillDesc{font-size:8px;line-height:1.5}.beginnerSkillGrid .skillMeta{font-size:7px}.beginnerSkillGrid .lcBtn{padding:8px;font-size:7px;border-radius:5px}
+.equippedLabel,.armoryDivider{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#809bad;font-size:7px;font-weight:1000;letter-spacing:.12em}.equippedLabel small,.armoryDivider small{color:#4e6a7e;font-size:6px}.shardSetupStep .equippedShardSlots{grid-template-columns:repeat(3,1fr);gap:7px;margin:9px 0 18px}.shardSetupStep .shardSlot{min-height:62px;border-radius:7px;cursor:pointer}.shardSetupStep .shardSlot:hover{border-color:var(--cy)}.armoryDivider{padding-top:13px;border-top:1px solid rgba(87,233,255,.1);margin-bottom:4px}.shardSetupStep .loadoutGrid{grid-template-columns:repeat(3,minmax(190px,1fr));gap:8px}.shardSetupStep .catalogHeader{margin:15px 0 3px;font-size:8px}.shardSetupStep .loadCard{min-height:148px;padding:11px;border-radius:7px}.shardSetupStep .lcIcon{width:31px;height:31px}.shardSetupStep .lcName{font-size:9px}.shardSetupStep .lcType{font-size:6px}.shardSetupStep .lcDesc{font-size:8px}.shardSetupStep .lcStat{font-size:7px}.shardSetupStep .lcBtn{padding:7px;font-size:7px;border-radius:5px}
+.deploymentCard{position:sticky;top:0;padding:22px 18px;min-height:560px;background:rgba(3,10,20,.7)}.deployStatus{display:flex;align-items:center;gap:7px;color:var(--gn);font-size:7px;font-weight:1000;letter-spacing:.14em}.deployStatus i{width:6px;height:6px;border-radius:50%;background:var(--gn);box-shadow:0 0 9px var(--gn)}.deploymentCard h3{margin:13px 0 4px;font-size:17px;letter-spacing:.12em}.deploymentCard>p{margin:0 0 17px;color:#668095;font-size:8px;line-height:1.45}.selectedBuildRow{display:grid;grid-template-columns:35px 1fr;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(87,233,255,.1)}.selectedKey{display:grid;place-items:center;width:32px;height:32px;border-radius:7px;background:rgba(255,216,93,.08);border:1px solid rgba(255,216,93,.3);color:var(--gd);font-size:11px;font-weight:1000}.selectedKey.chrono{color:var(--pp);border-color:rgba(167,108,255,.4);background:rgba(167,108,255,.08)}.selectedKey.shard{color:var(--cy);border-color:rgba(87,233,255,.35);background:rgba(87,233,255,.07)}.selectedBuildRow small,.selectedBuildRow b{display:block}.selectedBuildRow small{color:#536e82;font-size:6px;letter-spacing:.14em}.selectedBuildRow b{margin-top:4px;color:#dff5ff;font-size:9px}.deploymentCard .buildSummary{margin-top:15px}.deploymentCard #loadoutNotice{min-height:16px;margin:9px 0}.deployHelp{margin:4px 0 13px;padding:9px;border-left:2px solid var(--gd);background:rgba(255,216,93,.05);color:#738b9c;font-size:7px;line-height:1.45}.deployHelp b{margin-right:6px;color:var(--gd)}.deploymentCard .loadoutActions{display:grid;gap:7px}.deploymentCard .loadoutActions .btn{width:100%;padding:11px 9px;border-radius:6px;font-size:8px}.deploymentCard #loadoutStart{order:-1}
+@media(max-width:1050px){.loadoutGuide{align-items:flex-start}.guideSteps{display:grid;grid-template-columns:1fr 1fr}.simpleLoadoutWorkspace{grid-template-columns:1fr}.loadoutConfigurator{border-right:0}.deploymentCard{position:static;min-height:0;border-top:1px solid rgba(87,233,255,.1)}.deploymentCard .loadoutActions{grid-template-columns:1.2fr .8fr}.beginnerSkillGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.loadoutGuide{display:block;padding:12px 16px}.guideSteps{margin-top:11px}.loadoutConfigurator{padding:14px}.setupStep{padding:12px}.stepHeader{grid-template-columns:28px 1fr}.stepHeader>.skillKey,.stepHeader>.slotCounter{grid-column:2;justify-self:start}.beginnerSkillGrid,.shardSetupStep .loadoutGrid{grid-template-columns:1fr}.shardSetupStep .equippedShardSlots{grid-template-columns:1fr}.deploymentCard .loadoutActions{grid-template-columns:1fr}.guideIntro{align-items:flex-start}.equippedLabel small,.armoryDivider small{display:none}}
+
 </style>
 </head>
 <body>
@@ -701,30 +711,39 @@ button,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
       <div class="armoryMetrics"><div><small>AVAILABLE CREDITS</small><b class="creditValue">◉ <span id="loadoutCredits">0</span></b></div><div><small>OWNED SHARDS</small><b id="loadoutOwned">0 / 12</b></div></div>
     </header>
     <div class="missionStrip"><div><small>DEPLOYMENT TARGET</small><b id="loadoutMission">SECTOR 01 / OUTER RIM</b></div><div><small>THREAT LEVEL</small><b id="loadoutThreat">EASY</b></div><div><small>CONFIGURATION</small><b class="readyText">COMBAT READY</b></div></div>
+    <div class="loadoutGuide"><div class="guideIntro"><b>NEW PILOT?</b><span>Your default abilities are already equipped. Follow these three steps, or deploy immediately and learn them in combat.</span></div><div class="guideSteps"><span><i>1</i> CHOOSE E SKILL</span><span><i>2</i> CHOOSE Q SKILL</span><span><i>3</i> EQUIP SHARDS <small>OPTIONAL</small></span><span><i>4</i> DEPLOY</span></div></div>
 
-    <div class="loadoutWorkbench">
-      <section class="skillBay">
-        <div class="sectionCommand"><div><span>01</span><b>ACTIVE ABILITY MATRIX</b></div><small>SELECT ONE TACTICAL AND ONE CHRONO SYSTEM</small></div>
-        <div class="skillSlotGrid">
-          <div class="skillSlot"><div class="skillSlotHead"><div><small>TACTICAL CONTROL</small><b>E-SLOT ABILITY</b></div><span class="skillKey">E</span></div><div class="skillGrid" id="tacticalSkillGrid"></div></div>
-          <div class="skillSlot"><div class="skillSlotHead"><div><small>CHRONO CONTROL</small><b>Q-SLOT ABILITY</b></div><span class="skillKey">Q</span></div><div class="skillGrid" id="chronoSkillGrid"></div></div>
-        </div>
-      </section>
-      <aside class="buildRail">
-        <div class="sectionCommand"><div><span>02</span><b>EQUIPPED SHARDS</b></div><small><span id="shardEquipCount">0/3</span> SLOTS ACTIVE</small></div>
-        <div class="equippedShardSlots" id="equippedShardSlots"></div>
-        <div class="buildSummary"><small>DEPLOYMENT SUMMARY</small><div id="loadoutSummary"></div></div>
+    <div class="simpleLoadoutWorkspace">
+      <main class="loadoutConfigurator">
+        <section class="setupStep">
+          <div class="stepHeader"><span class="stepNumber">01</span><div><div class="stepLabel">REQUIRED • ONE ACTIVE</div><h3>CHOOSE YOUR TACTICAL SKILL</h3><p>Press <b>E</b> during combat for a defensive or movement ability. <strong>Zero Parry is the recommended starter.</strong></p></div><span class="skillKey">E</span></div>
+          <div class="skillGrid beginnerSkillGrid" id="tacticalSkillGrid"></div>
+        </section>
+        <section class="setupStep">
+          <div class="stepHeader"><span class="stepNumber">02</span><div><div class="stepLabel">REQUIRED • ONE ACTIVE</div><h3>CHOOSE YOUR CHRONO SKILL</h3><p>Press <b>Q</b> when the yellow Energy bar reaches 100%. <strong>Time Fracture is the recommended starter.</strong></p></div><span class="skillKey">Q</span></div>
+          <div class="skillGrid beginnerSkillGrid" id="chronoSkillGrid"></div>
+        </section>
+        <section class="setupStep shardSetupStep">
+          <div class="stepHeader"><span class="stepNumber">03</span><div><div class="stepLabel">OPTIONAL • UP TO THREE</div><h3>EQUIP AUGMENT SHARDS</h3><p>Shards add passive bonuses for the whole run. Buy one once, then equip or remove it anytime.</p></div><span class="slotCounter" id="shardEquipCount">0/3</span></div>
+          <div class="equippedLabel">YOUR THREE SHARD SLOTS <small>CLICK AN EQUIPPED SHARD TO REMOVE IT</small></div>
+          <div class="equippedShardSlots" id="equippedShardSlots"></div>
+          <div class="armoryDivider"><span>AVAILABLE SHARDS</span><small>BUY OR EQUIP BELOW</small></div>
+          <div class="loadoutGrid" id="shardStoreGrid"></div>
+        </section>
+      </main>
+
+      <aside class="deploymentCard">
+        <div class="deployStatus"><i></i> READY TO DEPLOY</div>
+        <h3>YOUR LOADOUT</h3>
+        <p>These choices will be active when the sector begins.</p>
+        <div class="selectedBuildRow"><span class="selectedKey">E</span><div><small>TACTICAL SKILL</small><b id="loadoutSelectedTactical">ZERO PARRY</b></div></div>
+        <div class="selectedBuildRow"><span class="selectedKey chrono">Q</span><div><small>CHRONO SKILL</small><b id="loadoutSelectedChrono">TIME FRACTURE</b></div></div>
+        <div class="selectedBuildRow"><span class="selectedKey shard">◇</span><div><small>PASSIVE SHARDS</small><b id="loadoutSelectedShards">NONE — OPTIONAL</b></div></div>
+        <div class="buildSummary"><small>MISSION SUMMARY</small><div id="loadoutSummary"></div></div>
         <div id="loadoutNotice"></div>
+        <div class="deployHelp"><b>TIP</b> You can safely start with the free defaults and no shards.</div>
+        <div class="loadoutActions"><button class="btn" id="loadoutStart">▶ START SECTOR</button><button class="btn ghost" id="loadoutBack">← RETURN WITHOUT STARTING</button></div>
       </aside>
-    </div>
-
-    <section class="shardArmory"><div class="sectionCommand"><div><span>03</span><b>AUGMENT ARMORY</b></div><small>PURCHASE ONCE, THEN EQUIP FOR ANY FUTURE OPERATION</small></div><div class="loadoutGrid" id="shardStoreGrid"></div></section>
-    <div class="loadoutFooter">
-      <span>CHANGES ARE SAVED AUTOMATICALLY</span>
-      <div class="loadoutActions">
-        <button class="btn ghost" id="loadoutBack">← CANCEL</button>
-        <button class="btn" id="loadoutStart">▶ DEPLOY</button>
-      </div>
     </div>
   </div>
 </div>
@@ -1457,6 +1476,7 @@ function renderLoadout(){
  }
  renderSkillGroup('tactical','tacticalSkillGrid');renderSkillGroup('chrono','chronoSkillGrid');refreshAbilityLabels();
  const t=tacticalSkill(),q=chronoSkill(),sh=meta.equippedShards.map(id=>shardById(id)?.name).filter(Boolean);
+ $('loadoutSelectedTactical').textContent=t.name;$('loadoutSelectedChrono').textContent=q.name;$('loadoutSelectedShards').textContent=sh.length?sh.join(' / '):'NONE — OPTIONAL';
  $('loadoutSummary').innerHTML=`<b>${loadoutRunMode==='ngplus'?'◈ NEW GAME+ • ':''}SECTOR ${loadoutSector+1}: ${MAPS[loadoutSector].name}</b><br>E: ${t.name} • Q: ${q.name}<br>SHARDS: ${sh.length?sh.join(' / '):'NONE EQUIPPED'}`;
  $('loadoutStart').textContent=loadoutRunMode==='ngplus'?`◈ START NEW GAME+ — SECTOR ${loadoutSector+1}`:`▶ START SECTOR ${loadoutSector+1}`;
 }
